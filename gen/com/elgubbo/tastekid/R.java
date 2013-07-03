@@ -25,7 +25,8 @@ public final class R {
         public static final int emmyavatar=0x7f020001;
         public static final int header_card_background=0x7f020002;
         public static final int ic_launcher=0x7f020003;
-        public static final int selectable_background_cardbank=0x7f020004;
+        public static final int logo=0x7f020004;
+        public static final int selectable_background_cardbank=0x7f020005;
     }
     public static final class id {
         public static final int action_search=0x7f080004;
@@ -69,7 +70,6 @@ public final class R {
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
- API 11 theme customizations can go here. 
 
         Base application theme for API 14+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and
@@ -82,5 +82,7 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f060001;
+        public static final int MyActionBarStyle=0x7f060003;
+        public static final int NoTitleText=0x7f060002;
     }
 }

@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,6 +57,9 @@ public class TasteKidActivity extends FragmentActivity implements
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
+		//TODO fix this dirty workaround
+		actionBar.setTitle("");
+		actionBar.setSubtitle("explore your taste");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -76,7 +80,8 @@ public class TasteKidActivity extends FragmentActivity implements
 					@Override
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
-						mSearchQueryChangeListener.setPosition(position);
+						if(Configuration.DEVMODE)
+							Log.d("TasteKid", "searchQuery is: "+mSearchView.getQuery().toString());
 						mSearchQueryChangeListener.onQueryTextSubmit(mSearchView.getQuery().toString());
 					}
 				});
