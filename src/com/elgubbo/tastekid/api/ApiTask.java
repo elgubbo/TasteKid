@@ -11,7 +11,6 @@ import org.apache.http.client.methods.HttpGet;
 
 import com.elgubbo.tastekid.interfaces.IQueryCompleteListener;
 import com.elgubbo.tastekid.model.ApiResponse;
-import com.elgubbo.tastekid.model.Similar;
 import com.google.gson.Gson;
 
 import android.annotation.SuppressLint;

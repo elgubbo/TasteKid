@@ -24,7 +24,6 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 /**
  * 
