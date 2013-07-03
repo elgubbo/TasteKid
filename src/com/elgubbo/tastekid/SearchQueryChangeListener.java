@@ -34,9 +34,12 @@ public class SearchQueryChangeListener implements SearchView.OnQueryTextListener
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-
+		if(query==null || query.trim() == "")
+			return true;
 		SectionFragment currentFragment = (SectionFragment) mSectionsPagerAdapter.getActiveFragment(mViewPager, mViewPager.getCurrentItem());
-		// TODO Auto-generated method stub
+		
+		currentFragment.showLoadingBar();
+		
 		String type = null;
 		switch (this.position) {
 		case TasteKidActivity.POSITION_ALL:
