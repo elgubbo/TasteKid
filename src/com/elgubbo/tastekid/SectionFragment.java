@@ -13,12 +13,14 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 public class SectionFragment extends Fragment implements IQueryCompleteListener {
@@ -37,12 +39,13 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	private LinearLayout infoLayout;
 	private LinearLayout helpLayout;
 
+	// Which position the fragment is at
 	int position;
 
-	public static SectionFragment init(int val, Context context) {
+	public static SectionFragment init(int position, Context context) {
 
 		SectionFragment fragment = new SectionFragment();
-		fragment.position = val;
+		fragment.position = position;
 		fragment.results = new ArrayList<Result>();
 		fragment.info = new ArrayList<Result>();
 		fragment.appContext = context;
@@ -68,14 +71,27 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	}
 
 	private void updateCards() {
-		fillHeaderInfo(info.get(0));
+		if(results.size() == 0)
+			fillHeaderNoResults();
+		else
+			fillHeaderInfo();
 		adapter.notifyDataSetChanged();
+	}
+
+	private void fillHeaderNoResults() {
+		SearchView mSearchView = (SearchView) getActivity().findViewById(R.id.action_search);
+		TextView title = (TextView) infoLayout.findViewById(R.id.title);
+		TextView description = (TextView) infoLayout
+				.findViewById(R.id.description);
+		title.setText("No results for " + mSearchView.getQuery() );
+		description.setText("Try searching for something different");
+		infoLayout.setVisibility(View.VISIBLE);
+		helpLayout.setVisibility(View.GONE);		
 	}
 
 	private void setupHeader() {
 		headerLayout = new LinearLayout(appContext);
 		headerLayout.setGravity(Gravity.CENTER);
-
 		headerLayout.setLayoutParams(new AbsListView.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
@@ -83,15 +99,19 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 				.inflate(R.layout.header_item, null);
 		headerLayout.addView(infoLayout);
 		infoLayout.setVisibility(View.GONE);
-		helpLayout = (LinearLayout) inflater.inflate(R.layout.list_item, null);
-		fillHelpInfo();
-		headerLayout.addView(helpLayout);
+		if (info.size() == 0)
+			fillHelpInfo();
+		else
+			fillHeaderInfo();
+
 		setupLoadingBar();
 
 		listView.addHeaderView(headerLayout);
 	}
 
 	public void fillHelpInfo() {
+		helpLayout = (LinearLayout) inflater.inflate(R.layout.list_item, null);
+
 		TextView title = (TextView) helpLayout.findViewById(R.id.title);
 		TextView description = (TextView) helpLayout
 				.findViewById(R.id.description);
@@ -109,31 +129,44 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		case TasteKidActivity.POSITION_GAME:
 			title.setText("Games");
 			description
-					.setText("Press the search button on top to explore your taste in games you might like. Just search for the name of a book you liked and you will get suggestions.");
+					.setText("Press the search button on top to explore your taste in games you might like. Just search for the name of a game you liked and you will get suggestions.");
 			break;
 		case TasteKidActivity.POSITION_MOVIE:
 			title.setText("Movies");
 			description
-					.setText("Press the search button on top to explore your taste in movies you might like. Just search for the name of a book you liked and you will get suggestions.");
+					.setText("Press the search button on top to explore your taste in movies you might like. Just search for the name of a movie you liked and you will get suggestions.");
 			break;
 		case TasteKidActivity.POSITION_MUSIC:
 			title.setText("Music");
 			description
-					.setText("Press the search button on top to explore your taste in music you might like. Just search for the name of a book you liked and you will get suggestions.");
+					.setText("Press the search button on top to explore your taste in music you might like. Just search for the name of an artist you liked and you will get suggestions.");
+			break;
+		case TasteKidActivity.POSITION_SHOW:
+			title.setText("Shows");
+			description
+					.setText("Press the search button on top to explore your taste in shows you might like. Just search for the name of a show you liked and you will get suggestions.");
 			break;
 		default:
 			break;
 		}
+		headerLayout.addView(helpLayout);
 		helpLayout.setVisibility(View.VISIBLE);
 	}
 
-	public void fillHeaderInfo(Result result) {
+	public void fillHeaderInfo() {
+		Result result;
+		if (info.size() == 0)
+			return;
+		else {
+			result = info.get(0);
+		}
 		TextView title = (TextView) infoLayout.findViewById(R.id.title);
 		TextView description = (TextView) infoLayout
 				.findViewById(R.id.description);
 		title.setText(result.name);
 		description.setText(result.wTeaser);
 		infoLayout.setVisibility(View.VISIBLE);
+		helpLayout.setVisibility(View.GONE);
 	}
 
 	private void setupLoadingBar() {
