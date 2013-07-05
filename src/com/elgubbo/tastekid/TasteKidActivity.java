@@ -1,27 +1,18 @@
 package com.elgubbo.tastekid;
 
 import java.util.List;
-import java.util.Locale;
-
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 public class TasteKidActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -31,7 +22,8 @@ public class TasteKidActivity extends FragmentActivity implements
 	public static final int POSITION_MUSIC = 1;
 	public static final int POSITION_BOOK = 3;
 	public static final int POSITION_GAME = 4;
-	//The searchview
+	public static final int POSITION_SHOW = 5;
+	// The searchview
 	SearchView mSearchView;
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -47,7 +39,7 @@ public class TasteKidActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-	
+
 	SearchQueryChangeListener mSearchQueryChangeListener;
 
 	@Override
@@ -57,7 +49,7 @@ public class TasteKidActivity extends FragmentActivity implements
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
-		//TODO fix this dirty workaround
+		// TODO fix this dirty workaround
 		actionBar.setTitle("");
 		actionBar.setSubtitle("explore your taste");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -69,8 +61,9 @@ public class TasteKidActivity extends FragmentActivity implements
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		
-		mSearchQueryChangeListener = new SearchQueryChangeListener(mSectionsPagerAdapter, mViewPager.getCurrentItem(), mViewPager);
+
+		mSearchQueryChangeListener = new SearchQueryChangeListener(
+				mSectionsPagerAdapter, mViewPager.getCurrentItem(), mViewPager);
 
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -80,9 +73,12 @@ public class TasteKidActivity extends FragmentActivity implements
 					@Override
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
-						if(Configuration.DEVMODE)
-							Log.d("TasteKid", "searchQuery is: "+mSearchView.getQuery().toString());
-						mSearchQueryChangeListener.onQueryTextSubmit(mSearchView.getQuery().toString());
+						if (Configuration.DEVMODE)
+							Log.d("TasteKid", "searchQuery is: "
+									+ mSearchView.getQuery().toString());
+						mSearchQueryChangeListener
+								.onQueryTextSubmit(mSearchView.getQuery()
+										.toString());
 					}
 				});
 
@@ -96,7 +92,7 @@ public class TasteKidActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
-		
+
 	}
 
 	@Override
@@ -108,24 +104,26 @@ public class TasteKidActivity extends FragmentActivity implements
 		setupSearchView(searchItem);
 		return true;
 	}
-	
+
 	private void setupSearchView(MenuItem searchItem) {
-		   	 
-	        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-	        if (searchManager != null) {
-	            List<SearchableInfo> searchables = searchManager.getSearchablesInGlobalSearch();
-	 
-	            SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
-	            for (SearchableInfo inf : searchables) {
-	                if (inf.getSuggestAuthority() != null
-	                        && inf.getSuggestAuthority().startsWith("applications")) {
-	                    info = inf;
-	                }
-	            }
-	            mSearchView.setSearchableInfo(info);
-	        }
-	        mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
-	    }
+
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		if (searchManager != null) {
+//			List<SearchableInfo> searchables = searchManager
+//					.getSearchablesInGlobalSearch();
+//
+//			SearchableInfo info = searchManager
+//					.getSearchableInfo(getComponentName());
+//			for (SearchableInfo inf : searchables) {
+//				if (inf.getSuggestAuthority() != null
+//						&& inf.getSuggestAuthority().startsWith("applications")) {
+//					info = inf;
+//				}
+//			}
+//			mSearchView.setSearchableInfo(info);
+		}
+		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
+	}
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
@@ -133,7 +131,7 @@ public class TasteKidActivity extends FragmentActivity implements
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
-	
+
 	}
 
 	@Override
@@ -145,7 +143,5 @@ public class TasteKidActivity extends FragmentActivity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
-
-
 
 }

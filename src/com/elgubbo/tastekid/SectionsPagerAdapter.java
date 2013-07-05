@@ -7,26 +7,34 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter{
 	
 	FragmentManager mFragmentManager;
 	Context appContext;
+	SparseArray<Fragment> fragmentHolder;
 	public SectionsPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
 		this.appContext = context;
 		this.mFragmentManager = fm;
+		this.fragmentHolder = new SparseArray<Fragment>();
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		SectionFragment fragment = SectionFragment.init(position, appContext);
-		return fragment;
+		if(fragmentHolder.get(position) != null)
+			return fragmentHolder.get(position);
+		else {
+			Fragment fragment = SectionFragment.init(position, appContext);
+			fragmentHolder.append(position, fragment);
+			return fragment;
+		}
 	}
 
 	@Override
 	public int getCount() {
-		return 5;
+		return 6;
 	}
 	
 	public Fragment getActiveFragment(ViewPager container, int position) {
@@ -52,6 +60,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 			return appContext.getString(R.string.title_section4).toUpperCase(l);
 		case 4:
 			return appContext.getString(R.string.title_section5).toUpperCase(l);
+		case 5:
+			return appContext.getString(R.string.title_section6).toUpperCase(l);
 		}
 		return null;
 	}

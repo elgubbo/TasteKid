@@ -63,7 +63,7 @@ public class APIWrapper {
 		HashMap<String, String> argMap = new HashMap<String, String>();
 		try {
 			argMap.put("q", (type != null) ? 
-					(type+":"+URLEncoder.encode(searchQuery, "UTF-8")+"//"+type) :
+					(type+":"+URLEncoder.encode(searchQuery, "UTF-8")+"//"+type+"s") :
 					"" +URLEncoder.encode(searchQuery, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
