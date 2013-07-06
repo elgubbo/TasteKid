@@ -1,10 +1,8 @@
 package com.elgubbo.tastekid;
 
-import java.util.List;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
-import android.app.SearchableInfo;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -12,7 +10,10 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 public class TasteKidActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -23,6 +24,8 @@ public class TasteKidActivity extends FragmentActivity implements
 	public static final int POSITION_BOOK = 3;
 	public static final int POSITION_GAME = 4;
 	public static final int POSITION_SHOW = 5;
+	public static final String[] TYPE_ARRAY = { null, "music", "movie", "book",
+			"game", "show" };
 	// The searchview
 	SearchView mSearchView;
 	/**
@@ -73,12 +76,18 @@ public class TasteKidActivity extends FragmentActivity implements
 					@Override
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
-						if (Configuration.DEVMODE)
-							Log.d("TasteKid", "searchQuery is: "
-									+ mSearchView.getQuery().toString());
-						mSearchQueryChangeListener
-								.onQueryTextSubmit(mSearchView.getQuery()
-										.toString());
+						ViewParent root = findViewById(android.R.id.content)
+								.getParent();
+						findAndUpdateSpinner(root, position);
+						if (mSearchView != null) {
+							if (Configuration.DEVMODE)
+								Log.d("TasteKid", "searchQuery is: "
+										+ mSearchView.getQuery().toString());
+							mSearchQueryChangeListener
+									.onQueryTextSubmit(mSearchView.getQuery()
+											.toString());
+						}
+
 					}
 				});
 
@@ -95,6 +104,39 @@ public class TasteKidActivity extends FragmentActivity implements
 
 	}
 
+	/**
+	 * Searches the view hierarchy excluding the content view for a possible
+	 * Spinner in the ActionBar.
+	 * 
+	 * @param root
+	 *            The parent of the content view
+	 * @param position
+	 *            The position that should be selected
+	 * @return if the spinner was found and adjusted
+	 */
+	private boolean findAndUpdateSpinner(Object root, int position) {
+		if (root instanceof android.widget.Spinner) {
+			// Found the Spinner
+			Spinner spinner = (Spinner) root;
+			spinner.setSelection(position);
+			return true;
+		} else if (root instanceof ViewGroup) {
+			ViewGroup group = (ViewGroup) root;
+			if (group.getId() != android.R.id.content) {
+				// Found a container that isn't the container holding our screen
+				// layout
+				for (int i = 0; i < group.getChildCount(); i++) {
+					if (findAndUpdateSpinner(group.getChildAt(i), position)) {
+						// Found and done searching the View tree
+						return true;
+					}
+				}
+			}
+		}
+		// Nothing found
+		return false;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -109,18 +151,18 @@ public class TasteKidActivity extends FragmentActivity implements
 
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		if (searchManager != null) {
-//			List<SearchableInfo> searchables = searchManager
-//					.getSearchablesInGlobalSearch();
-//
-//			SearchableInfo info = searchManager
-//					.getSearchableInfo(getComponentName());
-//			for (SearchableInfo inf : searchables) {
-//				if (inf.getSuggestAuthority() != null
-//						&& inf.getSuggestAuthority().startsWith("applications")) {
-//					info = inf;
-//				}
-//			}
-//			mSearchView.setSearchableInfo(info);
+			// List<SearchableInfo> searchables = searchManager
+			// .getSearchablesInGlobalSearch();
+			//
+			// SearchableInfo info = searchManager
+			// .getSearchableInfo(getComponentName());
+			// for (SearchableInfo inf : searchables) {
+			// if (inf.getSuggestAuthority() != null
+			// && inf.getSuggestAuthority().startsWith("applications")) {
+			// info = inf;
+			// }
+			// }
+			// mSearchView.setSearchableInfo(info);
 		}
 		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
 	}

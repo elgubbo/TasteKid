@@ -14,11 +14,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 	FragmentManager mFragmentManager;
 	Context appContext;
 	SparseArray<Fragment> fragmentHolder;
+	SparseArray<CardListArrayAdapter> adapterHolder;
+	
 	public SectionsPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
 		this.appContext = context;
 		this.mFragmentManager = fm;
 		this.fragmentHolder = new SparseArray<Fragment>();
+		this.adapterHolder = new SparseArray<CardListArrayAdapter>();
 	}
 
 	@Override
@@ -26,7 +29,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 		if(fragmentHolder.get(position) != null)
 			return fragmentHolder.get(position);
 		else {
-			Fragment fragment = SectionFragment.init(position, appContext);
+			Fragment fragment = SectionFragment.init(position, appContext, adapterHolder);
+			fragment.setRetainInstance(true);
 			fragmentHolder.append(position, fragment);
 			return fragment;
 		}

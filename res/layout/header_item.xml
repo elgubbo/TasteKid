@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent" 
-		android:layout_marginLeft="6dp"
-		android:layout_marginRight="6dp"
-		android:layout_marginTop="4dp"
-		android:layout_marginBottom="4dp"
-		android:orientation="vertical"
-		android:background="@drawable/header_card_background">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginTop="4dp"
+    android:background="@drawable/header_card_background"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,17 +21,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="20dp"
+            android:text="title"
             android:textColor="@android:color/white"
-            android:text="title" />
+            android:textSize="20sp" />
 
+        <ImageView
+            android:id="@+id/iconView"
+            android:layout_width="28dp"
+            android:layout_height="28dp" />
     </LinearLayout>
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_marginTop="4dp"
-         />
+        android:background="@color/dark_grey" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,9 +48,70 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:lines="8"
             android:ellipsize="end"
-            android:textColor="@android:color/white"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra metus et ligula accumsan auctor. Nullam luctus neque quis nibh porttitor sagittis. Nunc dignissim quam nec quam scelerisque faucibus. Maecenas elementum ante eget felis vestibulum quis pharetra dui condimentum. In a ligula lectus, aliquet interdum diam. Fusce luctus bibendum tellus, sed iaculis mi vehicula vitae. Fusce quis ipsum in est ultricies egestas a vel orci." />
+            android:maxLines="8"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra metus et ligula accumsan auctor. Nullam luctus neque quis nibh porttitor sagittis. Nunc dignissim quam nec quam scelerisque faucibus. Maecenas elementum ante eget felis vestibulum quis pharetra dui condimentum. In a ligula lectus, aliquet interdum diam. Fusce luctus bibendum tellus, sed iaculis mi vehicula vitae. Fusce quis ipsum in est ultricies egestas a vel orci."
+            android:textColor="@android:color/white" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+
+        <LinearLayout
+            android:id="@+id/youtubeLinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:background="@drawable/buttons_background_header"
+            android:clickable="true"
+            android:padding="4dp" >
+
+            <ImageView
+                android:id="@+id/youtubeImageView"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/youtube" />
+
+            <TextView
+                android:id="@+id/youtubeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Watch trailer"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/wikiLinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:background="@drawable/buttons_background_header"
+            android:clickable="true"
+            android:padding="4dp" >
+
+            <ImageView
+                android:id="@+id/wikiImageView"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/wikipedia" />
+
+            <TextView
+                android:id="@+id/wikiTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Wiki article"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
