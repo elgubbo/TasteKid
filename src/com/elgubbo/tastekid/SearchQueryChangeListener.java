@@ -61,28 +61,8 @@ public class SearchQueryChangeListener implements
 
 		currentFragment.showLoadingBar();
 
-		String type = null;
-		switch (this.position) {
-		case TasteKidActivity.POSITION_ALL:
-			break;
-		case TasteKidActivity.POSITION_BOOK:
-			type = "book";
-			break;
-		case TasteKidActivity.POSITION_GAME:
-			type = "game";
-			break;
-		case TasteKidActivity.POSITION_MOVIE:
-			type = "movie";
-			break;
-		case TasteKidActivity.POSITION_MUSIC:
-			type = "music";
-			break;
-		case TasteKidActivity.POSITION_SHOW:
-			type = "show";
-			break;
-		default:
-			break;
-		}
+		String type = TasteKidActivity.TYPE_ARRAY[position];
+		
 		if (Configuration.DEVMODE) {
 			Log.d("TasteKid", "Position is:" + this.position);
 			Log.d("TasteKid", "type is: " + type);

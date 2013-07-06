@@ -11,9 +11,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -32,6 +32,7 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	ListView listView;
 	CardListArrayAdapter adapter;
 	LayoutInflater inflater;
+	SparseArray<CardListArrayAdapter> adapterHolder;
 
 	// Layouts
 	private LinearLayout progressLayout;
@@ -41,13 +42,15 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 
 	// Which position the fragment is at
 	int position;
+	private boolean firstQuery = true;;
 
-	public static SectionFragment init(int position, Context context) {
+	public static SectionFragment init(int position, Context context, SparseArray<CardListArrayAdapter> adapterHolder) {
 
 		SectionFragment fragment = new SectionFragment();
 		fragment.position = position;
 		fragment.results = new ArrayList<Result>();
 		fragment.info = new ArrayList<Result>();
+		fragment.adapterHolder = adapterHolder;
 		fragment.appContext = context;
 
 		return fragment;
@@ -59,20 +62,35 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		this.inflater = inflater;
 		rootView = inflater.inflate(R.layout.fragment_main_layout, container,
 				false);
+		this.setupListView();
+		Log.d("TasteKid", "creating layout");
+		return rootView;
+	}
+	
+	private void setupListView() {
 		listView = (ListView) rootView.findViewById(R.id.cardListView);
-		adapter = new CardListArrayAdapter(appContext, results);
+		//setup or recycle adapter
+		
+		if(adapterHolder.get(position) != null)
+			adapter = adapterHolder.get(position);
+		else {
+			adapter = new CardListArrayAdapter(appContext, results);
+			adapterHolder.put(position, adapter);
+		}
 
 		setupHeader();
 
 		listView.setAdapter(adapter);
 
-		Log.d("TasteKid", "creating layout");
-		return rootView;
 	}
 
 	private void updateCards() {
-		if(results.size() == 0)
-			fillHeaderNoResults();
+		if(results.size() == 0){
+			if(firstQuery)
+				fillHelpInfo();
+			else
+				fillHeaderNoResults();
+		}
 		else
 			fillHeaderInfo();
 		adapter.notifyDataSetChanged();
@@ -83,7 +101,7 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		TextView title = (TextView) infoLayout.findViewById(R.id.title);
 		TextView description = (TextView) infoLayout
 				.findViewById(R.id.description);
-		title.setText("No results for " + mSearchView.getQuery() );
+			title.setText("No results for " + mSearchView.getQuery() );
 		description.setText("Try searching for something different");
 		infoLayout.setVisibility(View.VISIBLE);
 		helpLayout.setVisibility(View.GONE);		
@@ -113,6 +131,9 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		helpLayout = (LinearLayout) inflater.inflate(R.layout.list_item, null);
 
 		TextView title = (TextView) helpLayout.findViewById(R.id.title);
+		LinearLayout buttonLayout = (LinearLayout) helpLayout.findViewById(R.id.buttonLayoutItem);
+		buttonLayout.setVisibility(View.GONE);
+
 		TextView description = (TextView) helpLayout
 				.findViewById(R.id.description);
 		switch (this.position) {
@@ -199,6 +220,7 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 
 	@Override
 	public void onQueryComplete(ArrayList<ApiResponse> apiResponses) {
+		this.firstQuery = false;
 		for (ApiResponse apiResponse : apiResponses) {
 			this.info = (ArrayList<Result>) apiResponse.similar.getInfo();
 			this.results = (ArrayList<Result>) apiResponse.similar.getResults();
