@@ -62,11 +62,13 @@ public class APIWrapper {
 		ApiTask qt = new ApiTask(callBack);
 		HashMap<String, String> argMap = new HashMap<String, String>();
 		try {
-			String append = "";
+			String append = "//";
 			if(type!=null)
-				append = (type.equalsIgnoreCase("music")) ? type : type+"s";
+				append += (type.equalsIgnoreCase("music")) ? type : type+"s";
+			else
+				append="";
 			
-			argMap.put("q", (URLEncoder.encode(searchQuery, "UTF-8")+"//"+append));
+			argMap.put("q", (URLEncoder.encode(searchQuery, "UTF-8")+append));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

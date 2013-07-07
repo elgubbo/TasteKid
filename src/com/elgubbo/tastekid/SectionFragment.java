@@ -79,14 +79,13 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		}
 
 		setupHeader();
-
 		listView.setAdapter(adapter);
 
 	}
 
 	private void updateCards() {
 		if(results.size() == 0){
-			if(firstQuery)
+			if(info.size() == 0)
 				fillHelpInfo();
 			else
 				fillHeaderNoResults();
@@ -98,13 +97,16 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 
 	private void fillHeaderNoResults() {
 		SearchView mSearchView = (SearchView) getActivity().findViewById(R.id.action_search);
+		LinearLayout buttonLayout = (LinearLayout) infoLayout.findViewById(R.id.buttonLayout);
 		TextView title = (TextView) infoLayout.findViewById(R.id.title);
 		TextView description = (TextView) infoLayout
 				.findViewById(R.id.description);
 			title.setText("No results for " + mSearchView.getQuery() );
 		description.setText("Try searching for something different");
 		infoLayout.setVisibility(View.VISIBLE);
-		helpLayout.setVisibility(View.GONE);		
+		helpLayout.setVisibility(View.GONE);	
+		buttonLayout.setVisibility(View.GONE);
+		
 	}
 
 	private void setupHeader() {
@@ -119,6 +121,8 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		infoLayout.setVisibility(View.GONE);
 		if (info.size() == 0)
 			fillHelpInfo();
+		else if(results.size()==0)
+			fillHeaderNoResults();
 		else
 			fillHeaderInfo();
 
