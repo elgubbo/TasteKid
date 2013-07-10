@@ -32,7 +32,6 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	ListView listView;
 	CardListArrayAdapter adapter;
 	LayoutInflater inflater;
-	SparseArray<CardListArrayAdapter> adapterHolder;
 
 	// Layouts
 	private LinearLayout progressLayout;
@@ -42,15 +41,12 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 
 	// Which position the fragment is at
 	int position;
-	private ViewGroup fragmentViewGroup;
-
 	public static SectionFragment init(int position, Context context, SparseArray<CardListArrayAdapter> adapterHolder) {
 
 		SectionFragment fragment = new SectionFragment();
 		fragment.position = position;
 		fragment.results = new ArrayList<Result>();
 		fragment.info = new ArrayList<Result>();
-		fragment.adapterHolder = adapterHolder;
 		fragment.appContext = context;
 
 		return fragment;
@@ -59,29 +55,42 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
 		this.inflater = inflater;
-		this.fragmentViewGroup = container;
-		rootView = inflater.inflate(R.layout.fragment_main_layout, container,
+		this.appContext = container.getContext();
+		this.rootView = inflater.inflate(R.layout.fragment_main_layout, container,
 				false);
+		this.helpLayout = (LinearLayout) inflater.inflate(R.layout.list_item, null);
+
+		if(savedInstanceState != null){
+			this.info = savedInstanceState.getParcelableArrayList("info");
+			this.results = savedInstanceState.getParcelableArrayList("results");
+		}
 		this.setupListView();
 		Log.d("TasteKid", "creating layout");
 		return rootView;
 	}
 	
+	@Override
+    public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        Log.i("TasteKid", "onSaveInstanceState()");
+        state.putParcelableArrayList("results", results);
+        state.putParcelableArrayList("info", info);
+
+        state.putString("saved_thing", "some_value");
+    }
 	private void setupListView() {
 		listView = (ListView) rootView.findViewById(R.id.cardListView);
 		//setup or recycle adapter
-		
-		if(adapterHolder.get(position) != null)
-			adapter = adapterHolder.get(position);
-		else {
-			adapter = new CardListArrayAdapter(appContext, results);
-			adapterHolder.put(position, adapter);
-		}
+
+		adapter = new CardListArrayAdapter(appContext, results);
+
 
 		setupHeader();
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new ListItemClickListener(appContext, (ViewGroup) rootView));
+
 
 	}
 
@@ -134,7 +143,6 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	}
 
 	public void fillHelpInfo() {
-		helpLayout = (LinearLayout) inflater.inflate(R.layout.list_item, null);
 
 		TextView title = (TextView) helpLayout.findViewById(R.id.title);
 		LinearLayout buttonLayout = (LinearLayout) helpLayout.findViewById(R.id.buttonLayoutItem);

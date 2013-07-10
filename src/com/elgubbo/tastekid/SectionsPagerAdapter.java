@@ -30,7 +30,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 			return fragmentHolder.get(position);
 		else {
 			Fragment fragment = SectionFragment.init(position, appContext, adapterHolder);
-			fragment.setRetainInstance(true);
+//			fragment.setRetainInstance(true);
 			fragmentHolder.append(position, fragment);
 			return fragment;
 		}

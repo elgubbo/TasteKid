@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.model.Result;
 
 import android.content.Context;
@@ -18,27 +20,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class CardListArrayAdapter extends ArrayAdapter<Result> {
 
+public class CardListArrayAdapter extends ArrayAdapter<Result>{
+	
 	/**
 	 * A static map of possible icon resources
 	 */
-	public static final Map<String, Integer> iconMap;
-	static {
-		HashMap<String, Integer> iconMapInit = new HashMap<String, Integer>();
-		iconMapInit.put("movie", R.drawable.movie);
-		iconMapInit.put("book", R.drawable.book);
-		iconMapInit.put("music", R.drawable.music);
-		iconMapInit.put("show", R.drawable.show);
-		iconMapInit.put("game", R.drawable.game);
-		iconMapInit.put("author", R.drawable.author);
-		iconMap = Collections.unmodifiableMap(iconMapInit);
-	}
+    public static final Map<String, Integer> iconMap;
+    static {
+        HashMap<String, Integer> iconMapInit = new HashMap<String, Integer>();
+	    iconMapInit.put("movie", R.drawable.movie);
+	    iconMapInit.put("book", R.drawable.book);
+	    iconMapInit.put("music", R.drawable.music);
+	    iconMapInit.put("show", R.drawable.show);
+	    iconMapInit.put("game", R.drawable.game);
+	    iconMapInit.put("author", R.drawable.author);
+        iconMap = Collections.unmodifiableMap(iconMapInit);
+    }
 
 	Context appContext;
 	ArrayList<Result> results;
-
-	public CardListArrayAdapter(Context context, List<Result> objects) {
+	public CardListArrayAdapter(Context context,
+			List<Result> objects) {
 		super(context, R.layout.list_item, objects);
 		this.appContext = context;
 		this.results = (ArrayList<Result>) objects;

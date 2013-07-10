@@ -22,10 +22,8 @@ public class ListItemClickListener implements OnItemClickListener{
 	
 	private PopupWindow pw;
 	private Context appContext;
-	private ViewGroup rootView;
 	public ListItemClickListener(Context ctx, ViewGroup rootView){
 		this.appContext = ctx;
-		this.rootView = rootView;
 	}
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -53,9 +51,11 @@ public class ListItemClickListener implements OnItemClickListener{
 	
 	private void initiatePopupWindow(Result result, View root, int width, int height) {
 	    try {
+	    	
 	        //We need to get the instance of the LayoutInflater, use the context of this activity
 	        LayoutInflater inflater = (LayoutInflater) appContext
 	                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	        
 	        //Inflate the view from a predefined XML layout
 	        View layout = inflater.inflate(R.layout.list_item,
 	                null);

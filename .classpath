@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry exported="true" kind="lib" path="/home/alexander/Programmierung/workspace/cardsui-for-android/CardsUILib/bin/cardsuilib.jar" sourcepath="/CardsUILib/src"/>
-	<classpathentry kind="lib" path="libs/ormlite-android-4.45.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/TasteKid/libs/ormlite-android-4.45-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="libs/gson-2.2.2.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
