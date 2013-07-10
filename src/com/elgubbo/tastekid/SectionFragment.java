@@ -42,7 +42,7 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 
 	// Which position the fragment is at
 	int position;
-	private boolean firstQuery = true;;
+	private ViewGroup fragmentViewGroup;
 
 	public static SectionFragment init(int position, Context context, SparseArray<CardListArrayAdapter> adapterHolder) {
 
@@ -60,6 +60,7 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.inflater = inflater;
+		this.fragmentViewGroup = container;
 		rootView = inflater.inflate(R.layout.fragment_main_layout, container,
 				false);
 		this.setupListView();
@@ -80,6 +81,7 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 
 		setupHeader();
 		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new ListItemClickListener(appContext, (ViewGroup) rootView));
 
 	}
 
@@ -190,6 +192,7 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 				.findViewById(R.id.description);
 		title.setText(result.name);
 		description.setText(result.wTeaser);
+		setupHeaderButtons(infoLayout, result);
 		infoLayout.setVisibility(View.VISIBLE);
 		helpLayout.setVisibility(View.GONE);
 	}
@@ -221,10 +224,38 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 			Log.d("TasteKid", "hiding loadingbar");
 		progressLayout.setVisibility(View.GONE);
 	}
+	
+	private void setupHeaderButtons(View headerView, Result result) {
+		LinearLayout buttonLayout = (LinearLayout) headerView
+				.findViewById(R.id.buttonLayout);
+		addOnClickListenerToButtons(buttonLayout, result);
+	}
+
+	private void addOnClickListenerToButtons(LinearLayout buttonLayout,
+			Result result) {
+
+		if (result == null)
+			return;
+		LinearLayout yTButton = (LinearLayout) buttonLayout
+				.findViewById(R.id.youtubeLinearLayout);
+		LinearLayout wikiButton = (LinearLayout) buttonLayout
+				.findViewById(R.id.wikiLinearLayout);
+		ItemButtonClickListener listener = new ItemButtonClickListener(result,
+				appContext);
+		if (result.yID != null && !result.yID.trim().equalsIgnoreCase("")) {
+			yTButton.setOnClickListener(listener);
+			yTButton.setVisibility(View.VISIBLE);
+		} else
+			yTButton.setVisibility(View.INVISIBLE);
+		if (result.wUrl != null && !result.wUrl.trim().equalsIgnoreCase("")) {
+			wikiButton.setOnClickListener(listener);
+			wikiButton.setVisibility(View.VISIBLE);
+		} else
+			wikiButton.setVisibility(View.INVISIBLE);
+	}
 
 	@Override
 	public void onQueryComplete(ArrayList<ApiResponse> apiResponses) {
-		this.firstQuery = false;
 		for (ApiResponse apiResponse : apiResponses) {
 			this.info = (ArrayList<Result>) apiResponse.similar.getInfo();
 			this.results = (ArrayList<Result>) apiResponse.similar.getResults();
