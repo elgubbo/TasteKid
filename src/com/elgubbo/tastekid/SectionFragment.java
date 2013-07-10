@@ -1,12 +1,12 @@
 package com.elgubbo.tastekid;
 
 import java.util.ArrayList;
-import com.elgubbo.tastekid.interfaces.IQueryCompleteListener;
-import com.elgubbo.tastekid.model.ApiResponse;
-import com.elgubbo.tastekid.model.Result;
 
+import com.elgubbo.tastekid.db.DBHelper;
+import com.elgubbo.tastekid.interfaces.IResultsReceiver;
+import com.elgubbo.tastekid.model.Result;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import android.app.ActionBar.LayoutParams;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,12 +23,11 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class SectionFragment extends Fragment implements IQueryCompleteListener {
+public class SectionFragment extends Fragment implements IResultsReceiver {
 
 	ArrayList<Result> results;
 	ArrayList<Result> info;
 	View rootView;
-	Context appContext;
 	ListView listView;
 	CardListArrayAdapter adapter;
 	LayoutInflater inflater;
@@ -41,14 +40,14 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 
 	// Which position the fragment is at
 	int position;
-	public static SectionFragment init(int position, Context context, SparseArray<CardListArrayAdapter> adapterHolder) {
+	private DBHelper databaseHelper;
+	
+	public static SectionFragment init(int position, SparseArray<CardListArrayAdapter> adapterHolder) {
 
 		SectionFragment fragment = new SectionFragment();
 		fragment.position = position;
 		fragment.results = new ArrayList<Result>();
 		fragment.info = new ArrayList<Result>();
-		fragment.appContext = context;
-
 		return fragment;
 	}
 
@@ -57,7 +56,6 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 			Bundle savedInstanceState) {
 
 		this.inflater = inflater;
-		this.appContext = container.getContext();
 		this.rootView = inflater.inflate(R.layout.fragment_main_layout, container,
 				false);
 		this.helpLayout = (LinearLayout) inflater.inflate(R.layout.list_item, null);
@@ -84,12 +82,12 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		listView = (ListView) rootView.findViewById(R.id.cardListView);
 		//setup or recycle adapter
 
-		adapter = new CardListArrayAdapter(appContext, results);
+		adapter = new CardListArrayAdapter(TasteKidActivity.getAppContext(), results);
 
 
 		setupHeader();
 		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(new ListItemClickListener(appContext, (ViewGroup) rootView));
+		listView.setOnItemClickListener(new ListItemClickListener());
 
 
 	}
@@ -119,9 +117,24 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		buttonLayout.setVisibility(View.GONE);
 		
 	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		/*
+		 * Handle DB closing
+		 */
+		if (databaseHelper != null) {
+			OpenHelperManager.releaseHelper();
+			databaseHelper = null;
+		}
+	}
+	
+
 
 	private void setupHeader() {
-		headerLayout = new LinearLayout(appContext);
+		headerLayout = new LinearLayout(TasteKidActivity.getAppContext());
 		headerLayout.setGravity(Gravity.CENTER);
 		headerLayout.setLayoutParams(new AbsListView.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -130,7 +143,7 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 				.inflate(R.layout.header_item, null);
 		headerLayout.addView(infoLayout);
 		infoLayout.setVisibility(View.GONE);
-		if (info.size() == 0)
+		if (info != null && info.size() == 0)
 			fillHelpInfo();
 		else if(results.size()==0)
 			fillHeaderNoResults();
@@ -206,14 +219,14 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	}
 
 	private void setupLoadingBar() {
-		progressLayout = new LinearLayout(appContext);
+		progressLayout = new LinearLayout(TasteKidActivity.getAppContext());
 		progressLayout.setGravity(Gravity.CENTER);
 		progressLayout.setBackgroundResource(R.drawable.card_background);
-		TextView loadingText = new TextView(appContext);
+		TextView loadingText = new TextView(TasteKidActivity.getAppContext());
 		loadingText.setText("Loading...");
 		loadingText.setTextColor(Color.BLACK);
 		loadingText.setGravity(Gravity.CENTER);
-		ProgressBar loadingProgressBar = new ProgressBar(appContext);
+		ProgressBar loadingProgressBar = new ProgressBar(TasteKidActivity.getAppContext());
 		progressLayout.addView(loadingText);
 		progressLayout.addView(loadingProgressBar);
 		headerLayout.addView(progressLayout);
@@ -249,7 +262,7 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		LinearLayout wikiButton = (LinearLayout) buttonLayout
 				.findViewById(R.id.wikiLinearLayout);
 		ItemButtonClickListener listener = new ItemButtonClickListener(result,
-				appContext);
+				TasteKidActivity.getAppContext());
 		if (result.yID != null && !result.yID.trim().equalsIgnoreCase("")) {
 			yTButton.setOnClickListener(listener);
 			yTButton.setVisibility(View.VISIBLE);
@@ -263,6 +276,18 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	}
 
 	@Override
+	public void onResultsReady() {
+		results = ResultManager.getResultsByPosition(position);
+		info = ResultManager.getInfo();
+		adapter.clear();
+		adapter.addAll(results);
+		updateCards();
+		hideLoadingBar();
+		
+	}
+
+
+/*	@Override
 	public void onQueryComplete(ArrayList<ApiResponse> apiResponses) {
 		for (ApiResponse apiResponse : apiResponses) {
 			this.info = (ArrayList<Result>) apiResponse.similar.getInfo();
@@ -270,11 +295,13 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 		}
 		adapter.clear();
 		adapter.addAll(results);
+		saveResults();
 		updateCards();
 		hideLoadingBar();
 	}
+*/
 
-	@Override
+/*	@Override
 	public void onQueryFailed(Exception e) {
 		// TODO Auto-generated method stub
 
@@ -284,5 +311,5 @@ public class SectionFragment extends Fragment implements IQueryCompleteListener 
 	public void onDefaultError(Exception e) {
 		// TODO Auto-generated method stub
 
-	}
+	}*/
 }

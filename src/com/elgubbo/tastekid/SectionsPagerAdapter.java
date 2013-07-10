@@ -12,13 +12,11 @@ import android.util.SparseArray;
 public class SectionsPagerAdapter extends FragmentPagerAdapter{
 	
 	FragmentManager mFragmentManager;
-	Context appContext;
 	SparseArray<Fragment> fragmentHolder;
 	SparseArray<CardListArrayAdapter> adapterHolder;
 	
 	public SectionsPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
-		this.appContext = context;
 		this.mFragmentManager = fm;
 		this.fragmentHolder = new SparseArray<Fragment>();
 		this.adapterHolder = new SparseArray<CardListArrayAdapter>();
@@ -29,7 +27,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 		if(fragmentHolder.get(position) != null)
 			return fragmentHolder.get(position);
 		else {
-			Fragment fragment = SectionFragment.init(position, appContext, adapterHolder);
+			Fragment fragment = SectionFragment.init(position, adapterHolder);
 //			fragment.setRetainInstance(true);
 			fragmentHolder.append(position, fragment);
 			return fragment;
@@ -55,17 +53,17 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 		Locale l = Locale.getDefault();
 		switch (position) {
 		case 0:
-			return appContext.getString(R.string.title_section1).toUpperCase(l);
+			return TasteKidActivity.getAppContext().getString(R.string.title_section1).toUpperCase(l);
 		case 1:
-			return appContext.getString(R.string.title_section2).toUpperCase(l);
+			return TasteKidActivity.getAppContext().getString(R.string.title_section2).toUpperCase(l);
 		case 2:
-			return appContext.getString(R.string.title_section3).toUpperCase(l);
+			return TasteKidActivity.getAppContext().getString(R.string.title_section3).toUpperCase(l);
 		case 3:
-			return appContext.getString(R.string.title_section4).toUpperCase(l);
+			return TasteKidActivity.getAppContext().getString(R.string.title_section4).toUpperCase(l);
 		case 4:
-			return appContext.getString(R.string.title_section5).toUpperCase(l);
+			return TasteKidActivity.getAppContext().getString(R.string.title_section5).toUpperCase(l);
 		case 5:
-			return appContext.getString(R.string.title_section6).toUpperCase(l);
+			return TasteKidActivity.getAppContext().getString(R.string.title_section6).toUpperCase(l);
 		}
 		return null;
 	}

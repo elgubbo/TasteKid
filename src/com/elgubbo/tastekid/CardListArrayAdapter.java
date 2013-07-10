@@ -38,18 +38,16 @@ public class CardListArrayAdapter extends ArrayAdapter<Result>{
         iconMap = Collections.unmodifiableMap(iconMapInit);
     }
 
-	Context appContext;
 	ArrayList<Result> results;
 	public CardListArrayAdapter(Context context,
 			List<Result> objects) {
 		super(context, R.layout.list_item, objects);
-		this.appContext = context;
 		this.results = (ArrayList<Result>) objects;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) appContext
+		LayoutInflater inflater = (LayoutInflater) TasteKidActivity.getAppContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = (convertView == null) ? inflater.inflate(
 				R.layout.list_item, parent, false) : convertView;
@@ -91,7 +89,7 @@ public class CardListArrayAdapter extends ArrayAdapter<Result>{
 		LinearLayout wikiButton = (LinearLayout) buttonLayout
 				.findViewById(R.id.wikiLinearLayout);
 		ItemButtonClickListener listener = new ItemButtonClickListener(result,
-				appContext);
+				TasteKidActivity.getAppContext());
 		if (result.yID != null && !result.yID.trim().equalsIgnoreCase("")) {
 			yTButton.setOnClickListener(listener);
 			yTButton.setVisibility(View.VISIBLE);

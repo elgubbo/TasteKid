@@ -1,7 +1,6 @@
 package com.elgubbo.tastekid;
 
-import com.elgubbo.tastekid.api.APIWrapper;
-import com.elgubbo.tastekid.interfaces.IQueryCompleteListener;
+import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -13,9 +12,6 @@ public class SearchQueryChangeListener implements
 
 	int position;
 
-	// this is temporary TODO add persistent data storage
-	SparseArray<String> lastSearches;
-
 	public int getPosition() {
 		return position;
 	}
@@ -26,6 +22,7 @@ public class SearchQueryChangeListener implements
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
+	private SparseArray<String> lastSearches;
 
 	public SearchQueryChangeListener(
 			SectionsPagerAdapter mSectionsPagerAdapter, int position,
@@ -49,8 +46,6 @@ public class SearchQueryChangeListener implements
 		SectionFragment currentFragment = (SectionFragment) mSectionsPagerAdapter
 				.getActiveFragment(mViewPager, mViewPager.getCurrentItem());
 		this.position = currentFragment.position;
-		// check if the current query is equal to the last query, don't to
-		// anything if it is
 		if(lastSearches.get(position, "").equals(query))
 			return false;
 		if (query.trim().equalsIgnoreCase("")) {
@@ -67,11 +62,9 @@ public class SearchQueryChangeListener implements
 			Log.d("TasteKid", "Position is:" + this.position);
 			Log.d("TasteKid", "type is: " + type);
 		}
+		ResultManager.sendResultsForQueryTo((IResultsReceiver) currentFragment, query);
 
-		APIWrapper.getResultsForType((IQueryCompleteListener) currentFragment,
-				query, type);
 		lastSearches.append(position, query);
-
 		return true;
 	}
 

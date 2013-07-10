@@ -2,11 +2,11 @@ package com.elgubbo.tastekid.db;
 
 import java.sql.SQLException;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.model.Result;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -25,8 +25,8 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	// the DAO object we use to access the Result table
 	private Dao<Result, Integer> resultDao = null;
 
-	public DBHelper(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	public DBHelper() {
+		super(TasteKidActivity.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	/**

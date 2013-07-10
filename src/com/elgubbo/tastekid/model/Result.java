@@ -13,6 +13,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Result implements Parcelable{
 	
 	@DatabaseField(generatedId = true)
+	private
 	int id;
 	@DatabaseField
 	@SerializedName("Name")
@@ -35,6 +36,10 @@ public class Result implements Parcelable{
 	@DatabaseField
 	Date created;
 	
+	
+	public Result(){
+		//no args constructor
+	};
 	public Result(Parcel parcel) {
 		name = parcel.readString();
 		type = parcel.readString();
@@ -64,6 +69,13 @@ public class Result implements Parcelable{
 		//todo think of date solution
 	}
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public static Creator<Result> CREATOR = new Creator<Result>() {
         public Result createFromParcel(Parcel parcel) {
             return new Result(parcel);

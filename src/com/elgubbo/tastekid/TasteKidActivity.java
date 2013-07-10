@@ -1,5 +1,8 @@
 package com.elgubbo.tastekid;
 
+import com.elgubbo.tastekid.db.DBHelper;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
@@ -42,14 +45,18 @@ public class TasteKidActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	
+    private static Context appContext;
 
 	SearchQueryChangeListener mSearchQueryChangeListener;
+	
+	private DBHelper databaseHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		appContext = getApplicationContext();
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		// TODO fix this dirty workaround
@@ -104,6 +111,10 @@ public class TasteKidActivity extends FragmentActivity implements
 
 	}
 
+	public static Context getAppContext() {
+		return appContext;
+	}
+
 	/**
 	 * Searches the view hierarchy excluding the content view for a possible
 	 * Spinner in the ActionBar.
@@ -142,15 +153,41 @@ public class TasteKidActivity extends FragmentActivity implements
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		MenuItem searchItem = menu.findItem(R.id.action_search);
+
 		mSearchView = (SearchView) searchItem.getActionView();
+
 		setupSearchView(searchItem);
 		return true;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		/*
+		 * Handle DB closing
+		 */
+		if (databaseHelper != null) {
+			OpenHelperManager.releaseHelper();
+			databaseHelper = null;
+		}
+	}
+	
+
+	public DBHelper getHelper() {
+		if (databaseHelper == null) {
+			databaseHelper = OpenHelperManager.getHelper(this, DBHelper.class);
+		}
+		return databaseHelper;
 	}
 
 	private void setupSearchView(MenuItem searchItem) {
 
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		if (searchManager != null) {
+		SearchManager mSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		
+		mSearchView.setSubmitButtonEnabled(true);
+	    mSearchView.setSearchableInfo(mSearchManager.getSearchableInfo(getComponentName()));
+		if (mSearchManager != null) {
 			// List<SearchableInfo> searchables = searchManager
 			// .getSearchablesInGlobalSearch();
 			//
@@ -185,5 +222,6 @@ public class TasteKidActivity extends FragmentActivity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
+	
 
 }

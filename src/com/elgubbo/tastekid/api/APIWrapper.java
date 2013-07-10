@@ -58,17 +58,11 @@ public class APIWrapper {
 	 * @param searchQuery
 	 * @param type the type can be: music, movie, show, book, game or NULL for all
 	 */
-	public static void getResultsForType(IQueryCompleteListener callBack, String searchQuery, String type){
+	public static void getResultsForType(IQueryCompleteListener callBack, String searchQuery){
 		ApiTask qt = new ApiTask(callBack);
 		HashMap<String, String> argMap = new HashMap<String, String>();
 		try {
-			String append = "//";
-			if(type!=null)
-				append += (type.equalsIgnoreCase("music")) ? type : type+"s";
-			else
-				append="";
-			
-			argMap.put("q", (URLEncoder.encode(searchQuery, "UTF-8")+append));
+			argMap.put("q", (URLEncoder.encode(searchQuery, "UTF-8")));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
