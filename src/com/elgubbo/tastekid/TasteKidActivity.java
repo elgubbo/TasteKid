@@ -1,9 +1,12 @@
 package com.elgubbo.tastekid;
 
+import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
+import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
@@ -21,32 +24,16 @@ import android.widget.Spinner;
 public class TasteKidActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
-	public static final int POSITION_ALL = 0;
-	public static final int POSITION_MOVIE = 2;
-	public static final int POSITION_MUSIC = 1;
-	public static final int POSITION_BOOK = 3;
-	public static final int POSITION_GAME = 4;
-	public static final int POSITION_SHOW = 5;
-	public static final String[] TYPE_ARRAY = { null, "music", "movie", "book",
-			"game", "show" };
+
 	// The searchview
 	SearchView mSearchView;
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
+
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
 	ViewPager mViewPager;
 	
     private static Context appContext;
+    private static Activity activityInstance;
 
 	SearchQueryChangeListener mSearchQueryChangeListener;
 	
@@ -57,6 +44,7 @@ public class TasteKidActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		appContext = getApplicationContext();
+		activityInstance = this;
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		// TODO fix this dirty workaround
@@ -113,6 +101,9 @@ public class TasteKidActivity extends FragmentActivity implements
 
 	public static Context getAppContext() {
 		return appContext;
+	}
+	public static Context getActivityInstance() {
+		return activityInstance;
 	}
 
 	/**

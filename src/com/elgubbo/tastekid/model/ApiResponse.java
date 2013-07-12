@@ -7,4 +7,6 @@ public class ApiResponse {
 	@SerializedName("Similar")
 	public Similar similar;
 	
+	@SerializedName("Error")
+	public String error;
 }

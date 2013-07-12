@@ -26,9 +26,9 @@ public class APIWrapper {
 	 * Builds the url from get request
 	 * 
 	 * @param prefix
-	 *            the prefix e.g. "user" or "places"
+	 *            will be prefixed to the url
 	 * @param mapcontex
-	 *            a hashmap containing
+	 *            a hashmap containing key,value pairs for the request url
 	 * @return the HttpGet representing the get call to the api
 	 */
 	private static HttpGet buildHttpGet(String prefix,

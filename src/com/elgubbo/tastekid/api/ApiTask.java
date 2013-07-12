@@ -9,6 +9,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 
 
+import com.elgubbo.tastekid.Configuration;
 import com.elgubbo.tastekid.interfaces.IQueryCompleteListener;
 import com.elgubbo.tastekid.model.ApiResponse;
 import com.google.gson.Gson;
@@ -82,8 +83,10 @@ public class ApiTask extends
 		for (HttpGet get : params) {
 			try {
 				json = getRequest(get);
-				Log.d("TasteKid", "The JSON is: ");
-				Log.d("TasteKid", json);
+				if(Configuration.DEVMODE){
+					Log.d("TasteKid", "The JSON is: ");
+					Log.d("TasteKid", json);
+				}
 				apiResponses.add(gson.fromJson(json, ApiResponse.class));
 			} catch (ClientProtocolException e) {
 				if (exception == null)
