@@ -1121,26 +1121,13 @@ android.support.v4.widget.EdgeEffectCompatIcs -> android.support.v4.d.e:
     boolean onPull(java.lang.Object,float) -> a
     boolean onRelease(java.lang.Object) -> c
     boolean draw(java.lang.Object,android.graphics.Canvas) -> a
-com.elgubbo.tastekid.CardListArrayAdapter -> com.elgubbo.tastekid.a:
-    java.util.Map iconMap -> a
-    java.util.ArrayList results -> b
-    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
-    com.elgubbo.tastekid.model.Result getItem(int) -> a
-    void setupButtons(int,android.view.View) -> a
-    void addOnClickListenerToButtons(android.widget.LinearLayout,com.elgubbo.tastekid.model.Result) -> a
-    java.lang.Object getItem(int) -> getItem
 com.elgubbo.tastekid.DetailActivity -> com.elgubbo.tastekid.DetailActivity:
     com.elgubbo.tastekid.model.Result result -> a
     void onCreate(android.os.Bundle) -> onCreate
+    void setupViews() -> c
     void onInitializationSuccess(com.google.android.youtube.player.YouTubePlayer$Provider,com.google.android.youtube.player.YouTubePlayer,boolean) -> a
     com.google.android.youtube.player.YouTubePlayer$Provider getYouTubePlayerProvider() -> a
-com.elgubbo.tastekid.ItemButtonClickListener -> com.elgubbo.tastekid.b:
-    com.elgubbo.tastekid.model.Result result -> a
-    android.content.Context appContext -> b
-    void onClick(android.view.View) -> onClick
-com.elgubbo.tastekid.ListItemClickListener -> com.elgubbo.tastekid.c:
-    void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
-com.elgubbo.tastekid.ResultManager -> com.elgubbo.tastekid.d:
+com.elgubbo.tastekid.ResultManager -> com.elgubbo.tastekid.a:
     com.elgubbo.tastekid.ResultManager instance -> a
     com.elgubbo.tastekid.interfaces.IResultsReceiver callBack -> b
     java.util.ArrayList info -> c
@@ -1155,64 +1142,52 @@ com.elgubbo.tastekid.ResultManager -> com.elgubbo.tastekid.d:
     void onQueryFailed(java.lang.Exception) -> a
     void onDefaultError(java.lang.Exception) -> b
     java.util.ArrayList getInfo() -> c
-com.elgubbo.tastekid.SearchQueryChangeListener -> com.elgubbo.tastekid.e:
-    int position -> a
-    com.elgubbo.tastekid.SectionsPagerAdapter mSectionsPagerAdapter -> b
-    android.support.v4.view.ViewPager mViewPager -> c
-    android.util.SparseArray lastSearches -> d
-    boolean onQueryTextChange(java.lang.String) -> onQueryTextChange
-    boolean onQueryTextSubmit(java.lang.String) -> onQueryTextSubmit
-com.elgubbo.tastekid.SectionFragment -> com.elgubbo.tastekid.f:
+com.elgubbo.tastekid.SectionFragment -> com.elgubbo.tastekid.b:
     java.util.ArrayList results -> P
     java.util.ArrayList info -> Q
     android.view.View rootView -> R
     android.widget.ListView listView -> S
-    com.elgubbo.tastekid.CardListArrayAdapter adapter -> T
+    com.elgubbo.tastekid.adapter.CardListArrayAdapter adapter -> T
     android.view.LayoutInflater inflater -> U
     android.widget.LinearLayout progressLayout -> W
     android.widget.LinearLayout headerLayout -> X
     android.widget.LinearLayout infoLayout -> Y
     android.widget.LinearLayout helpLayout -> Z
+    android.widget.LinearLayout errorLayout -> aa
     int position -> V
-    com.elgubbo.tastekid.db.DBHelper databaseHelper -> aa
+    com.elgubbo.tastekid.db.DBHelper databaseHelper -> ab
     com.elgubbo.tastekid.SectionFragment init(int,android.util.SparseArray) -> a
-    android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> a
-    void onSaveInstanceState(android.os.Bundle) -> g
-    void setupListView() -> F
-    void updateCards() -> G
-    void fillHeaderNoResults() -> H
-    void onDestroy() -> n
-    void setupHeader() -> I
-    void fillHelpInfo() -> A
-    void fillHeaderInfo() -> B
-    void setupLoadingBar() -> J
-    void showLoadingBar() -> C
-    void hideLoadingBar() -> D
-    void setupHeaderButtons(android.view.View,com.elgubbo.tastekid.model.Result) -> a
     void addOnClickListenerToButtons(android.widget.LinearLayout,com.elgubbo.tastekid.model.Result) -> a
-    void onResultsReady() -> E
+    void fillHeaderInfo() -> A
+    void fillHeaderNoResults() -> G
+    void fillHelpInfo() -> B
+    int getPosition() -> C
+    void hideLoadingBar() -> D
+    android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> a
+    void onDestroy() -> n
     void onErrorReceived(java.lang.String) -> a
-com.elgubbo.tastekid.SectionsPagerAdapter -> com.elgubbo.tastekid.g:
-    android.support.v4.app.FragmentManager mFragmentManager -> a
-    android.util.SparseArray fragmentHolder -> b
-    android.util.SparseArray adapterHolder -> c
-    android.support.v4.app.Fragment getItem(int) -> a
-    int getCount() -> b
-    android.support.v4.app.Fragment getActiveFragment(android.support.v4.view.ViewPager,int) -> a
-    java.lang.String makeFragmentName(int,int) -> a
-    java.lang.CharSequence getPageTitle(int) -> c
+    void onResultsReady() -> E
+    void onSaveInstanceState(android.os.Bundle) -> g
+    void setupHeader() -> H
+    void setupHeaderButtons(android.view.View,com.elgubbo.tastekid.model.Result) -> a
+    void setupListView() -> I
+    void setupLoadingBar() -> J
+    void showLoadingBar() -> F
+    void updateCards() -> K
 com.elgubbo.tastekid.TasteKidActivity -> com.elgubbo.tastekid.TasteKidActivity:
     android.widget.SearchView mSearchView -> n
-    com.elgubbo.tastekid.SectionsPagerAdapter mSectionsPagerAdapter -> o
+    com.elgubbo.tastekid.adapter.SectionsPagerAdapter mSectionsPagerAdapter -> o
     android.support.v4.view.ViewPager mViewPager -> p
     android.content.Context appContext -> r
     android.app.Activity activityInstance -> s
-    com.elgubbo.tastekid.SearchQueryChangeListener mSearchQueryChangeListener -> q
+    com.elgubbo.tastekid.listener.SearchQueryChangeListener mSearchQueryChangeListener -> q
     com.elgubbo.tastekid.db.DBHelper databaseHelper -> t
     void onCreate(android.os.Bundle) -> onCreate
     android.content.Context getAppContext() -> f
     android.content.Context getActivityInstance() -> g
     boolean findAndUpdateSpinner(java.lang.Object,int) -> a
+    void showLoadingBar() -> h
+    void hideLoadingBar() -> i
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
     void onDestroy() -> onDestroy
     void setupSearchView(android.view.MenuItem) -> a
@@ -1220,7 +1195,7 @@ com.elgubbo.tastekid.TasteKidActivity -> com.elgubbo.tastekid.TasteKidActivity:
     void onTabUnselected(android.app.ActionBar$Tab,android.app.FragmentTransaction) -> onTabUnselected
     void onTabReselected(android.app.ActionBar$Tab,android.app.FragmentTransaction) -> onTabReselected
     boolean access$0(com.elgubbo.tastekid.TasteKidActivity,java.lang.Object,int) -> a
-com.elgubbo.tastekid.TasteKidActivity$1 -> com.elgubbo.tastekid.h:
+com.elgubbo.tastekid.TasteKidActivity$1 -> com.elgubbo.tastekid.c:
     com.elgubbo.tastekid.TasteKidActivity this$0 -> a
     android.app.ActionBar val$actionBar -> b
     void onPageSelected(int) -> a
@@ -1231,14 +1206,31 @@ com.elgubbo.tastekid.TasteKidApp -> com.elgubbo.tastekid.TasteKidApp:
     void onCreate() -> onCreate
     java.lang.String getCurrentQuery() -> a
     void setCurrentQuery(java.lang.String) -> a
-com.elgubbo.tastekid.YouTubeFailureRecoveryActivity -> com.elgubbo.tastekid.i:
+com.elgubbo.tastekid.YouTubeFailureRecoveryActivity -> com.elgubbo.tastekid.d:
     void onInitializationFailure(com.google.android.youtube.player.YouTubePlayer$Provider,com.google.android.youtube.player.YouTubeInitializationResult) -> a
     void onActivityResult(int,int,android.content.Intent) -> onActivityResult
     com.google.android.youtube.player.YouTubePlayer$Provider getYouTubePlayerProvider() -> a
-com.elgubbo.tastekid.api.APIWrapper -> com.elgubbo.tastekid.a.a:
+com.elgubbo.tastekid.adapter.CardListArrayAdapter -> com.elgubbo.tastekid.a.a:
+    java.util.Map iconMap -> a
+    java.util.ArrayList results -> b
+    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+    com.elgubbo.tastekid.model.Result getItem(int) -> a
+    void setupButtons(int,android.view.View) -> a
+    void addOnClickListenerToButtons(android.widget.LinearLayout,com.elgubbo.tastekid.model.Result) -> a
+    java.lang.Object getItem(int) -> getItem
+com.elgubbo.tastekid.adapter.SectionsPagerAdapter -> com.elgubbo.tastekid.a.b:
+    android.support.v4.app.FragmentManager mFragmentManager -> a
+    android.util.SparseArray fragmentHolder -> b
+    android.util.SparseArray adapterHolder -> c
+    android.support.v4.app.Fragment getItem(int) -> a
+    int getCount() -> b
+    android.support.v4.app.Fragment getActiveFragment(android.support.v4.view.ViewPager,int) -> a
+    java.lang.String makeFragmentName(int,int) -> a
+    java.lang.CharSequence getPageTitle(int) -> c
+com.elgubbo.tastekid.api.APIWrapper -> com.elgubbo.tastekid.b.a:
     org.apache.http.client.methods.HttpGet buildHttpGet(java.lang.String,java.util.HashMap) -> a
     void getResultsForType(com.elgubbo.tastekid.interfaces.IQueryCompleteListener,java.lang.String) -> a
-com.elgubbo.tastekid.api.ApiTask -> com.elgubbo.tastekid.a.b:
+com.elgubbo.tastekid.api.ApiTask -> com.elgubbo.tastekid.b.b:
     com.elgubbo.tastekid.interfaces.IQueryCompleteListener callBack -> a
     java.lang.Exception exception -> b
     java.lang.String getRequest(org.apache.http.client.methods.HttpGet) -> a
@@ -1246,11 +1238,11 @@ com.elgubbo.tastekid.api.ApiTask -> com.elgubbo.tastekid.a.b:
     void onPostExecute(java.util.ArrayList) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.elgubbo.tastekid.api.UnsecureHttpClient -> com.elgubbo.tastekid.a.c:
+com.elgubbo.tastekid.api.UnsecureHttpClient -> com.elgubbo.tastekid.b.c:
     org.apache.http.impl.client.DefaultHttpClient getClient() -> a
     java.util.HashMap executeForResponse(org.apache.http.client.methods.HttpUriRequest) -> a
     void handleErrors(java.util.HashMap) -> a
-com.elgubbo.tastekid.api.UnsecureSSLSocketFactory -> com.elgubbo.tastekid.a.d:
+com.elgubbo.tastekid.api.UnsecureSSLSocketFactory -> com.elgubbo.tastekid.b.d:
     javax.net.ssl.SSLContext sslcontext -> a
     javax.net.ssl.SSLContext createEasySSLContext() -> a
     javax.net.ssl.SSLContext getSSLContext() -> b
@@ -1260,23 +1252,36 @@ com.elgubbo.tastekid.api.UnsecureSSLSocketFactory -> com.elgubbo.tastekid.a.d:
     java.net.Socket createSocket(java.net.Socket,java.lang.String,int,boolean) -> createSocket
     boolean equals(java.lang.Object) -> equals
     int hashCode() -> hashCode
-com.elgubbo.tastekid.api.UnsecureX509TrustManager -> com.elgubbo.tastekid.a.e:
+com.elgubbo.tastekid.api.UnsecureX509TrustManager -> com.elgubbo.tastekid.b.e:
     javax.net.ssl.X509TrustManager standardTrustManager -> a
     void checkClientTrusted(java.security.cert.X509Certificate[],java.lang.String) -> checkClientTrusted
     void checkServerTrusted(java.security.cert.X509Certificate[],java.lang.String) -> checkServerTrusted
     java.security.cert.X509Certificate[] getAcceptedIssuers() -> getAcceptedIssuers
-com.elgubbo.tastekid.db.DBHelper -> com.elgubbo.tastekid.b.a:
+com.elgubbo.tastekid.db.DBHelper -> com.elgubbo.tastekid.c.a:
     com.j256.ormlite.dao.Dao resultDao -> c
     void onCreate(android.database.sqlite.SQLiteDatabase,com.j256.ormlite.support.ConnectionSource) -> a
     void onUpgrade(android.database.sqlite.SQLiteDatabase,com.j256.ormlite.support.ConnectionSource,int,int) -> a
     void close() -> close
-com.elgubbo.tastekid.interfaces.IQueryCompleteListener -> com.elgubbo.tastekid.c.a:
+com.elgubbo.tastekid.interfaces.IQueryCompleteListener -> com.elgubbo.tastekid.d.a:
     void onQueryComplete(java.util.ArrayList) -> a
     void onQueryFailed(java.lang.Exception) -> a
     void onDefaultError(java.lang.Exception) -> b
-com.elgubbo.tastekid.interfaces.IResultsReceiver -> com.elgubbo.tastekid.c.b:
+com.elgubbo.tastekid.interfaces.IResultsReceiver -> com.elgubbo.tastekid.d.b:
     void onResultsReady() -> E
     void onErrorReceived(java.lang.String) -> a
+com.elgubbo.tastekid.listener.ItemButtonClickListener -> com.elgubbo.tastekid.e.a:
+    com.elgubbo.tastekid.model.Result result -> a
+    android.content.Context appContext -> b
+    void onClick(android.view.View) -> onClick
+com.elgubbo.tastekid.listener.ListItemClickListener -> com.elgubbo.tastekid.e.b:
+    void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
+com.elgubbo.tastekid.listener.SearchQueryChangeListener -> com.elgubbo.tastekid.e.c:
+    int position -> a
+    com.elgubbo.tastekid.adapter.SectionsPagerAdapter mSectionsPagerAdapter -> b
+    android.support.v4.view.ViewPager mViewPager -> c
+    android.util.SparseArray lastSearches -> d
+    boolean onQueryTextChange(java.lang.String) -> onQueryTextChange
+    boolean onQueryTextSubmit(java.lang.String) -> onQueryTextSubmit
 com.elgubbo.tastekid.model.ApiResponse -> com.elgubbo.tastekid.model.a:
     com.elgubbo.tastekid.model.Similar similar -> a
     java.lang.String error -> b

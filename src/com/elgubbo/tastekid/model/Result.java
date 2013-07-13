@@ -10,11 +10,10 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "result")
-public class Result implements Parcelable{
-	
+public class Result implements Parcelable {
+
 	@DatabaseField(generatedId = true)
-	private
-	int id;
+	private int id;
 	@DatabaseField
 	@SerializedName("Name")
 	public String name;
@@ -35,11 +34,29 @@ public class Result implements Parcelable{
 	public int parentId;
 	@DatabaseField
 	Date created;
-	
-	
-	public Result(){
-		//no args constructor
+	@DatabaseField
+	public boolean favourite;
+
+	public Result() {
+		// no args constructor
 	};
+
+	public Result(int id, String name, String type, String wTeaser,
+			String wUrl, String yTitle, String yUrl, String yID, int parentId,
+			Date created, boolean favourite) {
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.wTeaser = wTeaser;
+		this.wUrl = wUrl;
+		this.yTitle = yTitle;
+		this.yUrl = yUrl;
+		this.yID = yID;
+		this.parentId = parentId;
+		this.created = created;
+		this.favourite = favourite;
+	}
+
 	public Result(Parcel parcel) {
 		name = parcel.readString();
 		type = parcel.readString();
@@ -51,11 +68,13 @@ public class Result implements Parcelable{
 		parentId = parcel.readInt();
 
 	}
+
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(name);
@@ -66,26 +85,25 @@ public class Result implements Parcelable{
 		dest.writeString(yUrl);
 		dest.writeString(yID);
 		dest.writeInt(parentId);
-		//todo think of date solution
+		// todo think of date solution
 	}
-	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
 
 	public static Creator<Result> CREATOR = new Creator<Result>() {
-        public Result createFromParcel(Parcel parcel) {
-            return new Result(parcel);
-        }
+		public Result createFromParcel(Parcel parcel) {
+			return new Result(parcel);
+		}
 
-        public Result[] newArray(int size) {
-            return new Result[size];
-        }
-    };
-    
-   
+		public Result[] newArray(int size) {
+			return new Result[size];
+		}
+	};
 
 }

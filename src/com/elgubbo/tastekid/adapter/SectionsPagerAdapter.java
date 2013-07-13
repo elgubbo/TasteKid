@@ -13,12 +13,27 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SectionsPagerAdapter.
+ */
 public class SectionsPagerAdapter extends FragmentPagerAdapter{
 	
+	/** The m fragment manager. */
 	FragmentManager mFragmentManager;
+	
+	/** The fragment holder. */
 	SparseArray<Fragment> fragmentHolder;
+	
+	/** The adapter holder. */
 	SparseArray<CardListArrayAdapter> adapterHolder;
 	
+	/**
+	 * Instantiates a new sections pager adapter.
+	 *
+	 * @param fm the fm
+	 * @param context the context
+	 */
 	public SectionsPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
 		this.mFragmentManager = fm;
@@ -26,6 +41,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 		this.adapterHolder = new SparseArray<CardListArrayAdapter>();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
+	 */
 	@Override
 	public Fragment getItem(int position) {
 		if(fragmentHolder.get(position) != null)
@@ -41,20 +59,40 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.view.PagerAdapter#getCount()
+	 */
 	@Override
 	public int getCount() {
 		return 6;
 	}
 	
+	/**
+	 * Gets the active fragment.
+	 *
+	 * @param container the container
+	 * @param position the position
+	 * @return the active fragment
+	 */
 	public Fragment getActiveFragment(ViewPager container, int position) {
 		String name = makeFragmentName(container.getId(), position);
 		return  mFragmentManager.findFragmentByTag(name);
 	}
 
+	/**
+	 * Make fragment name.
+	 *
+	 * @param viewId the view id
+	 * @param index the index
+	 * @return the string
+	 */
 	private String makeFragmentName(int viewId, int index) {
 		    return "android:switcher:" + viewId + ":" + index;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
+	 */
 	@Override
 	public CharSequence getPageTitle(int position) {
 		Locale l = Locale.getDefault();

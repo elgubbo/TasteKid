@@ -30,8 +30,12 @@ import android.widget.Toast;
 public abstract class YouTubeFailureRecoveryActivity extends YouTubeBaseActivity implements
     YouTubePlayer.OnInitializedListener {
 
+  /** The Constant RECOVERY_DIALOG_REQUEST. */
   private static final int RECOVERY_DIALOG_REQUEST = 1;
 
+  /* (non-Javadoc)
+   * @see com.google.android.youtube.player.YouTubePlayer.OnInitializedListener#onInitializationFailure(com.google.android.youtube.player.YouTubePlayer.Provider, com.google.android.youtube.player.YouTubeInitializationResult)
+   */
   @Override
   public void onInitializationFailure(YouTubePlayer.Provider provider,
       YouTubeInitializationResult errorReason) {
@@ -44,6 +48,9 @@ public abstract class YouTubeFailureRecoveryActivity extends YouTubeBaseActivity
     }
   }
 
+  /* (non-Javadoc)
+   * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+   */
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == RECOVERY_DIALOG_REQUEST) {
@@ -52,6 +59,11 @@ public abstract class YouTubeFailureRecoveryActivity extends YouTubeBaseActivity
     }
   }
 
+  /**
+   * Gets the you tube player provider.
+   *
+   * @return the you tube player provider
+   */
   protected abstract YouTubePlayer.Provider getYouTubePlayerProvider();
 
 }

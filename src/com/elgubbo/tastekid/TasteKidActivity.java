@@ -18,30 +18,46 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.Window;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+/**
+ * The Class TasteKidActivity. The main activity, contains all fragments (ViewPager etc) and the actionbar
+ */
 public class TasteKidActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
 
 	// The searchview
+	/** The m search view. */
 	SearchView mSearchView;
 
+	/** The m sections pager adapter. */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
+	/** The m view pager. */
 	ViewPager mViewPager;
 	
+    /** The app context. */
     private static Context appContext;
+    
+    /** The activity instance. */
     private static Activity activityInstance;
 
+	/** The m search query change listener. */
 	SearchQueryChangeListener mSearchQueryChangeListener;
 	
+	/** The database helper. */
 	private DBHelper databaseHelper;
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);  
 		setContentView(R.layout.activity_main);
 		appContext = getApplicationContext();
 		activityInstance = this;
@@ -51,6 +67,7 @@ public class TasteKidActivity extends FragmentActivity implements
 		actionBar.setTitle("");
 		actionBar.setSubtitle("explore your taste");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -99,9 +116,20 @@ public class TasteKidActivity extends FragmentActivity implements
 
 	}
 
+	/**
+	 * Gets the app context.
+	 *
+	 * @return the app context
+	 */
 	public static Context getAppContext() {
 		return appContext;
 	}
+	
+	/**
+	 * Gets the activity instance.
+	 *
+	 * @return the activity instance
+	 */
 	public static Context getActivityInstance() {
 		return activityInstance;
 	}
@@ -138,7 +166,17 @@ public class TasteKidActivity extends FragmentActivity implements
 		// Nothing found
 		return false;
 	}
+	
+	public void showLoadingBar(){
+		setProgressBarIndeterminateVisibility(true);
+	}
+	public void hideLoadingBar(){
+		setProgressBarIndeterminateVisibility(false);
+	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -151,6 +189,9 @@ public class TasteKidActivity extends FragmentActivity implements
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onDestroy()
+	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -165,6 +206,11 @@ public class TasteKidActivity extends FragmentActivity implements
 	}
 	
 
+	/**
+	 * Gets the helper.
+	 *
+	 * @return the helper
+	 */
 	public DBHelper getHelper() {
 		if (databaseHelper == null) {
 			databaseHelper = OpenHelperManager.getHelper(this, DBHelper.class);
@@ -172,6 +218,11 @@ public class TasteKidActivity extends FragmentActivity implements
 		return databaseHelper;
 	}
 
+	/**
+	 * Sets the up search view.
+	 *
+	 * @param searchItem the new up search view
+	 */
 	private void setupSearchView(MenuItem searchItem) {
 
 		SearchManager mSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -195,6 +246,9 @@ public class TasteKidActivity extends FragmentActivity implements
 		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.ActionBar.TabListener#onTabSelected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	 */
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
@@ -204,11 +258,17 @@ public class TasteKidActivity extends FragmentActivity implements
 
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.ActionBar.TabListener#onTabUnselected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	 */
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.ActionBar.TabListener#onTabReselected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	 */
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {

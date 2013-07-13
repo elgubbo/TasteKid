@@ -13,12 +13,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * @author alexander reichert
+ * The Class DetailActivity.
  *
+ * @author alexander reichert
  */
 public class DetailActivity extends YouTubeFailureRecoveryActivity{
 
+	/** The result. */
 	private Result result;
+	
+	/* (non-Javadoc)
+	 * @see com.google.android.youtube.player.YouTubeBaseActivity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,7 +44,7 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity{
 	
 	
 	/**
-	 * helper method to set up views in this activity
+	 * helper method to set up views in this activity.
 	 */
 	private void setupViews(){
 	    YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
@@ -56,6 +62,9 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity{
 		description.setText(result.wTeaser);
 	}
 	 
+	/* (non-Javadoc)
+	 * @see com.google.android.youtube.player.YouTubePlayer.OnInitializedListener#onInitializationSuccess(com.google.android.youtube.player.YouTubePlayer.Provider, com.google.android.youtube.player.YouTubePlayer, boolean)
+	 */
 	@Override
 	  public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
 	      boolean wasRestored) {
@@ -64,7 +73,10 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity{
 	    }
 	  }
 
-	  @Override
+	  /* (non-Javadoc)
+  	 * @see com.elgubbo.tastekid.YouTubeFailureRecoveryActivity#getYouTubePlayerProvider()
+  	 */
+  	@Override
 	  protected YouTubePlayer.Provider getYouTubePlayerProvider() {
 	    return (YouTubePlayerView) findViewById(R.id.youtube_view);
 	  }

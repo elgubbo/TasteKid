@@ -13,18 +13,25 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+/**
+ * The Class DBHelper. Contains helper methods to initialize the ORM models and the database
+ */
 public class DBHelper extends OrmLiteSqliteOpenHelper {
 
-	// name of the database file for your application -- change to something
-	// appropriate for your app
+
+	/** The Constant DATABASE_NAME. */
 	private static final String DATABASE_NAME = "results.db";
-	// any time you make changes to your database objects, you may have to
-	// increase the database version
-	private static final int DATABASE_VERSION = 1;
+
+	/** The Constant DATABASE_VERSION. */
+	private static final int DATABASE_VERSION = 2;
 
 	// the DAO object we use to access the Result table
+	/** The result dao. */
 	private Dao<Result, Integer> resultDao = null;
 
+	/**
+	 * Instantiates a new dB helper.
+	 */
 	public DBHelper() {
 		super(TasteKidActivity.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -33,6 +40,9 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	 * This is called when the database is first created. Usually you should
 	 * call createTable statements here to create the tables that will store
 	 * your data.
+	 *
+	 * @param db the db
+	 * @param connectionSource the connection source
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
@@ -51,8 +61,10 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	/**
 	 * Returns the Database Access Object (DAO) for our Result class. It will
 	 * create it or just give the cached value.
-	 * 
-	 * @throws java.sql.SQLException
+	 *
+	 * @return the result dao
+	 * @throws SQLException the sQL exception
+	 * @throws SQLException the sQL exception
 	 */
 	public Dao<Result, Integer> getResultDao() throws SQLException,
 			java.sql.SQLException {
@@ -62,6 +74,9 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 		return resultDao;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, com.j256.ormlite.support.ConnectionSource, int, int)
+	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
 			int oldVersion, int newVersion) {

@@ -3,13 +3,17 @@ package com.elgubbo.tastekid.listener;
 import com.elgubbo.tastekid.Configuration;
 import com.elgubbo.tastekid.ResultManager;
 import com.elgubbo.tastekid.SectionFragment;
+import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.TasteKidApp;
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
 public class SearchQueryChangeListener implements
@@ -54,6 +58,12 @@ public class SearchQueryChangeListener implements
 	 */
 	@Override
 	public boolean onQueryTextSubmit(String query) {
+		InputMethodManager inputManager = 
+		        (InputMethodManager) TasteKidActivity.getAppContext().
+		            getSystemService(Context.INPUT_METHOD_SERVICE); 
+		inputManager.hideSoftInputFromWindow(
+		        ((Activity) TasteKidActivity.getActivityInstance()).getCurrentFocus().getWindowToken(),
+		        InputMethodManager.HIDE_NOT_ALWAYS); 
 		SectionFragment currentFragment = (SectionFragment) mSectionsPagerAdapter
 				.getActiveFragment(mViewPager, mViewPager.getCurrentItem());
 		TasteKidApp.setCurrentQuery(query);

@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -26,11 +27,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 /**
- * @author alexander reichert
+ * The Class SectionFragment. Displays a fragment for a given position (category)
  *
+ * @author alexander reichert
  */
 public class SectionFragment extends Fragment implements IResultsReceiver {
 
+	/**
+	 * Inits the.
+	 *
+	 * @param position the position
+	 * @param adapterHolder the adapter holder
+	 * @return the section fragment
+	 */
 	public static SectionFragment init(int position,
 			SparseArray<CardListArrayAdapter> adapterHolder) {
 
@@ -40,27 +49,50 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		fragment.info = new ArrayList<Result>();
 		return fragment;
 	}
+	
+	/** The results. */
 	ArrayList<Result> results;
+	
+	/** The info. */
 	ArrayList<Result> info;
+	
+	/** The root view. */
 	View rootView;
+	
+	/** The list view. */
 	ListView listView;
+	
+	/** The adapter. */
 	CardListArrayAdapter adapter;
 
+	/** The inflater. */
 	LayoutInflater inflater;
 	// Layouts
+	/** The progress layout. */
 	private LinearLayout progressLayout;
+	
+	/** The header layout. */
 	private LinearLayout headerLayout;
+	
+	/** The info layout. */
 	private LinearLayout infoLayout;
+	
+	/** The help layout. */
 	private LinearLayout helpLayout;
 
+	/** The error layout. */
 	private LinearLayout errorLayout;
 
 	// Which position the fragment is at
+	/** The position. */
 	int position;
 
+	/** The database helper. */
 	private DBHelper databaseHelper;
 
 	/**
+	 * Adds the on click listener to buttons.
+	 *
 	 * @param buttonLayout linearLayout that conains clickable linear Layouts
 	 * @param result a result that should be used by the buttons
 	 */
@@ -88,7 +120,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	}
 
 	/**
-	 * fills the header content with a header listview item that displays the info about the current search result
+	 * fills the header content with a header listview item that displays the info about the current search result.
 	 */
 	public void fillHeaderInfo() {
 		Result result;
@@ -108,7 +140,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	}
 
 	/**
-	 * fills the header content with a Layout that is displayed when no results are found
+	 * fills the header content with a Layout that is displayed when no results are found.
 	 */
 	private void fillHeaderNoResults() {
 		LinearLayout buttonLayout = (LinearLayout) infoLayout
@@ -125,7 +157,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	}
 
 	/**
-	 * Fills the header content with a Help box that describes what to do to the user
+	 * Fills the header content with a Help box that describes what to do to the user.
 	 */
 	public void fillHelpInfo() {
 		helpLayout.setOnClickListener(null);
@@ -175,19 +207,29 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		helpLayout.setVisibility(View.VISIBLE);
 	}
 
+	/**
+	 * Gets the position.
+	 *
+	 * @return the position
+	 */
 	public int getPosition() {
 		return position;
 	}
 
 	/**
-	 * Hides the loading bar
+	 * Hides the loading bar.
 	 */
 	public void hideLoadingBar() {
 		if (Configuration.DEVMODE)
 			Log.d("TasteKid", "hiding loadingbar");
+		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
+		activity.hideLoadingBar();
 		progressLayout.setVisibility(View.GONE);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -219,6 +261,9 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		return rootView;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onDestroy()
+	 */
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -237,6 +282,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	 */
 	@Override
 	public void onErrorReceived(String error) {
+		headerLayout.removeView(errorLayout);
 		errorLayout.setBackgroundColor(getResources().getColor(
 				android.R.color.holo_orange_light));
 		LinearLayout buttonLayout = (LinearLayout) errorLayout.findViewById(R.id.buttonLayoutItem);
@@ -278,11 +324,12 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	}
 
 	/**
-	 * Sets up the ONE header layout that contains all other views that should be displayed in the header
+	 * Sets up the ONE header layout that contains all other views that should be displayed in the header.
 	 */
 	private void setupHeader() {
 		headerLayout = new LinearLayout(TasteKidActivity.getAppContext());
 		headerLayout.setGravity(Gravity.CENTER);
+		headerLayout.setOrientation(LinearLayout.VERTICAL);
 		headerLayout.setLayoutParams(new AbsListView.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
@@ -304,8 +351,10 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 
 	
 	/**
+	 * Setup header buttons.
+	 *
 	 * @param headerView the view that contains the info about the current search result
-	 * @param result
+	 * @param result the result
 	 */
 	private void setupHeaderButtons(View headerView, Result result) {
 		LinearLayout buttonLayout = (LinearLayout) headerView
@@ -315,7 +364,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 
 	
 	/**
-	 * Sets up the list view that is displayed by this fragment
+	 * Sets up the list view that is displayed by this fragment.
 	 */
 	private void setupListView() {
 		listView = (ListView) rootView.findViewById(R.id.cardListView);
@@ -332,7 +381,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	
 	
 	/**
-	 * Sets up the loading bar that is shown during requests
+	 * Sets up the loading bar that is shown during requests.
 	 */
 	private void setupLoadingBar() {
 		progressLayout.setGravity(Gravity.CENTER);
@@ -351,17 +400,19 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 
 	
 	/**
-	 * Shows the loading bar
+	 * Shows the loading bar.
 	 */
 	public void showLoadingBar() {
 		if (Configuration.DEVMODE)
 			Log.d("TasteKid", "showing loadingbar");
+		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
+		activity.showLoadingBar();
 		progressLayout.setVisibility(View.VISIBLE);
 		helpLayout.setVisibility(View.GONE);
 	}
 
 	/**
-	 * Refreshes the listView to fit the current resultSet
+	 * Refreshes the listView to fit the current resultSet.
 	 */
 	private void updateCards() {
 		if (results.size() == 0) {
