@@ -5,6 +5,7 @@ import com.elgubbo.tastekid.ResultManager;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.adapter.CardListArrayAdapter;
 import com.elgubbo.tastekid.model.Result;
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 import android.content.Intent;
 import android.util.Log;
@@ -24,7 +25,7 @@ public class ListItemClickListener implements OnItemClickListener{
 		
 		ListView listView = (ListView) arg0;
 		HeaderViewListAdapter wrapAdapter = (HeaderViewListAdapter) listView.getAdapter();
-		CardListArrayAdapter adapter = (CardListArrayAdapter) wrapAdapter.getWrappedAdapter();
+		SwingBottomInAnimationAdapter adapter = (SwingBottomInAnimationAdapter) wrapAdapter.getWrappedAdapter();
 		Log.d("tastekid", "clicked item at position: "+position);
 		Result res = (position==0) ? (Result) ResultManager.getInstance().getInfo().get(0) : (Result) adapter.getItem(position-1);
 		

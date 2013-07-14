@@ -2,6 +2,7 @@ package com.elgubbo.tastekid.db;
 
 import java.sql.SQLException;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -34,6 +35,12 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	 */
 	public DBHelper() {
 		super(TasteKidActivity.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
+	}
+	/**
+	 * Instantiates a new dB helper.
+	 */
+	public DBHelper(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	/**

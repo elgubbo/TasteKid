@@ -1133,15 +1133,18 @@ com.elgubbo.tastekid.ResultManager -> com.elgubbo.tastekid.a:
     java.util.ArrayList info -> c
     java.util.ArrayList results -> d
     java.lang.String oldQuery -> e
+    com.elgubbo.tastekid.db.DBHelper databaseHelper -> f
     com.elgubbo.tastekid.ResultManager getInstance() -> a
     void sendResultsForQueryTo(com.elgubbo.tastekid.interfaces.IResultsReceiver,java.lang.String) -> a
     void onQueryComplete(java.util.ArrayList) -> a
-    boolean resultsAvailable() -> b
+    com.elgubbo.tastekid.db.DBHelper getHelper() -> b
+    boolean resultsAvailable() -> c
     java.util.ArrayList getresultsByType(java.lang.String) -> a
     java.util.ArrayList getResultsByPosition(int) -> a
+    void saveResults() -> e
     void onQueryFailed(java.lang.Exception) -> a
     void onDefaultError(java.lang.Exception) -> b
-    java.util.ArrayList getInfo() -> c
+    java.util.ArrayList getInfo() -> d
 com.elgubbo.tastekid.SectionFragment -> com.elgubbo.tastekid.b:
     java.util.ArrayList results -> P
     java.util.ArrayList info -> Q
@@ -1260,6 +1263,7 @@ com.elgubbo.tastekid.api.UnsecureX509TrustManager -> com.elgubbo.tastekid.b.e:
 com.elgubbo.tastekid.db.DBHelper -> com.elgubbo.tastekid.c.a:
     com.j256.ormlite.dao.Dao resultDao -> c
     void onCreate(android.database.sqlite.SQLiteDatabase,com.j256.ormlite.support.ConnectionSource) -> a
+    com.j256.ormlite.dao.Dao getResultDao() -> a
     void onUpgrade(android.database.sqlite.SQLiteDatabase,com.j256.ormlite.support.ConnectionSource,int,int) -> a
     void close() -> close
 com.elgubbo.tastekid.interfaces.IQueryCompleteListener -> com.elgubbo.tastekid.d.a:
@@ -1286,6 +1290,7 @@ com.elgubbo.tastekid.model.ApiResponse -> com.elgubbo.tastekid.model.a:
     com.elgubbo.tastekid.model.Similar similar -> a
     java.lang.String error -> b
 com.elgubbo.tastekid.model.Result -> com.elgubbo.tastekid.model.Result:
+    int id -> j
     java.lang.String name -> a
     java.lang.String type -> b
     java.lang.String wTeaser -> c
@@ -1297,6 +1302,7 @@ com.elgubbo.tastekid.model.Result -> com.elgubbo.tastekid.model.Result:
     android.os.Parcelable$Creator CREATOR -> i
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    int getId() -> a
 com.elgubbo.tastekid.model.Result$1 -> com.elgubbo.tastekid.model.b:
     com.elgubbo.tastekid.model.Result createFromParcel(android.os.Parcel) -> a
     com.elgubbo.tastekid.model.Result[] newArray(int) -> a
@@ -2971,7 +2977,55 @@ com.google.gson.stream.MalformedJsonException -> com.google.a.d.h:
 com.google.gson.stream.StringPool -> com.google.a.d.i:
     java.lang.String[] pool -> a
     java.lang.String get(char[],int,int) -> a
-com.j256.ormlite.android.AndroidCompiledStatement -> com.a.a.a.a:
+com.haarman.listviewanimations.BaseAdapterDecorator -> com.a.a.a:
+    android.widget.BaseAdapter mDecoratedBaseAdapter -> a
+    android.widget.AbsListView mListView -> b
+    void setAbsListView(android.widget.AbsListView) -> a
+    android.widget.AbsListView getAbsListView() -> a
+    int getCount() -> getCount
+    java.lang.Object getItem(int) -> getItem
+    long getItemId(int) -> getItemId
+    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+    boolean areAllItemsEnabled() -> areAllItemsEnabled
+    android.view.View getDropDownView(int,android.view.View,android.view.ViewGroup) -> getDropDownView
+    int getItemViewType(int) -> getItemViewType
+    int getViewTypeCount() -> getViewTypeCount
+    boolean hasStableIds() -> hasStableIds
+    boolean isEmpty() -> isEmpty
+    boolean isEnabled(int) -> isEnabled
+    void notifyDataSetChanged() -> notifyDataSetChanged
+    void notifyDataSetInvalidated() -> notifyDataSetInvalidated
+    void registerDataSetObserver(android.database.DataSetObserver) -> registerDataSetObserver
+    void unregisterDataSetObserver(android.database.DataSetObserver) -> unregisterDataSetObserver
+com.haarman.listviewanimations.swinginadapters.AnimationAdapter -> com.a.a.a.a:
+    android.util.SparseArray mAnimators -> b
+    long mAnimationStartMillis -> c
+    int mLastAnimatedPosition -> d
+    boolean mHasParentAnimationAdapter -> e
+    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+    void animateViewIfNecessary(int,android.view.View,android.view.ViewGroup) -> a
+    void animateView(int,android.view.ViewGroup,android.view.View) -> a
+    void hideView(android.view.View) -> a
+    com.nineoldandroids.animation.Animator[] concatAnimators(com.nineoldandroids.animation.Animator[],com.nineoldandroids.animation.Animator[],com.nineoldandroids.animation.Animator) -> a
+    long calculateAnimationDelay() -> d
+    void setHasParentAnimationAdapter(boolean) -> a
+    long getAnimationDelayMillis() -> b
+    long getAnimationDurationMillis() -> c
+    com.nineoldandroids.animation.Animator[] getAnimators(android.view.ViewGroup,android.view.View) -> a
+com.haarman.listviewanimations.swinginadapters.AnimationAdapter$AnimationInfo -> com.a.a.a.b:
+    int position -> a
+    com.nineoldandroids.animation.Animator animator -> b
+    com.haarman.listviewanimations.swinginadapters.AnimationAdapter this$0 -> c
+com.haarman.listviewanimations.swinginadapters.SingleAnimationAdapter -> com.a.a.a.c:
+    com.nineoldandroids.animation.Animator[] getAnimators(android.view.ViewGroup,android.view.View) -> a
+    com.nineoldandroids.animation.Animator getAnimator(android.view.ViewGroup,android.view.View) -> b
+com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter -> com.a.a.a.a.a:
+    long mAnimationDelayMillis -> b
+    long mAnimationDurationMillis -> c
+    long getAnimationDelayMillis() -> b
+    long getAnimationDurationMillis() -> c
+    com.nineoldandroids.animation.Animator getAnimator(android.view.ViewGroup,android.view.View) -> b
+com.j256.ormlite.android.AndroidCompiledStatement -> com.b.a.a.a:
     com.j256.ormlite.logger.Logger logger -> a
     java.lang.String sql -> b
     android.database.sqlite.SQLiteDatabase db -> c
@@ -2991,9 +3045,9 @@ com.j256.ormlite.android.AndroidCompiledStatement -> com.a.a.a.a:
     void isInPrep() -> d
     java.lang.Object[] getArgArray() -> e
     java.lang.String[] getStringArray() -> f
-com.j256.ormlite.android.AndroidCompiledStatement$1 -> com.a.a.a.b:
+com.j256.ormlite.android.AndroidCompiledStatement$1 -> com.b.a.a.b:
     int[] $SwitchMap$com$j256$ormlite$field$SqlType -> a
-com.j256.ormlite.android.AndroidConnectionSource -> com.a.a.a.c:
+com.j256.ormlite.android.AndroidConnectionSource -> com.b.a.a.c:
     com.j256.ormlite.logger.Logger logger -> a
     android.database.sqlite.SQLiteOpenHelper helper -> b
     android.database.sqlite.SQLiteDatabase sqliteDatabase -> c
@@ -3008,7 +3062,7 @@ com.j256.ormlite.android.AndroidConnectionSource -> com.a.a.a.c:
     void close() -> c
     com.j256.ormlite.db.DatabaseType getDatabaseType() -> d
     java.lang.String toString() -> toString
-com.j256.ormlite.android.AndroidDatabaseConnection -> com.a.a.a.d:
+com.j256.ormlite.android.AndroidDatabaseConnection -> com.b.a.a.d:
     com.j256.ormlite.logger.Logger logger -> b
     java.lang.String[] NO_STRING_ARGS -> c
     android.database.sqlite.SQLiteDatabase db -> d
@@ -3016,16 +3070,17 @@ com.j256.ormlite.android.AndroidDatabaseConnection -> com.a.a.a.d:
     com.j256.ormlite.support.CompiledStatement compileStatement(java.lang.String,com.j256.ormlite.stmt.StatementBuilder$StatementType,com.j256.ormlite.field.FieldType[]) -> a
     com.j256.ormlite.support.CompiledStatement compileStatement(java.lang.String,com.j256.ormlite.stmt.StatementBuilder$StatementType,com.j256.ormlite.field.FieldType[],int) -> a
     int insert(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[],com.j256.ormlite.support.GeneratedKeyHolder) -> a
-    int delete(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[]) -> a
+    int update(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[]) -> a
+    int delete(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[]) -> b
     java.lang.Object queryForOne(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[],com.j256.ormlite.stmt.GenericRowMapper,com.j256.ormlite.dao.ObjectCache) -> a
     long queryForLong(java.lang.String) -> a
     int update(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[],java.lang.String) -> a
     void bindArgs(android.database.sqlite.SQLiteStatement,java.lang.Object[],com.j256.ormlite.field.FieldType[]) -> a
     java.lang.String[] toStrings(java.lang.Object[]) -> a
     java.lang.String toString() -> toString
-com.j256.ormlite.android.AndroidDatabaseConnection$1 -> com.a.a.a.e:
+com.j256.ormlite.android.AndroidDatabaseConnection$1 -> com.b.a.a.e:
     int[] $SwitchMap$com$j256$ormlite$field$SqlType -> a
-com.j256.ormlite.android.AndroidDatabaseResults -> com.a.a.a.f:
+com.j256.ormlite.android.AndroidDatabaseResults -> com.b.a.a.f:
     android.database.Cursor cursor -> a
     java.lang.String[] columnNames -> b
     java.util.Map columnNameMap -> c
@@ -3051,7 +3106,7 @@ com.j256.ormlite.android.AndroidDatabaseResults -> com.a.a.a.f:
     com.j256.ormlite.dao.ObjectCache getObjectCache() -> d
     java.lang.String toString() -> toString
     int lookupColumn(java.lang.String) -> b
-com.j256.ormlite.android.DatabaseTableConfigUtil -> com.a.a.a.g:
+com.j256.ormlite.android.DatabaseTableConfigUtil -> com.b.a.a.g:
     java.lang.Class annotationFactoryClazz -> a
     java.lang.reflect.Field elementsField -> b
     java.lang.Class annotationMemberClazz -> c
@@ -3066,27 +3121,32 @@ com.j256.ormlite.android.DatabaseTableConfigUtil -> com.a.a.a.g:
     com.j256.ormlite.field.DatabaseFieldConfig buildConfig(com.j256.ormlite.field.DatabaseField,java.lang.String,java.lang.reflect.Field) -> a
     void assignConfigField(int,com.j256.ormlite.field.DatabaseFieldConfig,java.lang.reflect.Field,java.lang.Object) -> a
     java.lang.String valueIfNotBlank(java.lang.String) -> b
-com.j256.ormlite.android.DatabaseTableConfigUtil$DatabaseFieldSample -> com.a.a.a.h:
+com.j256.ormlite.android.DatabaseTableConfigUtil$DatabaseFieldSample -> com.b.a.a.h:
     java.lang.String field -> a
-com.j256.ormlite.android.apptools.OpenHelperManager -> com.a.a.a.a.a:
+com.j256.ormlite.android.apptools.OpenHelperManager -> com.b.a.a.a.a:
     com.j256.ormlite.logger.Logger logger -> a
     java.lang.Class helperClass -> b
     com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper helper -> c
     boolean wasClosed -> d
     int instanceCount -> e
+    com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper getHelper(android.content.Context,java.lang.Class) -> a
     void releaseHelper() -> a
-com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper -> com.a.a.a.a.b:
+    void innerSetHelperClass(java.lang.Class) -> a
+    com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper loadHelper(android.content.Context,java.lang.Class) -> b
+    com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper constructHelper(android.content.Context,java.lang.Class) -> c
+com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper -> com.b.a.a.a.b:
     com.j256.ormlite.logger.Logger logger -> a
     com.j256.ormlite.android.AndroidConnectionSource connectionSource -> b
     boolean isOpen -> c
     void onCreate(android.database.sqlite.SQLiteDatabase,com.j256.ormlite.support.ConnectionSource) -> a
     void onUpgrade(android.database.sqlite.SQLiteDatabase,com.j256.ormlite.support.ConnectionSource,int,int) -> a
-    com.j256.ormlite.support.ConnectionSource getConnectionSource() -> a
+    com.j256.ormlite.support.ConnectionSource getConnectionSource() -> b
     void onCreate(android.database.sqlite.SQLiteDatabase) -> onCreate
     void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
     void close() -> close
+    com.j256.ormlite.dao.Dao getDao(java.lang.Class) -> a
     java.lang.String toString() -> toString
-com.j256.ormlite.dao.BaseDaoImpl -> com.a.a.b.a:
+com.j256.ormlite.dao.BaseDaoImpl -> com.b.a.b.a:
     boolean initialized -> i
     com.j256.ormlite.stmt.StatementExecutor statementExecutor -> a
     com.j256.ormlite.db.DatabaseType databaseType -> b
@@ -3097,41 +3157,46 @@ com.j256.ormlite.dao.BaseDaoImpl -> com.a.a.b.a:
     com.j256.ormlite.dao.CloseableIterator lastIterator -> g
     com.j256.ormlite.table.ObjectFactory objectFactory -> h
     java.lang.ThreadLocal daoConfigLevelLocal -> j
-    com.j256.ormlite.dao.ObjectCache objectCache -> k
+    com.j256.ormlite.dao.ReferenceObjectCache defaultObjectCache -> k
+    com.j256.ormlite.dao.ObjectCache objectCache -> l
     void initialize() -> a
     com.j256.ormlite.stmt.QueryBuilder queryBuilder() -> b
     java.util.List query(com.j256.ormlite.stmt.PreparedQuery) -> a
-    int create(java.lang.Object) -> a
-    int delete(java.lang.Object) -> b
+    java.util.List queryForMatching(java.lang.Object) -> a
+    int create(java.lang.Object) -> b
+    int update(java.lang.Object) -> c
+    int delete(java.lang.Object) -> d
     com.j256.ormlite.dao.CloseableIterator iterator() -> c
     com.j256.ormlite.dao.CloseableIterator closeableIterator() -> d
     com.j256.ormlite.dao.CloseableIterator iterator(int) -> a
     com.j256.ormlite.dao.CloseableIterator iterator(com.j256.ormlite.stmt.PreparedQuery) -> b
     com.j256.ormlite.dao.CloseableIterator iterator(com.j256.ormlite.stmt.PreparedQuery,int) -> a
     java.lang.Class getDataClass() -> e
-    com.j256.ormlite.table.ObjectFactory getObjectFactory() -> f
-    com.j256.ormlite.table.TableInfo getTableInfo() -> g
+    void clearAllInternalObjectCaches() -> f
+    com.j256.ormlite.table.ObjectFactory getObjectFactory() -> g
+    com.j256.ormlite.table.TableInfo getTableInfo() -> h
     com.j256.ormlite.dao.Dao createDao(com.j256.ormlite.support.ConnectionSource,java.lang.Class) -> a
     com.j256.ormlite.dao.Dao createDao(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.table.DatabaseTableConfig) -> a
-    void checkForInitialized() -> h
+    void checkForInitialized() -> i
     com.j256.ormlite.dao.CloseableIterator createIterator(int) -> b
     com.j256.ormlite.dao.CloseableIterator createIterator(com.j256.ormlite.stmt.PreparedQuery,int) -> b
+    java.util.List queryForMatching(java.lang.Object,boolean) -> a
     java.util.Iterator iterator() -> iterator
-com.j256.ormlite.dao.BaseDaoImpl$1 -> com.a.a.b.b:
+com.j256.ormlite.dao.BaseDaoImpl$1 -> com.b.a.b.b:
     com.j256.ormlite.dao.BaseDaoImpl$DaoConfigArray initialValue() -> a
     java.lang.Object initialValue() -> initialValue
-com.j256.ormlite.dao.BaseDaoImpl$4 -> com.a.a.b.c:
+com.j256.ormlite.dao.BaseDaoImpl$4 -> com.b.a.b.c:
     java.util.Iterator iterator() -> iterator
-com.j256.ormlite.dao.BaseDaoImpl$5 -> com.a.a.b.d:
+com.j256.ormlite.dao.BaseDaoImpl$5 -> com.b.a.b.d:
     java.util.Iterator iterator() -> iterator
-com.j256.ormlite.dao.BaseDaoImpl$DaoConfigArray -> com.a.a.b.e:
+com.j256.ormlite.dao.BaseDaoImpl$DaoConfigArray -> com.b.a.b.e:
     com.j256.ormlite.dao.BaseDaoImpl[] daoArray -> a
     int daoArrayC -> b
     void addDao(com.j256.ormlite.dao.BaseDaoImpl) -> a
     int size() -> a
     com.j256.ormlite.dao.BaseDaoImpl get(int) -> a
     void clear() -> b
-com.j256.ormlite.dao.BaseForeignCollection -> com.a.a.b.f:
+com.j256.ormlite.dao.BaseForeignCollection -> com.b.a.b.f:
     com.j256.ormlite.dao.Dao dao -> a
     com.j256.ormlite.field.FieldType foreignFieldType -> b
     java.lang.Object parentId -> c
@@ -3144,20 +3209,22 @@ com.j256.ormlite.dao.BaseForeignCollection -> com.a.a.b.f:
     boolean retainAll(java.util.Collection) -> retainAll
     void clear() -> clear
     com.j256.ormlite.stmt.PreparedQuery getPreparedQuery() -> a
-com.j256.ormlite.dao.CloseableIterable -> com.a.a.b.g:
+com.j256.ormlite.dao.CloseableIterable -> com.b.a.b.g:
     com.j256.ormlite.dao.CloseableIterator closeableIterator() -> d
-com.j256.ormlite.dao.CloseableIterator -> com.a.a.b.h:
+com.j256.ormlite.dao.CloseableIterator -> com.b.a.b.h:
     void close() -> a
     void moveToNext() -> b
-com.j256.ormlite.dao.CloseableWrappedIterable -> com.a.a.b.i:
-com.j256.ormlite.dao.Dao -> com.a.a.b.j:
+com.j256.ormlite.dao.CloseableWrappedIterable -> com.b.a.b.i:
+com.j256.ormlite.dao.Dao -> com.b.a.b.j:
+    java.util.List queryForMatching(java.lang.Object) -> a
     com.j256.ormlite.stmt.QueryBuilder queryBuilder() -> b
     java.util.List query(com.j256.ormlite.stmt.PreparedQuery) -> a
-    int create(java.lang.Object) -> a
-    int delete(java.lang.Object) -> b
+    int create(java.lang.Object) -> b
+    int update(java.lang.Object) -> c
+    int delete(java.lang.Object) -> d
     com.j256.ormlite.dao.CloseableIterator iterator(com.j256.ormlite.stmt.PreparedQuery) -> b
     java.lang.Class getDataClass() -> e
-com.j256.ormlite.dao.DaoManager -> com.a.a.b.k:
+com.j256.ormlite.dao.DaoManager -> com.b.a.b.k:
     java.util.Map configMap -> a
     java.util.Map classMap -> b
     java.util.Map tableConfigMap -> c
@@ -3166,6 +3233,7 @@ com.j256.ormlite.dao.DaoManager -> com.a.a.b.k:
     com.j256.ormlite.dao.Dao createDao(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.table.DatabaseTableConfig) -> a
     void registerDao(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.dao.Dao) -> a
     void unregisterDao(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.dao.Dao) -> b
+    void clearDaoCache() -> a
     void addDaoToClassMap(com.j256.ormlite.dao.DaoManager$ClassConnectionSource,com.j256.ormlite.dao.Dao) -> a
     void removeDaoToClassMap(com.j256.ormlite.dao.DaoManager$ClassConnectionSource,com.j256.ormlite.dao.Dao) -> b
     void addDaoToTableMap(com.j256.ormlite.dao.DaoManager$TableConfigConnectionSource,com.j256.ormlite.dao.Dao) -> a
@@ -3174,17 +3242,17 @@ com.j256.ormlite.dao.DaoManager -> com.a.a.b.k:
     java.lang.reflect.Constructor findConstructor(java.lang.Class,java.lang.Object[]) -> a
     java.lang.Object createDaoFromConfig(com.j256.ormlite.support.ConnectionSource,java.lang.Class) -> b
     com.j256.ormlite.dao.Dao doCreateDao(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.table.DatabaseTableConfig) -> b
-com.j256.ormlite.dao.DaoManager$ClassConnectionSource -> com.a.a.b.l:
+com.j256.ormlite.dao.DaoManager$ClassConnectionSource -> com.b.a.b.l:
     com.j256.ormlite.support.ConnectionSource connectionSource -> a
     java.lang.Class clazz -> b
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.j256.ormlite.dao.DaoManager$TableConfigConnectionSource -> com.a.a.b.m:
+com.j256.ormlite.dao.DaoManager$TableConfigConnectionSource -> com.b.a.b.m:
     com.j256.ormlite.support.ConnectionSource connectionSource -> a
     com.j256.ormlite.table.DatabaseTableConfig tableConfig -> b
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.j256.ormlite.dao.EagerForeignCollection -> com.a.a.b.n:
+com.j256.ormlite.dao.EagerForeignCollection -> com.b.a.b.n:
     java.util.List results -> b
     com.j256.ormlite.dao.CloseableIterator iterator() -> b
     com.j256.ormlite.dao.CloseableIterator closeableIterator() -> d
@@ -3205,7 +3273,7 @@ com.j256.ormlite.dao.EagerForeignCollection -> com.a.a.b.n:
     int hashCode() -> hashCode
     java.util.Iterator iterator() -> iterator
     java.util.List access$000(com.j256.ormlite.dao.EagerForeignCollection) -> a
-com.j256.ormlite.dao.EagerForeignCollection$1 -> com.a.a.b.o:
+com.j256.ormlite.dao.EagerForeignCollection$1 -> com.b.a.b.o:
     int offset -> b
     com.j256.ormlite.dao.EagerForeignCollection this$0 -> a
     boolean hasNext() -> hasNext
@@ -3213,8 +3281,8 @@ com.j256.ormlite.dao.EagerForeignCollection$1 -> com.a.a.b.o:
     void remove() -> remove
     void close() -> a
     void moveToNext() -> b
-com.j256.ormlite.dao.ForeignCollection -> com.a.a.b.p:
-com.j256.ormlite.dao.LazyForeignCollection -> com.a.a.b.q:
+com.j256.ormlite.dao.ForeignCollection -> com.b.a.b.p:
+com.j256.ormlite.dao.LazyForeignCollection -> com.b.a.b.q:
     com.j256.ormlite.dao.CloseableIterator lastIterator -> b
     com.j256.ormlite.dao.CloseableIterator iterator() -> b
     com.j256.ormlite.dao.CloseableIterator closeableIterator() -> d
@@ -3231,11 +3299,19 @@ com.j256.ormlite.dao.LazyForeignCollection -> com.a.a.b.q:
     boolean equals(java.lang.Object) -> equals
     int hashCode() -> hashCode
     java.util.Iterator iterator() -> iterator
-com.j256.ormlite.dao.ObjectCache -> com.a.a.b.r:
+com.j256.ormlite.dao.ObjectCache -> com.b.a.b.r:
     java.lang.Object get(java.lang.Class,java.lang.Object) -> a
     void put(java.lang.Class,java.lang.Object,java.lang.Object) -> a
     void remove(java.lang.Class,java.lang.Object) -> b
-com.j256.ormlite.db.BaseDatabaseType -> com.a.a.c.a:
+com.j256.ormlite.dao.ReferenceObjectCache -> com.b.a.b.s:
+    java.util.concurrent.ConcurrentHashMap classMaps -> a
+    boolean useWeak -> b
+    java.lang.Object get(java.lang.Class,java.lang.Object) -> a
+    void put(java.lang.Class,java.lang.Object,java.lang.Object) -> a
+    void clearAll() -> a
+    void remove(java.lang.Class,java.lang.Object) -> b
+    java.util.Map getMapForClass(java.lang.Class) -> a
+com.j256.ormlite.db.BaseDatabaseType -> com.b.a.c.a:
     java.lang.String DEFAULT_SEQUENCE_SUFFIX -> a
     void appendColumnArg(java.lang.String,java.lang.StringBuilder,com.j256.ormlite.field.FieldType,java.util.List,java.util.List,java.util.List,java.util.List) -> a
     void appendStringType(java.lang.StringBuilder,com.j256.ormlite.field.FieldType,int) -> a
@@ -3282,15 +3358,15 @@ com.j256.ormlite.db.BaseDatabaseType -> com.a.a.c.a:
     com.j256.ormlite.table.DatabaseTableConfig extractDatabaseTableConfig(com.j256.ormlite.support.ConnectionSource,java.lang.Class) -> a
     void appendCanBeNull(java.lang.StringBuilder,com.j256.ormlite.field.FieldType) -> a
     void addSingleUnique(java.lang.StringBuilder,com.j256.ormlite.field.FieldType,java.util.List,java.util.List) -> a
-com.j256.ormlite.db.BaseDatabaseType$1 -> com.a.a.c.b:
+com.j256.ormlite.db.BaseDatabaseType$1 -> com.b.a.c.b:
     int[] $SwitchMap$com$j256$ormlite$field$SqlType -> a
-com.j256.ormlite.db.BaseDatabaseType$BooleanNumberFieldConverter -> com.a.a.c.c:
+com.j256.ormlite.db.BaseDatabaseType$BooleanNumberFieldConverter -> com.b.a.c.c:
     com.j256.ormlite.field.SqlType getSqlType() -> a
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     java.lang.Object resultToSqlArg(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> a
     java.lang.Object sqlArgToJava(com.j256.ormlite.field.FieldType,java.lang.Object,int) -> a
-com.j256.ormlite.db.BaseSqliteDatabaseType -> com.a.a.c.d:
+com.j256.ormlite.db.BaseSqliteDatabaseType -> com.b.a.c.d:
     com.j256.ormlite.field.FieldConverter booleanConverter -> b
     void appendLongType(java.lang.StringBuilder,com.j256.ormlite.field.FieldType,int) -> h
     void configureGeneratedId(java.lang.String,java.lang.StringBuilder,com.j256.ormlite.field.FieldType,java.util.List,java.util.List,java.util.List,java.util.List) -> b
@@ -3299,9 +3375,9 @@ com.j256.ormlite.db.BaseSqliteDatabaseType -> com.a.a.c.d:
     boolean isCreateTableReturnsZero() -> g
     boolean isCreateIfNotExistsSupported() -> j
     com.j256.ormlite.field.FieldConverter getFieldConverter(com.j256.ormlite.field.DataPersister) -> a
-com.j256.ormlite.db.BaseSqliteDatabaseType$1 -> com.a.a.c.e:
+com.j256.ormlite.db.BaseSqliteDatabaseType$1 -> com.b.a.c.e:
     int[] $SwitchMap$com$j256$ormlite$field$SqlType -> a
-com.j256.ormlite.db.DatabaseType -> com.a.a.c.f:
+com.j256.ormlite.db.DatabaseType -> com.b.a.c.f:
     void appendColumnArg(java.lang.String,java.lang.StringBuilder,com.j256.ormlite.field.FieldType,java.util.List,java.util.List,java.util.List,java.util.List) -> a
     void addPrimaryKeySql(com.j256.ormlite.field.FieldType[],java.util.List,java.util.List,java.util.List,java.util.List) -> a
     void addUniqueComboSql(com.j256.ormlite.field.FieldType[],java.util.List,java.util.List,java.util.List,java.util.List) -> b
@@ -3326,20 +3402,20 @@ com.j256.ormlite.db.DatabaseType -> com.a.a.c.f:
     boolean isSelectSequenceBeforeInsert() -> l
     java.lang.String getDatabaseName() -> m
     com.j256.ormlite.table.DatabaseTableConfig extractDatabaseTableConfig(com.j256.ormlite.support.ConnectionSource,java.lang.Class) -> a
-com.j256.ormlite.db.SqliteAndroidDatabaseType -> com.a.a.c.g:
+com.j256.ormlite.db.SqliteAndroidDatabaseType -> com.b.a.c.g:
     java.lang.String getDatabaseName() -> m
     void appendDateType(java.lang.StringBuilder,com.j256.ormlite.field.FieldType,int) -> c
     void appendBooleanType(java.lang.StringBuilder,com.j256.ormlite.field.FieldType,int) -> d
     com.j256.ormlite.field.FieldConverter getFieldConverter(com.j256.ormlite.field.DataPersister) -> a
     com.j256.ormlite.table.DatabaseTableConfig extractDatabaseTableConfig(com.j256.ormlite.support.ConnectionSource,java.lang.Class) -> a
-com.j256.ormlite.db.SqliteAndroidDatabaseType$1 -> com.a.a.c.h:
+com.j256.ormlite.db.SqliteAndroidDatabaseType$1 -> com.b.a.c.h:
     int[] $SwitchMap$com$j256$ormlite$field$SqlType -> a
-com.j256.ormlite.field.BaseFieldConverter -> com.a.a.d.a:
+com.j256.ormlite.field.BaseFieldConverter -> com.b.a.d.a:
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     java.lang.Object resultToJava(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> b
     java.lang.Object sqlArgToJava(com.j256.ormlite.field.FieldType,java.lang.Object,int) -> a
     boolean isStreamType() -> b
-com.j256.ormlite.field.DataPersister -> com.a.a.d.b:
+com.j256.ormlite.field.DataPersister -> com.b.a.d.b:
     java.lang.Class[] getAssociatedClasses() -> c
     java.lang.String[] getAssociatedClassNames() -> d
     java.lang.Object makeConfigObject(com.j256.ormlite.field.FieldType) -> a
@@ -3358,12 +3434,12 @@ com.j256.ormlite.field.DataPersister -> com.a.a.d.b:
     int getDefaultWidth() -> o
     boolean isValidForVersion() -> p
     java.lang.Object moveToNextValue(java.lang.Object) -> a
-com.j256.ormlite.field.DataPersisterManager -> com.a.a.d.c:
+com.j256.ormlite.field.DataPersisterManager -> com.b.a.d.c:
     com.j256.ormlite.field.DataPersister DEFAULT_ENUM_PERSISTER -> a
     java.util.Map builtInMap -> b
     java.util.List registeredPersisters -> c
     com.j256.ormlite.field.DataPersister lookupForField(java.lang.reflect.Field) -> a
-com.j256.ormlite.field.DataType -> com.a.a.d.d:
+com.j256.ormlite.field.DataType -> com.b.a.d.d:
     com.j256.ormlite.field.DataType STRING -> a
     com.j256.ormlite.field.DataType LONG_STRING -> b
     com.j256.ormlite.field.DataType STRING_BYTES -> c
@@ -3403,7 +3479,7 @@ com.j256.ormlite.field.DataType -> com.a.a.d.d:
     com.j256.ormlite.field.DataType[] values() -> values
     com.j256.ormlite.field.DataType valueOf(java.lang.String) -> valueOf
     com.j256.ormlite.field.DataPersister getDataPersister() -> a
-com.j256.ormlite.field.DatabaseField -> com.a.a.d.e:
+com.j256.ormlite.field.DatabaseField -> com.b.a.d.e:
     java.lang.String columnName() -> a
     com.j256.ormlite.field.DataType dataType() -> b
     java.lang.String defaultValue() -> c
@@ -3432,7 +3508,7 @@ com.j256.ormlite.field.DatabaseField -> com.a.a.d.e:
     boolean foreignAutoCreate() -> z
     boolean version() -> A
     java.lang.String foreignColumnName() -> B
-com.j256.ormlite.field.DatabaseFieldConfig -> com.a.a.d.f:
+com.j256.ormlite.field.DatabaseFieldConfig -> com.b.a.d.f:
     java.lang.Class DEFAULT_PERSISTER_CLASS -> a
     com.j256.ormlite.field.DataType DEFAULT_DATA_TYPE -> b
     java.lang.String fieldName -> c
@@ -3550,14 +3626,14 @@ com.j256.ormlite.field.DatabaseFieldConfig -> com.a.a.d.f:
     java.lang.String findIndexName(java.lang.String) -> m
     java.lang.String valueIfNotBlank(java.lang.String) -> n
     java.lang.String methodFromField(java.lang.reflect.Field,java.lang.String) -> b
-com.j256.ormlite.field.FieldConverter -> com.a.a.d.g:
+com.j256.ormlite.field.FieldConverter -> com.b.a.d.g:
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     java.lang.Object resultToSqlArg(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> a
     java.lang.Object resultToJava(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> b
     com.j256.ormlite.field.SqlType getSqlType() -> a
     boolean isStreamType() -> b
-com.j256.ormlite.field.FieldType -> com.a.a.d.h:
+com.j256.ormlite.field.FieldType -> com.b.a.d.h:
     boolean DEFAULT_VALUE_BOOLEAN -> a
     byte DEFAULT_VALUE_BYTE -> b
     char DEFAULT_VALUE_CHAR -> c
@@ -3640,15 +3716,15 @@ com.j256.ormlite.field.FieldType -> com.a.a.d.h:
     boolean isFieldValueDefault(java.lang.Object) -> i
     com.j256.ormlite.field.FieldType findForeignFieldType(java.lang.Class,java.lang.Class,com.j256.ormlite.dao.BaseDaoImpl) -> a
     void assignDataType(com.j256.ormlite.db.DatabaseType,com.j256.ormlite.field.DataPersister) -> a
-com.j256.ormlite.field.FieldType$1 -> com.a.a.d.i:
+com.j256.ormlite.field.FieldType$1 -> com.b.a.d.i:
     com.j256.ormlite.field.FieldType$LevelCounters initialValue() -> a
     java.lang.Object initialValue() -> initialValue
-com.j256.ormlite.field.FieldType$LevelCounters -> com.a.a.d.j:
+com.j256.ormlite.field.FieldType$LevelCounters -> com.b.a.d.j:
     int autoRefreshLevel -> a
     int autoRefreshLevelMax -> b
     int foreignCollectionLevel -> c
     int foreignCollectionLevelMax -> d
-com.j256.ormlite.field.ForeignCollectionField -> com.a.a.d.k:
+com.j256.ormlite.field.ForeignCollectionField -> com.b.a.d.k:
     boolean eager() -> a
     int maxEagerForeignCollectionLevel() -> b
     int maxEagerLevel() -> c
@@ -3657,7 +3733,7 @@ com.j256.ormlite.field.ForeignCollectionField -> com.a.a.d.k:
     boolean orderAscending() -> f
     java.lang.String foreignColumnName() -> g
     java.lang.String foreignFieldName() -> h
-com.j256.ormlite.field.SqlType -> com.a.a.d.l:
+com.j256.ormlite.field.SqlType -> com.b.a.d.l:
     com.j256.ormlite.field.SqlType STRING -> a
     com.j256.ormlite.field.SqlType LONG_STRING -> b
     com.j256.ormlite.field.SqlType DATE -> c
@@ -3678,7 +3754,7 @@ com.j256.ormlite.field.SqlType -> com.a.a.d.l:
     com.j256.ormlite.field.SqlType[] $VALUES -> r
     com.j256.ormlite.field.SqlType[] values() -> values
     com.j256.ormlite.field.SqlType valueOf(java.lang.String) -> valueOf
-com.j256.ormlite.field.types.BaseDataType -> com.a.a.d.a.a:
+com.j256.ormlite.field.types.BaseDataType -> com.b.a.d.a.a:
     com.j256.ormlite.field.SqlType sqlType -> a
     java.lang.Class[] classes -> b
     boolean isValidForField(java.lang.reflect.Field) -> a
@@ -3700,7 +3776,7 @@ com.j256.ormlite.field.types.BaseDataType -> com.a.a.d.a.a:
     int getDefaultWidth() -> o
     boolean isValidForVersion() -> p
     java.lang.Object moveToNextValue(java.lang.Object) -> a
-com.j256.ormlite.field.types.BaseDateType -> com.a.a.d.a.b:
+com.j256.ormlite.field.types.BaseDateType -> com.b.a.d.a.b:
     com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig defaultDateFormatConfig -> a
     com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig convertDateStringConfig(com.j256.ormlite.field.FieldType,com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig) -> a
     java.util.Date parseDateString(com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig,java.lang.String) -> a
@@ -3708,19 +3784,19 @@ com.j256.ormlite.field.types.BaseDateType -> com.a.a.d.a.b:
     boolean isValidForVersion() -> p
     java.lang.Object moveToNextValue(java.lang.Object) -> a
     boolean isValidForField(java.lang.reflect.Field) -> a
-com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig -> com.a.a.d.a.c:
+com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig -> com.b.a.d.a.c:
     java.lang.ThreadLocal threadLocal -> b
     java.lang.String dateFormatStr -> a
     java.text.DateFormat getDateFormat() -> a
     java.lang.String toString() -> toString
-com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig$1 -> com.a.a.d.a.d:
+com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig$1 -> com.b.a.d.a.d:
     com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig this$0 -> a
     java.text.DateFormat initialValue() -> a
     java.lang.Object initialValue() -> initialValue
-com.j256.ormlite.field.types.BaseEnumType -> com.a.a.d.a.e:
+com.j256.ormlite.field.types.BaseEnumType -> com.b.a.d.a.e:
     java.lang.Enum enumVal(com.j256.ormlite.field.FieldType,java.lang.Object,java.lang.Enum,java.lang.Enum) -> a
     boolean isValidForField(java.lang.reflect.Field) -> a
-com.j256.ormlite.field.types.BigDecimalNumericType -> com.a.a.d.a.f:
+com.j256.ormlite.field.types.BigDecimalNumericType -> com.b.a.d.a.f:
     com.j256.ormlite.field.types.BigDecimalNumericType singleTon -> a
     com.j256.ormlite.field.types.BigDecimalNumericType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3728,7 +3804,7 @@ com.j256.ormlite.field.types.BigDecimalNumericType -> com.a.a.d.a.f:
     boolean isAppropriateId() -> k
     boolean isEscapedValue() -> h
     java.lang.Class getPrimaryClass() -> f
-com.j256.ormlite.field.types.BigDecimalStringType -> com.a.a.d.a.g:
+com.j256.ormlite.field.types.BigDecimalStringType -> com.b.a.d.a.g:
     int DEFAULT_WIDTH -> a
     com.j256.ormlite.field.types.BigDecimalStringType singleTon -> b
     com.j256.ormlite.field.types.BigDecimalStringType getSingleton() -> q
@@ -3738,7 +3814,7 @@ com.j256.ormlite.field.types.BigDecimalStringType -> com.a.a.d.a.g:
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     int getDefaultWidth() -> o
     boolean isAppropriateId() -> k
-com.j256.ormlite.field.types.BigIntegerType -> com.a.a.d.a.h:
+com.j256.ormlite.field.types.BigIntegerType -> com.b.a.d.a.h:
     int DEFAULT_WIDTH -> a
     com.j256.ormlite.field.types.BigIntegerType singleTon -> b
     com.j256.ormlite.field.types.BigIntegerType getSingleton() -> q
@@ -3748,18 +3824,18 @@ com.j256.ormlite.field.types.BigIntegerType -> com.a.a.d.a.h:
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     int getDefaultWidth() -> o
     boolean isAppropriateId() -> k
-com.j256.ormlite.field.types.BooleanObjectType -> com.a.a.d.a.i:
+com.j256.ormlite.field.types.BooleanObjectType -> com.b.a.d.a.i:
     com.j256.ormlite.field.types.BooleanObjectType singleTon -> a
     com.j256.ormlite.field.types.BooleanObjectType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
     java.lang.Object resultToSqlArg(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> a
     boolean isEscapedValue() -> h
     boolean isAppropriateId() -> k
-com.j256.ormlite.field.types.BooleanType -> com.a.a.d.a.j:
+com.j256.ormlite.field.types.BooleanType -> com.b.a.d.a.j:
     com.j256.ormlite.field.types.BooleanType singleTon -> a
     com.j256.ormlite.field.types.BooleanType getSingleton() -> r
     boolean isPrimitive() -> i
-com.j256.ormlite.field.types.ByteArrayType -> com.a.a.d.a.k:
+com.j256.ormlite.field.types.ByteArrayType -> com.b.a.d.a.k:
     com.j256.ormlite.field.types.ByteArrayType singleTon -> a
     com.j256.ormlite.field.types.ByteArrayType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3767,27 +3843,27 @@ com.j256.ormlite.field.types.ByteArrayType -> com.a.a.d.a.k:
     boolean isAppropriateId() -> k
     boolean isArgumentHolderRequired() -> l
     java.lang.Class getPrimaryClass() -> f
-com.j256.ormlite.field.types.ByteObjectType -> com.a.a.d.a.l:
+com.j256.ormlite.field.types.ByteObjectType -> com.b.a.d.a.l:
     com.j256.ormlite.field.types.ByteObjectType singleTon -> a
     com.j256.ormlite.field.types.ByteObjectType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
     java.lang.Object resultToSqlArg(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> a
     boolean isEscapedValue() -> h
-com.j256.ormlite.field.types.ByteType -> com.a.a.d.a.m:
+com.j256.ormlite.field.types.ByteType -> com.b.a.d.a.m:
     com.j256.ormlite.field.types.ByteType singleTon -> a
     com.j256.ormlite.field.types.ByteType getSingleton() -> r
     boolean isPrimitive() -> i
-com.j256.ormlite.field.types.CharType -> com.a.a.d.a.n:
+com.j256.ormlite.field.types.CharType -> com.b.a.d.a.n:
     com.j256.ormlite.field.types.CharType singleTon -> a
     com.j256.ormlite.field.types.CharType getSingleton() -> q
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     boolean isPrimitive() -> i
-com.j256.ormlite.field.types.CharacterObjectType -> com.a.a.d.a.o:
+com.j256.ormlite.field.types.CharacterObjectType -> com.b.a.d.a.o:
     com.j256.ormlite.field.types.CharacterObjectType singleTon -> a
     com.j256.ormlite.field.types.CharacterObjectType getSingleton() -> r
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
     java.lang.Object resultToSqlArg(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> a
-com.j256.ormlite.field.types.DateLongType -> com.a.a.d.a.p:
+com.j256.ormlite.field.types.DateLongType -> com.b.a.d.a.p:
     com.j256.ormlite.field.types.DateLongType singleTon -> b
     com.j256.ormlite.field.types.DateLongType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3796,7 +3872,7 @@ com.j256.ormlite.field.types.DateLongType -> com.a.a.d.a.p:
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     boolean isEscapedValue() -> h
     java.lang.Class getPrimaryClass() -> f
-com.j256.ormlite.field.types.DateStringType -> com.a.a.d.a.q:
+com.j256.ormlite.field.types.DateStringType -> com.b.a.d.a.q:
     int DEFAULT_WIDTH -> b
     com.j256.ormlite.field.types.DateStringType singleTon -> c
     com.j256.ormlite.field.types.DateStringType getSingleton() -> q
@@ -3807,7 +3883,7 @@ com.j256.ormlite.field.types.DateStringType -> com.a.a.d.a.q:
     java.lang.Object makeConfigObject(com.j256.ormlite.field.FieldType) -> a
     int getDefaultWidth() -> o
     java.lang.Class getPrimaryClass() -> f
-com.j256.ormlite.field.types.DateTimeType -> com.a.a.d.a.r:
+com.j256.ormlite.field.types.DateTimeType -> com.b.a.d.a.r:
     com.j256.ormlite.field.types.DateTimeType singleTon -> a
     java.lang.Class dateTimeClass -> b
     java.lang.reflect.Method getMillisMethod -> c
@@ -3825,7 +3901,7 @@ com.j256.ormlite.field.types.DateTimeType -> com.a.a.d.a.r:
     java.lang.reflect.Method getMillisMethod() -> r
     java.lang.reflect.Constructor getConstructor() -> s
     java.lang.Class getDateTimeClass() -> t
-com.j256.ormlite.field.types.DateType -> com.a.a.d.a.s:
+com.j256.ormlite.field.types.DateType -> com.b.a.d.a.s:
     com.j256.ormlite.field.types.DateType singleTon -> b
     com.j256.ormlite.field.types.DateType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3834,17 +3910,17 @@ com.j256.ormlite.field.types.DateType -> com.a.a.d.a.s:
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     boolean isArgumentHolderRequired() -> l
     com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig getDefaultDateFormatConfig() -> r
-com.j256.ormlite.field.types.DoubleObjectType -> com.a.a.d.a.t:
+com.j256.ormlite.field.types.DoubleObjectType -> com.b.a.d.a.t:
     com.j256.ormlite.field.types.DoubleObjectType singleTon -> a
     com.j256.ormlite.field.types.DoubleObjectType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
     java.lang.Object resultToSqlArg(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> a
     boolean isEscapedValue() -> h
-com.j256.ormlite.field.types.DoubleType -> com.a.a.d.a.u:
+com.j256.ormlite.field.types.DoubleType -> com.b.a.d.a.u:
     com.j256.ormlite.field.types.DoubleType singleTon -> a
     com.j256.ormlite.field.types.DoubleType getSingleton() -> r
     boolean isPrimitive() -> i
-com.j256.ormlite.field.types.EnumIntegerType -> com.a.a.d.a.v:
+com.j256.ormlite.field.types.EnumIntegerType -> com.b.a.d.a.v:
     com.j256.ormlite.field.types.EnumIntegerType singleTon -> a
     com.j256.ormlite.field.types.EnumIntegerType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3854,7 +3930,7 @@ com.j256.ormlite.field.types.EnumIntegerType -> com.a.a.d.a.v:
     boolean isEscapedValue() -> h
     java.lang.Object makeConfigObject(com.j256.ormlite.field.FieldType) -> a
     java.lang.Class getPrimaryClass() -> f
-com.j256.ormlite.field.types.EnumStringType -> com.a.a.d.a.w:
+com.j256.ormlite.field.types.EnumStringType -> com.b.a.d.a.w:
     int DEFAULT_WIDTH -> a
     com.j256.ormlite.field.types.EnumStringType singleTon -> b
     com.j256.ormlite.field.types.EnumStringType getSingleton() -> q
@@ -3864,21 +3940,21 @@ com.j256.ormlite.field.types.EnumStringType -> com.a.a.d.a.w:
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     java.lang.Object makeConfigObject(com.j256.ormlite.field.FieldType) -> a
     int getDefaultWidth() -> o
-com.j256.ormlite.field.types.FloatObjectType -> com.a.a.d.a.x:
+com.j256.ormlite.field.types.FloatObjectType -> com.b.a.d.a.x:
     com.j256.ormlite.field.types.FloatObjectType singleTon -> a
     com.j256.ormlite.field.types.FloatObjectType getSingleton() -> q
     java.lang.Object resultToSqlArg(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> a
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
     boolean isEscapedValue() -> h
-com.j256.ormlite.field.types.FloatType -> com.a.a.d.a.y:
+com.j256.ormlite.field.types.FloatType -> com.b.a.d.a.y:
     com.j256.ormlite.field.types.FloatType singleTon -> a
     com.j256.ormlite.field.types.FloatType getSingleton() -> r
     boolean isPrimitive() -> i
-com.j256.ormlite.field.types.IntType -> com.a.a.d.a.z:
+com.j256.ormlite.field.types.IntType -> com.b.a.d.a.z:
     com.j256.ormlite.field.types.IntType singleTon -> a
     com.j256.ormlite.field.types.IntType getSingleton() -> q
     boolean isPrimitive() -> i
-com.j256.ormlite.field.types.IntegerObjectType -> com.a.a.d.a.aa:
+com.j256.ormlite.field.types.IntegerObjectType -> com.b.a.d.a.aa:
     com.j256.ormlite.field.types.IntegerObjectType singleTon -> a
     com.j256.ormlite.field.types.IntegerObjectType getSingleton() -> r
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3888,7 +3964,7 @@ com.j256.ormlite.field.types.IntegerObjectType -> com.a.a.d.a.aa:
     boolean isValidGeneratedType() -> e
     boolean isValidForVersion() -> p
     java.lang.Object moveToNextValue(java.lang.Object) -> a
-com.j256.ormlite.field.types.LongObjectType -> com.a.a.d.a.ab:
+com.j256.ormlite.field.types.LongObjectType -> com.b.a.d.a.ab:
     com.j256.ormlite.field.types.LongObjectType singleTon -> a
     com.j256.ormlite.field.types.LongObjectType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3898,17 +3974,17 @@ com.j256.ormlite.field.types.LongObjectType -> com.a.a.d.a.ab:
     boolean isValidGeneratedType() -> e
     boolean isValidForVersion() -> p
     java.lang.Object moveToNextValue(java.lang.Object) -> a
-com.j256.ormlite.field.types.LongStringType -> com.a.a.d.a.ac:
+com.j256.ormlite.field.types.LongStringType -> com.b.a.d.a.ac:
     com.j256.ormlite.field.types.LongStringType singleTon -> b
     com.j256.ormlite.field.types.LongStringType getSingleton() -> q
     boolean isAppropriateId() -> k
     int getDefaultWidth() -> o
     java.lang.Class getPrimaryClass() -> f
-com.j256.ormlite.field.types.LongType -> com.a.a.d.a.ad:
+com.j256.ormlite.field.types.LongType -> com.b.a.d.a.ad:
     com.j256.ormlite.field.types.LongType singleTon -> a
     com.j256.ormlite.field.types.LongType getSingleton() -> r
     boolean isPrimitive() -> i
-com.j256.ormlite.field.types.SerializableType -> com.a.a.d.a.ae:
+com.j256.ormlite.field.types.SerializableType -> com.b.a.d.a.ae:
     com.j256.ormlite.field.types.SerializableType singleTon -> a
     com.j256.ormlite.field.types.SerializableType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3921,7 +3997,7 @@ com.j256.ormlite.field.types.SerializableType -> com.a.a.d.a.ae:
     boolean isAppropriateId() -> k
     boolean isArgumentHolderRequired() -> l
     java.lang.Class getPrimaryClass() -> f
-com.j256.ormlite.field.types.ShortObjectType -> com.a.a.d.a.af:
+com.j256.ormlite.field.types.ShortObjectType -> com.b.a.d.a.af:
     com.j256.ormlite.field.types.ShortObjectType singleTon -> a
     com.j256.ormlite.field.types.ShortObjectType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3929,11 +4005,11 @@ com.j256.ormlite.field.types.ShortObjectType -> com.a.a.d.a.af:
     boolean isEscapedValue() -> h
     boolean isValidForVersion() -> p
     java.lang.Object moveToNextValue(java.lang.Object) -> a
-com.j256.ormlite.field.types.ShortType -> com.a.a.d.a.ag:
+com.j256.ormlite.field.types.ShortType -> com.b.a.d.a.ag:
     com.j256.ormlite.field.types.ShortType singleTon -> a
     com.j256.ormlite.field.types.ShortType getSingleton() -> r
     boolean isPrimitive() -> i
-com.j256.ormlite.field.types.SqlDateType -> com.a.a.d.a.ah:
+com.j256.ormlite.field.types.SqlDateType -> com.b.a.d.a.ah:
     com.j256.ormlite.field.types.SqlDateType singleTon -> b
     com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig sqlDateFormatConfig -> c
     com.j256.ormlite.field.types.SqlDateType getSingleton() -> s
@@ -3941,7 +4017,7 @@ com.j256.ormlite.field.types.SqlDateType -> com.a.a.d.a.ah:
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     com.j256.ormlite.field.types.BaseDateType$DateStringFormatConfig getDefaultDateFormatConfig() -> r
     boolean isValidForField(java.lang.reflect.Field) -> a
-com.j256.ormlite.field.types.StringBytesType -> com.a.a.d.a.ai:
+com.j256.ormlite.field.types.StringBytesType -> com.b.a.d.a.ai:
     com.j256.ormlite.field.types.StringBytesType singleTon -> a
     com.j256.ormlite.field.types.StringBytesType getSingleton() -> q
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
@@ -3952,20 +4028,20 @@ com.j256.ormlite.field.types.StringBytesType -> com.a.a.d.a.ai:
     boolean isArgumentHolderRequired() -> l
     java.lang.Class getPrimaryClass() -> f
     java.lang.String getCharsetName(com.j256.ormlite.field.FieldType) -> b
-com.j256.ormlite.field.types.StringType -> com.a.a.d.a.aj:
+com.j256.ormlite.field.types.StringType -> com.b.a.d.a.aj:
     int DEFAULT_WIDTH -> a
     com.j256.ormlite.field.types.StringType singleTon -> b
     com.j256.ormlite.field.types.StringType getSingleton() -> r
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
     java.lang.Object resultToSqlArg(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> a
     int getDefaultWidth() -> o
-com.j256.ormlite.field.types.TimeStampType -> com.a.a.d.a.ak:
+com.j256.ormlite.field.types.TimeStampType -> com.b.a.d.a.ak:
     com.j256.ormlite.field.types.TimeStampType singleTon -> b
     com.j256.ormlite.field.types.TimeStampType getSingleton() -> s
     java.lang.Object sqlArgToJava(com.j256.ormlite.field.FieldType,java.lang.Object,int) -> a
     java.lang.Object javaToSqlArg(com.j256.ormlite.field.FieldType,java.lang.Object) -> a
     boolean isValidForField(java.lang.reflect.Field) -> a
-com.j256.ormlite.field.types.UuidType -> com.a.a.d.a.al:
+com.j256.ormlite.field.types.UuidType -> com.b.a.d.a.al:
     int DEFAULT_WIDTH -> a
     com.j256.ormlite.field.types.UuidType singleTon -> b
     com.j256.ormlite.field.types.UuidType getSingleton() -> q
@@ -3977,11 +4053,11 @@ com.j256.ormlite.field.types.UuidType -> com.a.a.d.a.al:
     boolean isSelfGeneratedId() -> m
     java.lang.Object generateId() -> n
     int getDefaultWidth() -> o
-com.j256.ormlite.field.types.VoidType -> com.a.a.d.a.am:
+com.j256.ormlite.field.types.VoidType -> com.b.a.d.a.am:
     java.lang.Object parseDefaultString(com.j256.ormlite.field.FieldType,java.lang.String) -> a
     java.lang.Object resultToSqlArg(com.j256.ormlite.field.FieldType,com.j256.ormlite.support.DatabaseResults,int) -> a
     boolean isValidForField(java.lang.reflect.Field) -> a
-com.j256.ormlite.logger.LocalLog -> com.a.a.e.a:
+com.j256.ormlite.logger.LocalLog -> com.b.a.e.a:
     com.j256.ormlite.logger.Log$Level DEFAULT_LEVEL -> a
     java.lang.ThreadLocal dateFormatThreadLocal -> b
     java.io.PrintStream printStream -> c
@@ -3995,17 +4071,17 @@ com.j256.ormlite.logger.LocalLog -> com.a.a.e.a:
     java.util.List readLevelResourceFile(java.io.InputStream) -> a
     java.util.List configureClassLevels(java.io.InputStream) -> b
     void printMessage(com.j256.ormlite.logger.Log$Level,java.lang.String,java.lang.Throwable) -> b
-com.j256.ormlite.logger.LocalLog$1 -> com.a.a.e.b:
+com.j256.ormlite.logger.LocalLog$1 -> com.b.a.e.b:
     java.text.DateFormat initialValue() -> a
     java.lang.Object initialValue() -> initialValue
-com.j256.ormlite.logger.LocalLog$PatternLevel -> com.a.a.e.c:
+com.j256.ormlite.logger.LocalLog$PatternLevel -> com.b.a.e.c:
     java.util.regex.Pattern pattern -> a
     com.j256.ormlite.logger.Log$Level level -> b
-com.j256.ormlite.logger.Log -> com.a.a.e.d:
+com.j256.ormlite.logger.Log -> com.b.a.e.d:
     boolean isLevelEnabled(com.j256.ormlite.logger.Log$Level) -> a
     void log(com.j256.ormlite.logger.Log$Level,java.lang.String) -> a
     void log(com.j256.ormlite.logger.Log$Level,java.lang.String,java.lang.Throwable) -> a
-com.j256.ormlite.logger.Log$Level -> com.a.a.e.e:
+com.j256.ormlite.logger.Log$Level -> com.b.a.e.e:
     com.j256.ormlite.logger.Log$Level TRACE -> a
     com.j256.ormlite.logger.Log$Level DEBUG -> b
     com.j256.ormlite.logger.Log$Level INFO -> c
@@ -4017,7 +4093,7 @@ com.j256.ormlite.logger.Log$Level -> com.a.a.e.e:
     com.j256.ormlite.logger.Log$Level[] values() -> values
     com.j256.ormlite.logger.Log$Level valueOf(java.lang.String) -> valueOf
     boolean isEnabled(com.j256.ormlite.logger.Log$Level) -> a
-com.j256.ormlite.logger.Logger -> com.a.a.e.f:
+com.j256.ormlite.logger.Logger -> com.b.a.e.f:
     int ARG_STRING_LENGTH -> a
     java.lang.Object UNKNOWN_ARG -> b
     com.j256.ormlite.logger.Log log -> c
@@ -4029,26 +4105,27 @@ com.j256.ormlite.logger.Logger -> com.a.a.e.f:
     void debug(java.lang.String,java.lang.Object,java.lang.Object) -> b
     void debug(java.lang.String,java.lang.Object,java.lang.Object,java.lang.Object) -> b
     void debug(java.lang.String,java.lang.Object[]) -> a
+    void info(java.lang.String) -> a
     void info(java.lang.String,java.lang.Object) -> c
     void info(java.lang.String,java.lang.Object,java.lang.Object) -> c
     void info(java.lang.String,java.lang.Object,java.lang.Object,java.lang.Object) -> c
     void warn(java.lang.Throwable,java.lang.String) -> a
     void warn(java.lang.Throwable,java.lang.String,java.lang.Object[]) -> a
-    void error(java.lang.String) -> a
+    void error(java.lang.String) -> b
     void error(java.lang.String,java.lang.Object) -> d
     void error(java.lang.String,java.lang.Object,java.lang.Object) -> d
     void error(java.lang.String,java.lang.Object,java.lang.Object,java.lang.Object) -> d
     void innerLog(com.j256.ormlite.logger.Log$Level,java.lang.Throwable,java.lang.String,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object[]) -> a
     java.lang.String buildFullMessage(java.lang.String,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object[]) -> a
     void appendArg(java.lang.StringBuilder,java.lang.Object) -> a
-com.j256.ormlite.logger.LoggerFactory -> com.a.a.e.g:
+com.j256.ormlite.logger.LoggerFactory -> com.b.a.e.g:
     com.j256.ormlite.logger.LoggerFactory$LogType logType -> a
     com.j256.ormlite.logger.Logger getLogger(java.lang.Class) -> a
     com.j256.ormlite.logger.Logger getLogger(java.lang.String) -> a
     java.lang.String getSimpleClassName(java.lang.String) -> b
     com.j256.ormlite.logger.LoggerFactory$LogType findLogType() -> a
-com.j256.ormlite.logger.LoggerFactory$1 -> com.a.a.e.h:
-com.j256.ormlite.logger.LoggerFactory$LogType -> com.a.a.e.i:
+com.j256.ormlite.logger.LoggerFactory$1 -> com.b.a.e.h:
+com.j256.ormlite.logger.LoggerFactory$LogType -> com.b.a.e.i:
     com.j256.ormlite.logger.LoggerFactory$LogType ANDROID -> a
     com.j256.ormlite.logger.LoggerFactory$LogType SLF4J -> b
     com.j256.ormlite.logger.LoggerFactory$LogType COMMONS_LOGGING -> c
@@ -4064,18 +4141,18 @@ com.j256.ormlite.logger.LoggerFactory$LogType -> com.a.a.e.i:
     boolean isAvailable() -> a
     com.j256.ormlite.logger.Log createLogFromClassName(java.lang.String) -> b
     boolean isAvailableTestClass() -> b
-com.j256.ormlite.logger.LoggerFactory$LogType$1 -> com.a.a.e.j:
+com.j256.ormlite.logger.LoggerFactory$LogType$1 -> com.b.a.e.j:
     com.j256.ormlite.logger.Log createLog(java.lang.String) -> a
     boolean isAvailable() -> a
-com.j256.ormlite.misc.BaseDaoEnabled -> com.a.a.f.a:
+com.j256.ormlite.misc.BaseDaoEnabled -> com.b.a.f.a:
     com.j256.ormlite.dao.Dao dao -> a
     void setDao(com.j256.ormlite.dao.Dao) -> a
-com.j256.ormlite.misc.JavaxPersistence -> com.a.a.f.b:
+com.j256.ormlite.misc.JavaxPersistence -> com.b.a.f.b:
     com.j256.ormlite.field.DatabaseFieldConfig createFieldConfig(com.j256.ormlite.db.DatabaseType,java.lang.reflect.Field) -> a
     java.lang.String getEntityName(java.lang.Class) -> a
-com.j256.ormlite.misc.SqlExceptionUtil -> com.a.a.f.c:
+com.j256.ormlite.misc.SqlExceptionUtil -> com.b.a.f.c:
     java.sql.SQLException create(java.lang.String,java.lang.Throwable) -> a
-com.j256.ormlite.misc.VersionUtils -> com.a.a.f.d:
+com.j256.ormlite.misc.VersionUtils -> com.b.a.f.d:
     com.j256.ormlite.logger.Logger logger -> a
     boolean thrownOnErrors -> b
     java.lang.String coreVersion -> c
@@ -4083,13 +4160,13 @@ com.j256.ormlite.misc.VersionUtils -> com.a.a.f.d:
     void logVersionWarnings(java.lang.String,java.lang.String,java.lang.String,java.lang.String) -> a
     void warning(java.lang.Throwable,java.lang.String,java.lang.String,java.lang.Object[]) -> a
     com.j256.ormlite.logger.Logger getLogger() -> a
-com.j256.ormlite.stmt.ArgumentHolder -> com.a.a.g.a:
+com.j256.ormlite.stmt.ArgumentHolder -> com.b.a.g.a:
     void setMetaInfo(java.lang.String,com.j256.ormlite.field.FieldType) -> a
     void setValue(java.lang.Object) -> a
     java.lang.Object getSqlArgValue() -> a
     com.j256.ormlite.field.SqlType getSqlType() -> b
     com.j256.ormlite.field.FieldType getFieldType() -> c
-com.j256.ormlite.stmt.BaseArgumentHolder -> com.a.a.g.b:
+com.j256.ormlite.stmt.BaseArgumentHolder -> com.b.a.g.b:
     java.lang.String columnName -> a
     com.j256.ormlite.field.FieldType fieldType -> b
     com.j256.ormlite.field.SqlType sqlType -> c
@@ -4102,20 +4179,20 @@ com.j256.ormlite.stmt.BaseArgumentHolder -> com.a.a.g.b:
     com.j256.ormlite.field.FieldType getFieldType() -> c
     com.j256.ormlite.field.SqlType getSqlType() -> b
     java.lang.String toString() -> toString
-com.j256.ormlite.stmt.ColumnArg -> com.a.a.g.c:
+com.j256.ormlite.stmt.ColumnArg -> com.b.a.g.c:
     java.lang.String tableName -> a
     java.lang.String columnName -> b
     java.lang.String getTableName() -> a
     java.lang.String getColumnName() -> b
-com.j256.ormlite.stmt.GenericRowMapper -> com.a.a.g.d:
+com.j256.ormlite.stmt.GenericRowMapper -> com.b.a.g.d:
     java.lang.Object mapRow(com.j256.ormlite.support.DatabaseResults) -> a
-com.j256.ormlite.stmt.PreparedDelete -> com.a.a.g.e:
-com.j256.ormlite.stmt.PreparedQuery -> com.a.a.g.f:
-com.j256.ormlite.stmt.PreparedStmt -> com.a.a.g.g:
+com.j256.ormlite.stmt.PreparedDelete -> com.b.a.g.e:
+com.j256.ormlite.stmt.PreparedQuery -> com.b.a.g.f:
+com.j256.ormlite.stmt.PreparedStmt -> com.b.a.g.g:
     com.j256.ormlite.support.CompiledStatement compile(com.j256.ormlite.support.DatabaseConnection,com.j256.ormlite.stmt.StatementBuilder$StatementType,int) -> a
     java.lang.String getStatement() -> a
-com.j256.ormlite.stmt.PreparedUpdate -> com.a.a.g.h:
-com.j256.ormlite.stmt.QueryBuilder -> com.a.a.g.i:
+com.j256.ormlite.stmt.PreparedUpdate -> com.b.a.g.h:
+com.j256.ormlite.stmt.QueryBuilder -> com.b.a.g.i:
     com.j256.ormlite.field.FieldType idField -> h
     com.j256.ormlite.field.FieldType[] resultFieldTypes -> i
     boolean distinct -> j
@@ -4135,8 +4212,9 @@ com.j256.ormlite.stmt.QueryBuilder -> com.a.a.g.i:
     java.util.List joinList -> x
     com.j256.ormlite.stmt.PreparedQuery prepare() -> a
     com.j256.ormlite.stmt.QueryBuilder orderBy(java.lang.String,boolean) -> a
+    java.util.List query() -> b
     void appendStatementStart(java.lang.StringBuilder,java.util.List) -> a
-    com.j256.ormlite.field.FieldType[] getResultFieldTypes() -> b
+    com.j256.ormlite.field.FieldType[] getResultFieldTypes() -> c
     void appendWhereStatement(java.lang.StringBuilder,java.util.List,boolean) -> a
     void appendStatementEnd(java.lang.StringBuilder,java.util.List) -> b
     void setAddTableName(boolean) -> a
@@ -4147,25 +4225,25 @@ com.j256.ormlite.stmt.QueryBuilder -> com.a.a.g.i:
     void appendLimit(java.lang.StringBuilder) -> d
     void appendOffset(java.lang.StringBuilder) -> e
     void appendGroupBys(java.lang.StringBuilder) -> f
-    boolean hasGroupStuff() -> d
+    boolean hasGroupStuff() -> e
     void appendGroupBys(java.lang.StringBuilder,boolean) -> a
     void appendOrderBys(java.lang.StringBuilder,java.util.List) -> d
-    boolean hasOrderStuff() -> e
+    boolean hasOrderStuff() -> f
     void appendOrderBys(java.lang.StringBuilder,boolean,java.util.List) -> a
     void appendColumnName(java.lang.StringBuilder,java.lang.String) -> a
     void appendHaving(java.lang.StringBuilder) -> g
-com.j256.ormlite.stmt.QueryBuilder$JoinInfo -> com.a.a.g.j:
+com.j256.ormlite.stmt.QueryBuilder$JoinInfo -> com.b.a.g.j:
     java.lang.String type -> a
     com.j256.ormlite.stmt.QueryBuilder queryBuilder -> b
     com.j256.ormlite.field.FieldType localField -> c
     com.j256.ormlite.field.FieldType remoteField -> d
-com.j256.ormlite.stmt.SelectArg -> com.a.a.g.k:
+com.j256.ormlite.stmt.SelectArg -> com.b.a.g.k:
     boolean hasBeenSet -> a
     java.lang.Object value -> b
     java.lang.Object getValue() -> d
     void setValue(java.lang.Object) -> a
     boolean isValueSet() -> e
-com.j256.ormlite.stmt.SelectIterator -> com.a.a.g.l:
+com.j256.ormlite.stmt.SelectIterator -> com.b.a.g.l:
     com.j256.ormlite.logger.Logger logger -> a
     java.lang.Class dataClass -> b
     com.j256.ormlite.dao.Dao classDao -> c
@@ -4190,7 +4268,7 @@ com.j256.ormlite.stmt.SelectIterator -> com.a.a.g.l:
     void closeQuietly() -> f
     void moveToNext() -> b
     java.lang.Object getCurrent() -> g
-com.j256.ormlite.stmt.StatementBuilder -> com.a.a.g.m:
+com.j256.ormlite.stmt.StatementBuilder -> com.b.a.g.m:
     com.j256.ormlite.logger.Logger logger -> h
     com.j256.ormlite.table.TableInfo tableInfo -> a
     java.lang.String tableName -> b
@@ -4199,16 +4277,16 @@ com.j256.ormlite.stmt.StatementBuilder -> com.a.a.g.m:
     com.j256.ormlite.stmt.StatementBuilder$StatementType type -> e
     boolean addTableName -> f
     com.j256.ormlite.stmt.Where where -> g
-    com.j256.ormlite.stmt.Where where() -> c
+    com.j256.ormlite.stmt.Where where() -> d
     com.j256.ormlite.stmt.mapped.MappedPreparedStmt prepareStatement(java.lang.Long) -> a
     java.lang.String buildStatementString(java.util.List) -> a
     void appendStatementString(java.lang.StringBuilder,java.util.List) -> c
     void appendStatementStart(java.lang.StringBuilder,java.util.List) -> a
     void appendWhereStatement(java.lang.StringBuilder,java.util.List,boolean) -> a
     void appendStatementEnd(java.lang.StringBuilder,java.util.List) -> b
-    com.j256.ormlite.field.FieldType[] getResultFieldTypes() -> b
+    com.j256.ormlite.field.FieldType[] getResultFieldTypes() -> c
     com.j256.ormlite.field.FieldType verifyColumnName(java.lang.String) -> a
-com.j256.ormlite.stmt.StatementBuilder$StatementType -> com.a.a.g.n:
+com.j256.ormlite.stmt.StatementBuilder$StatementType -> com.b.a.g.n:
     com.j256.ormlite.stmt.StatementBuilder$StatementType SELECT -> a
     com.j256.ormlite.stmt.StatementBuilder$StatementType SELECT_LONG -> b
     com.j256.ormlite.stmt.StatementBuilder$StatementType SELECT_RAW -> c
@@ -4225,7 +4303,7 @@ com.j256.ormlite.stmt.StatementBuilder$StatementType -> com.a.a.g.n:
     boolean isOkForStatementBuilder() -> a
     boolean isOkForQuery() -> b
     boolean isOkForExecute() -> c
-com.j256.ormlite.stmt.StatementExecutor -> com.a.a.g.o:
+com.j256.ormlite.stmt.StatementExecutor -> com.b.a.g.o:
     com.j256.ormlite.logger.Logger logger -> a
     com.j256.ormlite.field.FieldType[] noFieldTypes -> b
     com.j256.ormlite.db.DatabaseType databaseType -> c
@@ -4233,16 +4311,18 @@ com.j256.ormlite.stmt.StatementExecutor -> com.a.a.g.o:
     com.j256.ormlite.dao.Dao dao -> e
     com.j256.ormlite.stmt.PreparedQuery preparedQueryForAll -> f
     com.j256.ormlite.stmt.mapped.MappedCreate mappedInsert -> g
-    com.j256.ormlite.stmt.mapped.MappedDelete mappedDelete -> h
+    com.j256.ormlite.stmt.mapped.MappedUpdate mappedUpdate -> h
+    com.j256.ormlite.stmt.mapped.MappedDelete mappedDelete -> i
     java.util.List query(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.stmt.PreparedStmt,com.j256.ormlite.dao.ObjectCache) -> a
     com.j256.ormlite.stmt.SelectIterator buildIterator(com.j256.ormlite.dao.BaseDaoImpl,com.j256.ormlite.support.ConnectionSource,int,com.j256.ormlite.dao.ObjectCache) -> a
     com.j256.ormlite.stmt.SelectIterator buildIterator(com.j256.ormlite.dao.BaseDaoImpl,com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.stmt.PreparedStmt,com.j256.ormlite.dao.ObjectCache,int) -> a
     int create(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache) -> a
-    int delete(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache) -> b
+    int update(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache) -> b
+    int delete(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache) -> c
     java.lang.String[] mapRow(com.j256.ormlite.support.DatabaseResults) -> b
     void prepareQueryForAll() -> a
     java.lang.Object mapRow(com.j256.ormlite.support.DatabaseResults) -> a
-com.j256.ormlite.stmt.Where -> com.a.a.g.p:
+com.j256.ormlite.stmt.Where -> com.b.a.g.p:
     com.j256.ormlite.table.TableInfo tableInfo -> a
     com.j256.ormlite.stmt.StatementBuilder statementBuilder -> b
     com.j256.ormlite.field.FieldType idFieldType -> c
@@ -4251,6 +4331,7 @@ com.j256.ormlite.stmt.Where -> com.a.a.g.p:
     com.j256.ormlite.stmt.query.Clause[] clauseStack -> f
     int clauseStackLevel -> g
     com.j256.ormlite.stmt.query.NeedsFutureClause needsFuture -> h
+    com.j256.ormlite.stmt.Where and(int) -> a
     com.j256.ormlite.stmt.Where eq(java.lang.String,java.lang.Object) -> a
     com.j256.ormlite.stmt.PreparedQuery prepare() -> a
     void appendSql(java.lang.String,java.lang.StringBuilder,java.util.List) -> a
@@ -4258,15 +4339,16 @@ com.j256.ormlite.stmt.Where -> com.a.a.g.p:
     void addClause(com.j256.ormlite.stmt.query.Clause) -> a
     com.j256.ormlite.field.FieldType findColumnFieldType(java.lang.String) -> a
     void push(com.j256.ormlite.stmt.query.Clause) -> b
+    com.j256.ormlite.stmt.query.Clause pop(java.lang.String) -> b
     com.j256.ormlite.stmt.query.Clause peek() -> b
-com.j256.ormlite.stmt.mapped.BaseMappedQuery -> com.a.a.g.a.a:
+com.j256.ormlite.stmt.mapped.BaseMappedQuery -> com.b.a.g.a.a:
     com.j256.ormlite.field.FieldType[] resultsFieldTypes -> a
     java.util.Map columnPositions -> h
     java.lang.Object parent -> i
     java.lang.Object parentId -> j
     java.lang.Object mapRow(com.j256.ormlite.support.DatabaseResults) -> a
     void setParentInformation(java.lang.Object,java.lang.Object) -> a
-com.j256.ormlite.stmt.mapped.BaseMappedStatement -> com.a.a.g.a.b:
+com.j256.ormlite.stmt.mapped.BaseMappedStatement -> com.b.a.g.a.b:
     com.j256.ormlite.logger.Logger logger -> b
     com.j256.ormlite.table.TableInfo tableInfo -> c
     java.lang.Class clazz -> d
@@ -4279,7 +4361,7 @@ com.j256.ormlite.stmt.mapped.BaseMappedStatement -> com.a.a.g.a.b:
     void appendTableName(com.j256.ormlite.db.DatabaseType,java.lang.StringBuilder,java.lang.String,java.lang.String) -> a
     void appendFieldColumnName(com.j256.ormlite.db.DatabaseType,java.lang.StringBuilder,com.j256.ormlite.field.FieldType,java.util.List) -> a
     java.lang.String toString() -> toString
-com.j256.ormlite.stmt.mapped.MappedCreate -> com.a.a.g.a.c:
+com.j256.ormlite.stmt.mapped.MappedCreate -> com.b.a.g.a.c:
     java.lang.String queryNextSequenceStmt -> a
     java.lang.String dataClassName -> h
     int versionFieldTypeIndex -> i
@@ -4290,28 +4372,34 @@ com.j256.ormlite.stmt.mapped.MappedCreate -> com.a.a.g.a.c:
     java.lang.String buildQueryNextSequence(com.j256.ormlite.db.DatabaseType,com.j256.ormlite.field.FieldType) -> b
     void assignSequenceId(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache) -> a
     void assignIdValue(java.lang.Object,java.lang.Number,java.lang.String,com.j256.ormlite.dao.ObjectCache) -> a
-com.j256.ormlite.stmt.mapped.MappedCreate$1 -> com.a.a.g.a.d:
-com.j256.ormlite.stmt.mapped.MappedCreate$KeyHolder -> com.a.a.g.a.e:
+com.j256.ormlite.stmt.mapped.MappedCreate$1 -> com.b.a.g.a.d:
+com.j256.ormlite.stmt.mapped.MappedCreate$KeyHolder -> com.b.a.g.a.e:
     java.lang.Number key -> a
     java.lang.Number getKey() -> a
     void addKey(java.lang.Number) -> a
-com.j256.ormlite.stmt.mapped.MappedDelete -> com.a.a.g.a.f:
+com.j256.ormlite.stmt.mapped.MappedDelete -> com.b.a.g.a.f:
     com.j256.ormlite.stmt.mapped.MappedDelete build(com.j256.ormlite.db.DatabaseType,com.j256.ormlite.table.TableInfo) -> a
     int delete(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache) -> a
-com.j256.ormlite.stmt.mapped.MappedPreparedStmt -> com.a.a.g.a.g:
+com.j256.ormlite.stmt.mapped.MappedPreparedStmt -> com.b.a.g.a.g:
     com.j256.ormlite.stmt.ArgumentHolder[] argHolders -> h
     java.lang.Long limit -> i
     com.j256.ormlite.stmt.StatementBuilder$StatementType type -> j
     com.j256.ormlite.support.CompiledStatement compile(com.j256.ormlite.support.DatabaseConnection,com.j256.ormlite.stmt.StatementBuilder$StatementType,int) -> a
     java.lang.String getStatement() -> a
     com.j256.ormlite.support.CompiledStatement assignStatementArguments(com.j256.ormlite.support.CompiledStatement) -> a
-com.j256.ormlite.stmt.mapped.MappedQueryForId -> com.a.a.g.a.h:
+com.j256.ormlite.stmt.mapped.MappedQueryForId -> com.b.a.g.a.h:
     java.lang.String label -> h
     java.lang.Object execute(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache) -> a
     com.j256.ormlite.stmt.mapped.MappedQueryForId build(com.j256.ormlite.db.DatabaseType,com.j256.ormlite.table.TableInfo,com.j256.ormlite.field.FieldType) -> a
     java.lang.String buildStatement(com.j256.ormlite.db.DatabaseType,com.j256.ormlite.table.TableInfo,com.j256.ormlite.field.FieldType) -> b
     void logArgs(java.lang.Object[]) -> a
-com.j256.ormlite.stmt.query.BaseComparison -> com.a.a.g.b.a:
+com.j256.ormlite.stmt.mapped.MappedUpdate -> com.b.a.g.a.i:
+    com.j256.ormlite.field.FieldType versionFieldType -> a
+    int versionFieldTypeIndex -> h
+    com.j256.ormlite.stmt.mapped.MappedUpdate build(com.j256.ormlite.db.DatabaseType,com.j256.ormlite.table.TableInfo) -> a
+    int update(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache) -> a
+    boolean isFieldUpdatable(com.j256.ormlite.field.FieldType,com.j256.ormlite.field.FieldType) -> a
+com.j256.ormlite.stmt.query.BaseComparison -> com.b.a.g.b.a:
     java.lang.String columnName -> a
     com.j256.ormlite.field.FieldType fieldType -> b
     java.lang.Object value -> c
@@ -4320,40 +4408,48 @@ com.j256.ormlite.stmt.query.BaseComparison -> com.a.a.g.b.a:
     void appendValue(com.j256.ormlite.db.DatabaseType,java.lang.StringBuilder,java.util.List) -> a
     void appendArgOrValue(com.j256.ormlite.db.DatabaseType,com.j256.ormlite.field.FieldType,java.lang.StringBuilder,java.util.List,java.lang.Object) -> a
     java.lang.String toString() -> toString
-com.j256.ormlite.stmt.query.Clause -> com.a.a.g.b.b:
+com.j256.ormlite.stmt.query.Clause -> com.b.a.g.b.b:
     void appendSql(com.j256.ormlite.db.DatabaseType,java.lang.String,java.lang.StringBuilder,java.util.List) -> a
-com.j256.ormlite.stmt.query.Comparison -> com.a.a.g.b.c:
-com.j256.ormlite.stmt.query.NeedsFutureClause -> com.a.a.g.b.d:
+com.j256.ormlite.stmt.query.Comparison -> com.b.a.g.b.c:
+com.j256.ormlite.stmt.query.ManyClause -> com.b.a.g.b.d:
+    com.j256.ormlite.stmt.query.Clause first -> a
+    com.j256.ormlite.stmt.query.Clause second -> b
+    com.j256.ormlite.stmt.query.Clause[] others -> c
+    int startOthersAt -> d
+    java.lang.String operation -> e
+    void appendSql(com.j256.ormlite.db.DatabaseType,java.lang.String,java.lang.StringBuilder,java.util.List) -> a
     void setMissingClause(com.j256.ormlite.stmt.query.Clause) -> a
-com.j256.ormlite.stmt.query.OrderBy -> com.a.a.g.b.e:
+com.j256.ormlite.stmt.query.NeedsFutureClause -> com.b.a.g.b.e:
+    void setMissingClause(com.j256.ormlite.stmt.query.Clause) -> a
+com.j256.ormlite.stmt.query.OrderBy -> com.b.a.g.b.f:
     java.lang.String columnName -> a
     boolean ascending -> b
     java.lang.String getColumnName() -> a
     boolean isAscending() -> b
-com.j256.ormlite.stmt.query.SimpleComparison -> com.a.a.g.b.f:
+com.j256.ormlite.stmt.query.SimpleComparison -> com.b.a.g.b.g:
     java.lang.String operation -> c
     void appendOperation(java.lang.StringBuilder) -> a
     java.lang.String toString() -> toString
     void appendValue(com.j256.ormlite.db.DatabaseType,java.lang.StringBuilder,java.util.List) -> a
     void appendSql(com.j256.ormlite.db.DatabaseType,java.lang.String,java.lang.StringBuilder,java.util.List) -> a
-com.j256.ormlite.support.BaseConnectionSource -> com.a.a.h.a:
+com.j256.ormlite.support.BaseConnectionSource -> com.b.a.h.a:
     java.lang.ThreadLocal specialConnection -> a
     com.j256.ormlite.support.DatabaseConnection getSpecialConnection() -> e
     com.j256.ormlite.support.DatabaseConnection getSavedConnection() -> f
     boolean saveSpecial(com.j256.ormlite.support.DatabaseConnection) -> d
     boolean clearSpecial(com.j256.ormlite.support.DatabaseConnection,com.j256.ormlite.logger.Logger) -> a
-com.j256.ormlite.support.BaseConnectionSource$NestedConnection -> com.a.a.h.b:
+com.j256.ormlite.support.BaseConnectionSource$NestedConnection -> com.b.a.h.b:
     com.j256.ormlite.support.DatabaseConnection connection -> a
     int nestedC -> b
     void increment() -> a
     int decrementAndGet() -> b
-com.j256.ormlite.support.CompiledStatement -> com.a.a.h.c:
+com.j256.ormlite.support.CompiledStatement -> com.b.a.h.c:
     com.j256.ormlite.support.DatabaseResults runQuery(com.j256.ormlite.dao.ObjectCache) -> a
     int runExecute() -> a
     void close() -> b
     void setObject(int,java.lang.Object,com.j256.ormlite.field.SqlType) -> a
     void setMaxRows(int) -> a
-com.j256.ormlite.support.ConnectionSource -> com.a.a.h.d:
+com.j256.ormlite.support.ConnectionSource -> com.b.a.h.d:
     com.j256.ormlite.support.DatabaseConnection getReadOnlyConnection() -> a
     com.j256.ormlite.support.DatabaseConnection getReadWriteConnection() -> b
     void releaseConnection(com.j256.ormlite.support.DatabaseConnection) -> a
@@ -4361,15 +4457,16 @@ com.j256.ormlite.support.ConnectionSource -> com.a.a.h.d:
     void clearSpecialConnection(com.j256.ormlite.support.DatabaseConnection) -> c
     com.j256.ormlite.support.DatabaseConnection getSpecialConnection() -> e
     com.j256.ormlite.db.DatabaseType getDatabaseType() -> d
-com.j256.ormlite.support.DatabaseConnection -> com.a.a.h.e:
+com.j256.ormlite.support.DatabaseConnection -> com.b.a.h.e:
     java.lang.Object MORE_THAN_ONE -> a
     com.j256.ormlite.support.CompiledStatement compileStatement(java.lang.String,com.j256.ormlite.stmt.StatementBuilder$StatementType,com.j256.ormlite.field.FieldType[]) -> a
     com.j256.ormlite.support.CompiledStatement compileStatement(java.lang.String,com.j256.ormlite.stmt.StatementBuilder$StatementType,com.j256.ormlite.field.FieldType[],int) -> a
     int insert(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[],com.j256.ormlite.support.GeneratedKeyHolder) -> a
-    int delete(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[]) -> a
+    int update(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[]) -> a
+    int delete(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[]) -> b
     java.lang.Object queryForOne(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[],com.j256.ormlite.stmt.GenericRowMapper,com.j256.ormlite.dao.ObjectCache) -> a
     long queryForLong(java.lang.String) -> a
-com.j256.ormlite.support.DatabaseResults -> com.a.a.h.f:
+com.j256.ormlite.support.DatabaseResults -> com.b.a.h.f:
     int getColumnCount() -> a
     boolean first() -> b
     boolean next() -> c
@@ -4388,12 +4485,12 @@ com.j256.ormlite.support.DatabaseResults -> com.a.a.h.f:
     java.math.BigDecimal getBigDecimal(int) -> l
     boolean wasNull(int) -> m
     com.j256.ormlite.dao.ObjectCache getObjectCache() -> d
-com.j256.ormlite.support.GeneratedKeyHolder -> com.a.a.h.g:
+com.j256.ormlite.support.GeneratedKeyHolder -> com.b.a.h.g:
     void addKey(java.lang.Number) -> a
-com.j256.ormlite.table.DatabaseTable -> com.a.a.i.a:
+com.j256.ormlite.table.DatabaseTable -> com.b.a.i.a:
     java.lang.String tableName() -> a
     java.lang.Class daoClass() -> b
-com.j256.ormlite.table.DatabaseTableConfig -> com.a.a.i.b:
+com.j256.ormlite.table.DatabaseTableConfig -> com.b.a.i.b:
     java.lang.Class dataClass -> a
     java.lang.String tableName -> b
     java.util.List fieldConfigs -> c
@@ -4409,9 +4506,9 @@ com.j256.ormlite.table.DatabaseTableConfig -> com.a.a.i.b:
     java.lang.reflect.Constructor findNoArgConstructor(java.lang.Class) -> b
     com.j256.ormlite.field.FieldType[] extractFieldTypes(com.j256.ormlite.support.ConnectionSource,java.lang.Class,java.lang.String) -> a
     com.j256.ormlite.field.FieldType[] convertFieldConfigs(com.j256.ormlite.support.ConnectionSource,java.lang.String,java.util.List) -> a
-com.j256.ormlite.table.ObjectFactory -> com.a.a.i.c:
+com.j256.ormlite.table.ObjectFactory -> com.b.a.i.c:
     java.lang.Object createObject(java.lang.reflect.Constructor,java.lang.Class) -> a
-com.j256.ormlite.table.TableInfo -> com.a.a.i.d:
+com.j256.ormlite.table.TableInfo -> com.b.a.i.d:
     com.j256.ormlite.field.FieldType[] NO_FOREIGN_COLLECTIONS -> a
     com.j256.ormlite.dao.BaseDaoImpl baseDaoImpl -> b
     java.lang.Class dataClass -> c
@@ -4431,7 +4528,7 @@ com.j256.ormlite.table.TableInfo -> com.a.a.i.d:
     boolean isForeignAutoCreate() -> f
     com.j256.ormlite.field.FieldType[] getForeignCollections() -> g
     void wireNewInstance(com.j256.ormlite.dao.BaseDaoImpl,java.lang.Object) -> a
-com.j256.ormlite.table.TableUtils -> com.a.a.i.e:
+com.j256.ormlite.table.TableUtils -> com.b.a.i.e:
     com.j256.ormlite.logger.Logger logger -> a
     com.j256.ormlite.field.FieldType[] noFieldTypes -> b
     int createTable(com.j256.ormlite.support.ConnectionSource,java.lang.Class) -> a
@@ -4445,3 +4542,439 @@ com.j256.ormlite.table.TableUtils -> com.a.a.i.e:
     int doCreateTable(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.table.TableInfo,boolean) -> a
     int doStatements(com.j256.ormlite.support.DatabaseConnection,java.lang.String,java.util.Collection,boolean,boolean,boolean) -> a
     int doCreateTestQueries(com.j256.ormlite.support.DatabaseConnection,com.j256.ormlite.db.DatabaseType,java.util.List) -> a
+com.nineoldandroids.animation.Animator -> com.c.a.a:
+    java.util.ArrayList mListeners -> a
+    void start() -> a
+    void cancel() -> b
+    void end() -> c
+    com.nineoldandroids.animation.Animator setDuration(long) -> a
+    boolean isRunning() -> d
+    boolean isStarted() -> e
+    void addListener(com.nineoldandroids.animation.Animator$AnimatorListener) -> a
+    void removeListener(com.nineoldandroids.animation.Animator$AnimatorListener) -> b
+    java.util.ArrayList getListeners() -> f
+    com.nineoldandroids.animation.Animator clone() -> g
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.Animator$AnimatorListener -> com.c.a.b:
+    void onAnimationStart(com.nineoldandroids.animation.Animator) -> a
+    void onAnimationEnd(com.nineoldandroids.animation.Animator) -> b
+    void onAnimationCancel(com.nineoldandroids.animation.Animator) -> c
+    void onAnimationRepeat(com.nineoldandroids.animation.Animator) -> d
+com.nineoldandroids.animation.AnimatorListenerAdapter -> com.c.a.c:
+    void onAnimationCancel(com.nineoldandroids.animation.Animator) -> c
+    void onAnimationEnd(com.nineoldandroids.animation.Animator) -> b
+    void onAnimationRepeat(com.nineoldandroids.animation.Animator) -> d
+    void onAnimationStart(com.nineoldandroids.animation.Animator) -> a
+com.nineoldandroids.animation.AnimatorSet -> com.c.a.d:
+    java.util.ArrayList mPlayingSet -> c
+    java.util.HashMap mNodeMap -> d
+    java.util.ArrayList mNodes -> e
+    java.util.ArrayList mSortedNodes -> f
+    boolean mNeedsSort -> g
+    com.nineoldandroids.animation.AnimatorSet$AnimatorSetListener mSetListener -> h
+    boolean mTerminated -> b
+    boolean mStarted -> i
+    long mStartDelay -> j
+    com.nineoldandroids.animation.ValueAnimator mDelayAnim -> k
+    long mDuration -> l
+    void playTogether(com.nineoldandroids.animation.Animator[]) -> a
+    com.nineoldandroids.animation.AnimatorSet$Builder play(com.nineoldandroids.animation.Animator) -> a
+    void cancel() -> b
+    void end() -> c
+    boolean isRunning() -> d
+    boolean isStarted() -> e
+    void setStartDelay(long) -> b
+    com.nineoldandroids.animation.AnimatorSet setDuration(long) -> c
+    void start() -> a
+    com.nineoldandroids.animation.AnimatorSet clone() -> h
+    void sortNodes() -> i
+    com.nineoldandroids.animation.Animator clone() -> g
+    com.nineoldandroids.animation.Animator setDuration(long) -> a
+    java.util.ArrayList access$2(com.nineoldandroids.animation.AnimatorSet) -> a
+    java.util.HashMap access$3(com.nineoldandroids.animation.AnimatorSet) -> b
+    java.util.ArrayList access$4(com.nineoldandroids.animation.AnimatorSet) -> c
+    void access$5(com.nineoldandroids.animation.AnimatorSet,boolean) -> a
+    java.util.ArrayList access$6(com.nineoldandroids.animation.AnimatorSet) -> d
+com.nineoldandroids.animation.AnimatorSet$1 -> com.c.a.e:
+    boolean canceled -> a
+    com.nineoldandroids.animation.AnimatorSet this$0 -> b
+    java.util.ArrayList val$nodesToStart -> c
+    void onAnimationCancel(com.nineoldandroids.animation.Animator) -> c
+    void onAnimationEnd(com.nineoldandroids.animation.Animator) -> b
+com.nineoldandroids.animation.AnimatorSet$AnimatorSetListener -> com.c.a.f:
+    com.nineoldandroids.animation.AnimatorSet mAnimatorSet -> b
+    com.nineoldandroids.animation.AnimatorSet this$0 -> a
+    void onAnimationCancel(com.nineoldandroids.animation.Animator) -> c
+    void onAnimationEnd(com.nineoldandroids.animation.Animator) -> b
+    void onAnimationRepeat(com.nineoldandroids.animation.Animator) -> d
+    void onAnimationStart(com.nineoldandroids.animation.Animator) -> a
+com.nineoldandroids.animation.AnimatorSet$Builder -> com.c.a.g:
+    com.nineoldandroids.animation.AnimatorSet$Node mCurrentNode -> b
+    com.nineoldandroids.animation.AnimatorSet this$0 -> a
+    com.nineoldandroids.animation.AnimatorSet$Builder with(com.nineoldandroids.animation.Animator) -> a
+com.nineoldandroids.animation.AnimatorSet$Dependency -> com.c.a.h:
+    com.nineoldandroids.animation.AnimatorSet$Node node -> a
+    int rule -> b
+com.nineoldandroids.animation.AnimatorSet$DependencyListener -> com.c.a.i:
+    com.nineoldandroids.animation.AnimatorSet mAnimatorSet -> a
+    com.nineoldandroids.animation.AnimatorSet$Node mNode -> b
+    int mRule -> c
+    void onAnimationCancel(com.nineoldandroids.animation.Animator) -> c
+    void onAnimationEnd(com.nineoldandroids.animation.Animator) -> b
+    void onAnimationRepeat(com.nineoldandroids.animation.Animator) -> d
+    void onAnimationStart(com.nineoldandroids.animation.Animator) -> a
+    void startIfReady(com.nineoldandroids.animation.Animator) -> e
+com.nineoldandroids.animation.AnimatorSet$Node -> com.c.a.j:
+    com.nineoldandroids.animation.Animator animation -> a
+    java.util.ArrayList dependencies -> b
+    java.util.ArrayList tmpDependencies -> c
+    java.util.ArrayList nodeDependencies -> d
+    java.util.ArrayList nodeDependents -> e
+    boolean done -> f
+    void addDependency(com.nineoldandroids.animation.AnimatorSet$Dependency) -> a
+    com.nineoldandroids.animation.AnimatorSet$Node clone() -> a
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.FloatEvaluator -> com.c.a.k:
+    java.lang.Float evaluate(float,java.lang.Number,java.lang.Number) -> a
+    java.lang.Object evaluate(float,java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.animation.FloatKeyframeSet -> com.c.a.l:
+    float firstValue -> g
+    float lastValue -> h
+    float deltaValue -> i
+    boolean firstTime -> j
+    java.lang.Object getValue(float) -> a
+    com.nineoldandroids.animation.FloatKeyframeSet clone() -> a
+    float getFloatValue(float) -> b
+    com.nineoldandroids.animation.KeyframeSet clone() -> b
+com.nineoldandroids.animation.IntEvaluator -> com.c.a.m:
+    java.lang.Integer evaluate(float,java.lang.Integer,java.lang.Integer) -> a
+    java.lang.Object evaluate(float,java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.animation.Keyframe -> com.c.a.n:
+    float mFraction -> a
+    java.lang.Class mValueType -> b
+    android.view.animation.Interpolator mInterpolator -> d
+    boolean mHasValue -> c
+    com.nineoldandroids.animation.Keyframe ofFloat(float,float) -> a
+    com.nineoldandroids.animation.Keyframe ofFloat(float) -> a
+    boolean hasValue() -> a
+    java.lang.Object getValue() -> b
+    void setValue(java.lang.Object) -> a
+    float getFraction() -> c
+    android.view.animation.Interpolator getInterpolator() -> d
+    void setInterpolator(android.view.animation.Interpolator) -> a
+    com.nineoldandroids.animation.Keyframe clone() -> e
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.Keyframe$FloatKeyframe -> com.c.a.o:
+    float mValue -> d
+    float getFloatValue() -> f
+    java.lang.Object getValue() -> b
+    void setValue(java.lang.Object) -> a
+    com.nineoldandroids.animation.Keyframe$FloatKeyframe clone() -> g
+    com.nineoldandroids.animation.Keyframe clone() -> e
+com.nineoldandroids.animation.KeyframeSet -> com.c.a.p:
+    int mNumKeyframes -> a
+    com.nineoldandroids.animation.Keyframe mFirstKeyframe -> b
+    com.nineoldandroids.animation.Keyframe mLastKeyframe -> c
+    android.view.animation.Interpolator mInterpolator -> d
+    java.util.ArrayList mKeyframes -> e
+    com.nineoldandroids.animation.TypeEvaluator mEvaluator -> f
+    com.nineoldandroids.animation.KeyframeSet ofFloat(float[]) -> a
+    void setEvaluator(com.nineoldandroids.animation.TypeEvaluator) -> a
+    com.nineoldandroids.animation.KeyframeSet clone() -> b
+    java.lang.Object getValue(float) -> a
+    java.lang.String toString() -> toString
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.ObjectAnimator -> com.c.a.q:
+    java.util.Map PROXY_PROPERTIES -> h
+    java.lang.Object mTarget -> i
+    java.lang.String mPropertyName -> j
+    com.nineoldandroids.util.Property mProperty -> k
+    void setPropertyName(java.lang.String) -> a
+    void setProperty(com.nineoldandroids.util.Property) -> a
+    com.nineoldandroids.animation.ObjectAnimator ofFloat(java.lang.Object,java.lang.String,float[]) -> a
+    void setFloatValues(float[]) -> a
+    void start() -> a
+    void initAnimation() -> h
+    com.nineoldandroids.animation.ObjectAnimator setDuration(long) -> b
+    void animateValue(float) -> a
+    com.nineoldandroids.animation.ObjectAnimator clone() -> i
+    java.lang.String toString() -> toString
+    com.nineoldandroids.animation.ValueAnimator clone() -> j
+    com.nineoldandroids.animation.ValueAnimator setDuration(long) -> c
+com.nineoldandroids.animation.PreHoneycombCompat -> com.c.a.r:
+    com.nineoldandroids.util.Property ALPHA -> a
+    com.nineoldandroids.util.Property PIVOT_X -> b
+    com.nineoldandroids.util.Property PIVOT_Y -> c
+    com.nineoldandroids.util.Property TRANSLATION_X -> d
+    com.nineoldandroids.util.Property TRANSLATION_Y -> e
+    com.nineoldandroids.util.Property ROTATION -> f
+    com.nineoldandroids.util.Property ROTATION_X -> g
+    com.nineoldandroids.util.Property ROTATION_Y -> h
+    com.nineoldandroids.util.Property SCALE_X -> i
+    com.nineoldandroids.util.Property SCALE_Y -> j
+    com.nineoldandroids.util.Property SCROLL_X -> k
+    com.nineoldandroids.util.Property SCROLL_Y -> l
+    com.nineoldandroids.util.Property X -> m
+    com.nineoldandroids.util.Property Y -> n
+com.nineoldandroids.animation.PreHoneycombCompat$1 -> com.c.a.s:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$10 -> com.c.a.t:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$11 -> com.c.a.u:
+    java.lang.Integer get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$12 -> com.c.a.v:
+    java.lang.Integer get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$13 -> com.c.a.w:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$14 -> com.c.a.x:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$2 -> com.c.a.y:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$3 -> com.c.a.z:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$4 -> com.c.a.aa:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$5 -> com.c.a.ab:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$6 -> com.c.a.ac:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$7 -> com.c.a.ad:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$8 -> com.c.a.ae:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$9 -> com.c.a.af:
+    void setValue(android.view.View,float) -> a
+    java.lang.Float get(android.view.View) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    void setValue(java.lang.Object,float) -> a
+com.nineoldandroids.animation.PropertyValuesHolder -> com.c.a.ag:
+    java.lang.String mPropertyName -> a
+    com.nineoldandroids.util.Property mProperty -> b
+    java.lang.reflect.Method mSetter -> c
+    java.lang.reflect.Method mGetter -> h
+    java.lang.Class mValueType -> d
+    com.nineoldandroids.animation.KeyframeSet mKeyframeSet -> e
+    com.nineoldandroids.animation.TypeEvaluator sIntEvaluator -> i
+    com.nineoldandroids.animation.TypeEvaluator sFloatEvaluator -> j
+    java.lang.Class[] FLOAT_VARIANTS -> k
+    java.lang.Class[] INTEGER_VARIANTS -> l
+    java.lang.Class[] DOUBLE_VARIANTS -> m
+    java.util.HashMap sSetterPropertyMap -> n
+    java.util.HashMap sGetterPropertyMap -> o
+    java.util.concurrent.locks.ReentrantReadWriteLock mPropertyMapLock -> f
+    java.lang.Object[] mTmpValueArray -> g
+    com.nineoldandroids.animation.TypeEvaluator mEvaluator -> p
+    java.lang.Object mAnimatedValue -> q
+    com.nineoldandroids.animation.PropertyValuesHolder ofFloat(java.lang.String,float[]) -> a
+    com.nineoldandroids.animation.PropertyValuesHolder ofFloat(com.nineoldandroids.util.Property,float[]) -> a
+    void setFloatValues(float[]) -> a
+    java.lang.reflect.Method getPropertyFunction(java.lang.Class,java.lang.String,java.lang.Class) -> a
+    java.lang.reflect.Method setupSetterOrGetter(java.lang.Class,java.util.HashMap,java.lang.String,java.lang.Class) -> a
+    void setupSetter(java.lang.Class) -> a
+    void setupGetter(java.lang.Class) -> b
+    void setupSetterAndGetter(java.lang.Object) -> a
+    com.nineoldandroids.animation.PropertyValuesHolder clone() -> a
+    void setAnimatedValue(java.lang.Object) -> b
+    void init() -> b
+    void calculateValue(float) -> a
+    void setPropertyName(java.lang.String) -> a
+    void setProperty(com.nineoldandroids.util.Property) -> a
+    java.lang.String getPropertyName() -> c
+    java.lang.Object getAnimatedValue() -> d
+    java.lang.String toString() -> toString
+    java.lang.String getMethodName(java.lang.String,java.lang.String) -> a
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.PropertyValuesHolder$FloatPropertyValuesHolder -> com.c.a.ah:
+    com.nineoldandroids.util.FloatProperty mFloatProperty -> j
+    com.nineoldandroids.animation.FloatKeyframeSet mFloatKeyframeSet -> h
+    float mFloatAnimatedValue -> i
+    void setFloatValues(float[]) -> a
+    void calculateValue(float) -> a
+    java.lang.Object getAnimatedValue() -> d
+    com.nineoldandroids.animation.PropertyValuesHolder$FloatPropertyValuesHolder clone() -> e
+    void setAnimatedValue(java.lang.Object) -> b
+    void setupSetter(java.lang.Class) -> a
+    com.nineoldandroids.animation.PropertyValuesHolder clone() -> a
+com.nineoldandroids.animation.TypeEvaluator -> com.c.a.ai:
+    java.lang.Object evaluate(float,java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.animation.ValueAnimator -> com.c.a.aj:
+    long mStartTime -> b
+    long mSeekTime -> c
+    java.lang.ThreadLocal sAnimationHandler -> h
+    java.lang.ThreadLocal sAnimations -> i
+    java.lang.ThreadLocal sPendingAnimations -> j
+    java.lang.ThreadLocal sDelayedAnims -> k
+    java.lang.ThreadLocal sEndingAnims -> l
+    java.lang.ThreadLocal sReadyAnims -> m
+    android.view.animation.Interpolator sDefaultInterpolator -> n
+    com.nineoldandroids.animation.TypeEvaluator sIntEvaluator -> o
+    com.nineoldandroids.animation.TypeEvaluator sFloatEvaluator -> p
+    boolean mPlayingBackwards -> q
+    int mCurrentIteration -> r
+    float mCurrentFraction -> s
+    boolean mStartedDelay -> t
+    long mDelayStartTime -> u
+    int mPlayingState -> d
+    boolean mRunning -> v
+    boolean mStarted -> w
+    boolean mInitialized -> e
+    long mDuration -> x
+    long mStartDelay -> y
+    long sFrameDelay -> z
+    int mRepeatCount -> A
+    int mRepeatMode -> B
+    android.view.animation.Interpolator mInterpolator -> C
+    java.util.ArrayList mUpdateListeners -> D
+    com.nineoldandroids.animation.PropertyValuesHolder[] mValues -> f
+    java.util.HashMap mValuesMap -> g
+    com.nineoldandroids.animation.ValueAnimator ofFloat(float[]) -> b
+    void setFloatValues(float[]) -> a
+    void setValues(com.nineoldandroids.animation.PropertyValuesHolder[]) -> a
+    void initAnimation() -> h
+    com.nineoldandroids.animation.ValueAnimator setDuration(long) -> c
+    void setCurrentPlayTime(long) -> d
+    long getCurrentPlayTime() -> k
+    void start(boolean) -> a
+    void start() -> a
+    void cancel() -> b
+    void end() -> c
+    boolean isRunning() -> d
+    boolean isStarted() -> e
+    void endAnimation() -> i
+    void startAnimation() -> r
+    boolean delayedAnimationFrame(long) -> b
+    boolean animationFrame(long) -> e
+    void animateValue(float) -> a
+    com.nineoldandroids.animation.ValueAnimator clone() -> j
+    java.lang.String toString() -> toString
+    com.nineoldandroids.animation.Animator clone() -> g
+    com.nineoldandroids.animation.Animator setDuration(long) -> a
+    java.lang.ThreadLocal access$2() -> l
+    java.lang.ThreadLocal access$3() -> m
+    java.lang.ThreadLocal access$4() -> n
+    long access$5(com.nineoldandroids.animation.ValueAnimator) -> a
+    void access$6(com.nineoldandroids.animation.ValueAnimator) -> b
+    java.lang.ThreadLocal access$7() -> o
+    java.lang.ThreadLocal access$8() -> p
+    boolean access$9(com.nineoldandroids.animation.ValueAnimator,long) -> a
+    void access$10(com.nineoldandroids.animation.ValueAnimator,boolean) -> a
+    void access$11(com.nineoldandroids.animation.ValueAnimator) -> c
+    long access$12() -> q
+com.nineoldandroids.animation.ValueAnimator$1 -> com.c.a.ak:
+    java.util.ArrayList initialValue() -> a
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$2 -> com.c.a.al:
+    java.util.ArrayList initialValue() -> a
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$3 -> com.c.a.am:
+    java.util.ArrayList initialValue() -> a
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$4 -> com.c.a.an:
+    java.util.ArrayList initialValue() -> a
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$5 -> com.c.a.ao:
+    java.util.ArrayList initialValue() -> a
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$AnimationHandler -> com.c.a.ap:
+    void handleMessage(android.os.Message) -> handleMessage
+com.nineoldandroids.animation.ValueAnimator$AnimatorUpdateListener -> com.c.a.aq:
+    void onAnimationUpdate(com.nineoldandroids.animation.ValueAnimator) -> a
+com.nineoldandroids.util.FloatProperty -> com.c.b.a:
+    void setValue(java.lang.Object,float) -> a
+    void set(java.lang.Object,java.lang.Float) -> a
+    void set(java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.util.IntProperty -> com.c.b.b:
+    void set(java.lang.Object,java.lang.Integer) -> a
+    void set(java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.util.Property -> com.c.b.c:
+    java.lang.String mName -> a
+    java.lang.Class mType -> b
+    void set(java.lang.Object,java.lang.Object) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    java.lang.String getName() -> a
+com.nineoldandroids.view.animation.AnimatorProxy -> com.c.c.a.a:
+    boolean NEEDS_PROXY -> a
+    java.util.WeakHashMap PROXIES -> b
+    java.lang.ref.WeakReference mView -> c
+    android.graphics.Camera mCamera -> d
+    boolean mHasPivot -> e
+    float mAlpha -> f
+    float mPivotX -> g
+    float mPivotY -> h
+    float mRotationX -> i
+    float mRotationY -> j
+    float mRotationZ -> k
+    float mScaleX -> l
+    float mScaleY -> m
+    float mTranslationX -> n
+    float mTranslationY -> o
+    android.graphics.RectF mBefore -> p
+    android.graphics.RectF mAfter -> q
+    android.graphics.Matrix mTempMatrix -> r
+    com.nineoldandroids.view.animation.AnimatorProxy wrap(android.view.View) -> a
+    float getAlpha() -> a
+    void setAlpha(float) -> a
+    float getPivotX() -> b
+    void setPivotX(float) -> b
+    float getPivotY() -> c
+    void setPivotY(float) -> c
+    float getRotation() -> d
+    void setRotation(float) -> d
+    float getRotationX() -> e
+    void setRotationX(float) -> e
+    float getRotationY() -> f
+    void setRotationY(float) -> f
+    float getScaleX() -> g
+    void setScaleX(float) -> g
+    float getScaleY() -> h
+    void setScaleY(float) -> h
+    int getScrollX() -> i
+    int getScrollY() -> j
+    float getTranslationX() -> k
+    void setTranslationX(float) -> i
+    float getTranslationY() -> l
+    void setTranslationY(float) -> j
+    float getX() -> m
+    void setX(float) -> k
+    float getY() -> n
+    void setY(float) -> l
+    void prepareForUpdate() -> o
+    void invalidateAfterUpdate() -> p
+    void computeRect(android.graphics.RectF,android.view.View) -> a
+    void transformMatrix(android.graphics.Matrix,android.view.View) -> a
+    void applyTransformation(float,android.view.animation.Transformation) -> applyTransformation

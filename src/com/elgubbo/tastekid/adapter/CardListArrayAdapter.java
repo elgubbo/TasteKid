@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +31,8 @@ import android.widget.TextView;
  */
 public class CardListArrayAdapter extends ArrayAdapter<Result>{
 	
+	
+
 	/**
 	 * A static map of possible icon resources
 	 */
@@ -59,22 +63,27 @@ public class CardListArrayAdapter extends ArrayAdapter<Result>{
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) TasteKidActivity.getAppContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = (convertView == null) ? inflater.inflate(
-				R.layout.list_item, parent, false) : convertView;
+		if(convertView == null)
+			convertView = inflater.inflate(
+					R.layout.list_item, parent, false);
+//		View rowView = (convertView == null) ? inflater.inflate(
+//				R.layout.list_item, parent, false) : convertView;
 		Result currentResult = results.get(position);
-		TextView title = (TextView) rowView.findViewById(R.id.title);
-		ImageView iconView = (ImageView) rowView.findViewById(R.id.iconView);
+		TextView title = (TextView) convertView.findViewById(R.id.title);
+		ImageView iconView = (ImageView) convertView.findViewById(R.id.iconView);
 		if (Configuration.DEVMODE)
 			Log.d("TasteKid", "Type of currentResult is: " + currentResult.type);
 		iconView.setBackgroundResource((currentResult.type != null) ? iconMap
 				.get(currentResult.type) : 0);
 		title.setText(currentResult.name);
-		TextView description = (TextView) rowView
+		TextView description = (TextView) convertView
 				.findViewById(R.id.description);
 		description.setText(currentResult.wTeaser);
 
-		setupButtons(position, rowView);
-		return rowView;
+		setupButtons(position, convertView);
+		
+
+		return convertView;
 	}
 
 	

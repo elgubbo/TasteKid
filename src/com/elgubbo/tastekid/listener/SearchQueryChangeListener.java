@@ -68,8 +68,9 @@ public class SearchQueryChangeListener implements
 				.getActiveFragment(mViewPager, mViewPager.getCurrentItem());
 		TasteKidApp.setCurrentQuery(query);
 		this.position = currentFragment.getPosition();
-		if(lastSearches.get(position, "").equals(query))
+		if(lastSearches.get(position, "").equals(query)){
 			return false;
+		}
 		if (query.trim().equalsIgnoreCase("")) {
 			if (Configuration.DEVMODE)
 				Log.d("TasteKid", "onQueryTextSubmit doing nothing");
@@ -84,7 +85,7 @@ public class SearchQueryChangeListener implements
 			Log.d("TasteKid", "Position is:" + this.position);
 			Log.d("TasteKid", "type is: " + type);
 		}
-		ResultManager.sendResultsForQueryTo((IResultsReceiver) currentFragment, query);
+		ResultManager.getInstance().sendResultsForQueryTo((IResultsReceiver) currentFragment, query);
 
 		lastSearches.append(position, query);
 		return true;

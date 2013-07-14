@@ -61,42 +61,44 @@
                 android:id="@+id/youtube_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/buttonLayoutItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="bottom"
+                android:paddingBottom="10dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="10dp" >
+
+                <LinearLayout
+                    android:id="@+id/wikiLinearLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="100"
+                    android:background="@drawable/buttons_background"
+                    android:clickable="true"
+                    android:padding="4dp" >
+
+                    <ImageView
+                        android:id="@+id/wikiImageView"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/wikipedia" />
+
+                    <TextView
+                        android:id="@+id/wikiTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Wiki article" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/buttonLayoutItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:gravity="bottom"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
-
-        <LinearLayout
-            android:id="@+id/wikiLinearLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="100"
-            android:background="@drawable/buttons_background"
-            android:clickable="true"
-            android:padding="4dp" >
-
-            <ImageView
-                android:id="@+id/wikiImageView"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/wikipedia" />
-
-            <TextView
-                android:id="@+id/wikiTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Wiki article" />
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

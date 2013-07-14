@@ -8,6 +8,7 @@ import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.elgubbo.tastekid.listener.ItemButtonClickListener;
 import com.elgubbo.tastekid.listener.ListItemClickListener;
 import com.elgubbo.tastekid.model.Result;
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import android.app.ActionBar.LayoutParams;
 import android.graphics.Color;
@@ -20,6 +21,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -243,10 +249,13 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 				null);
 		progressLayout = new LinearLayout(TasteKidActivity.getAppContext());
 
-		this.position = getArguments().getInt("position");
-		this.info = TasteKidApp.resultManager.getInfo();
-		this.results = TasteKidApp.resultManager.getResultsByPosition(position);
-
+		if(getArguments() != null)
+			this.position = getArguments().getInt("position");
+		if(savedInstanceState != null)
+			this.position = savedInstanceState.getInt("position");
+		this.info = ResultManager.getInstance().getInfo();
+		this.results = ResultManager.getInstance().getResultsByPosition(position);
+		
 		this.setupListView();
 
 		if (Configuration.DEVMODE) {
@@ -373,8 +382,10 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		adapter = new CardListArrayAdapter(TasteKidActivity.getAppContext(),
 				results);
 
+		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(adapter);
+		swingBottomInAnimationAdapter.setAbsListView(listView);
 		setupHeader();
-		listView.setAdapter(adapter);
+		listView.setAdapter(swingBottomInAnimationAdapter);
 		listView.setOnItemClickListener(new ListItemClickListener());
 
 	}

@@ -91,6 +91,7 @@ public class TasteKidActivity extends FragmentActivity implements
 						ViewParent root = findViewById(android.R.id.content)
 								.getParent();
 						findAndUpdateSpinner(root, position);
+						
 						if (mSearchView != null) {
 							if (Configuration.DEVMODE)
 								Log.d("TasteKid", "searchQuery is: "

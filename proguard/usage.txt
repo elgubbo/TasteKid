@@ -926,11 +926,10 @@ com.elgubbo.tastekid.R$string
 com.elgubbo.tastekid.R$style
 com.elgubbo.tastekid.R$xml
 com.elgubbo.tastekid.ResultManager:
-    private com.elgubbo.tastekid.db.DBHelper databaseHelper
-    103:107:public com.elgubbo.tastekid.db.DBHelper getHelper()
-    157:175:private void saveResults()
+    187:197:public java.util.List getFavouriteResults()
+    201:209:public java.util.List getDatabaseResultsSimilarTo(com.elgubbo.tastekid.model.Result)
 com.elgubbo.tastekid.TasteKidActivity:
-    215:218:public com.elgubbo.tastekid.db.DBHelper getHelper()
+    216:219:public com.elgubbo.tastekid.db.DBHelper getHelper()
 com.elgubbo.tastekid.TasteKidApp:
     public static final int POSITION_ALL
     public static final int POSITION_MOVIE
@@ -947,15 +946,15 @@ com.elgubbo.tastekid.api.UnsecureHttpClient:
 com.elgubbo.tastekid.db.DBHelper:
     private static final java.lang.String DATABASE_NAME
     private static final int DATABASE_VERSION
-    71:74:public com.j256.ormlite.dao.Dao getResultDao()
+    43:44:public DBHelper(android.content.Context)
 com.elgubbo.tastekid.listener.SearchQueryChangeListener:
-    21:21:public int getPosition()
-    25:26:public void setPosition(int)
+    25:25:public int getPosition()
+    29:30:public void setPosition(int)
 com.elgubbo.tastekid.model.Result:
-    private int id
     java.sql.Date created
-    73:73:public int getId()
-    76:77:public void setId(int)
+    public boolean favourite
+    44:58:public Result(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.sql.Date,boolean)
+    96:97:public void setId(int)
 com.elgubbo.tastekid.model.Similar:
     7:7:public Similar()
     17:18:public void setInfo(java.util.List)
@@ -1262,6 +1261,51 @@ com.google.gson.stream.MalformedJsonException:
     private static final long serialVersionUID
     33:37:public MalformedJsonException(java.lang.String,java.lang.Throwable)
     39:43:public MalformedJsonException(java.lang.Throwable)
+com.haarman.listviewanimations.ArrayAdapter
+com.haarman.listviewanimations.BaseAdapterDecorator:
+    46:51:public void setListView(android.widget.AbsListView)
+    63:63:public android.widget.AbsListView getListView()
+    146:146:public android.widget.BaseAdapter getDecoratedBaseAdapter()
+com.haarman.listviewanimations.itemmanipulation.AnimateDismissAdapter
+com.haarman.listviewanimations.itemmanipulation.AnimateDismissAdapter$1
+com.haarman.listviewanimations.itemmanipulation.AnimateDismissAdapter$2
+com.haarman.listviewanimations.itemmanipulation.AnimateDismissAdapter$3
+com.haarman.listviewanimations.itemmanipulation.ExpandableListItemAdapter
+com.haarman.listviewanimations.itemmanipulation.ExpandableListItemAdapter$RootView
+com.haarman.listviewanimations.itemmanipulation.ExpandableListItemAdapter$TitleViewOnClickListener
+com.haarman.listviewanimations.itemmanipulation.ExpandableListItemAdapter$TitleViewOnClickListener$1
+com.haarman.listviewanimations.itemmanipulation.ExpandableListItemAdapter$TitleViewOnClickListener$2
+com.haarman.listviewanimations.itemmanipulation.ExpandableListItemAdapter$ViewHolder
+com.haarman.listviewanimations.itemmanipulation.OnDismissCallback
+com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter
+com.haarman.listviewanimations.itemmanipulation.SwipeDismissListViewTouchListener
+com.haarman.listviewanimations.itemmanipulation.SwipeDismissListViewTouchListener$1
+com.haarman.listviewanimations.itemmanipulation.SwipeDismissListViewTouchListener$2
+com.haarman.listviewanimations.itemmanipulation.SwipeDismissListViewTouchListener$3
+com.haarman.listviewanimations.itemmanipulation.SwipeDismissListViewTouchListener$PendingDismissData
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter$DeleteItemCallback
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter$RecycleViewListener
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter$RemoveViewAnimatorListenerAdapter
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter$RemoveViewAnimatorUpdateListener
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter$UndoListener
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoListViewTouchListener
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoListViewTouchListener$1
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoListViewTouchListener$2
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoListViewTouchListener$Callback
+com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoView
+com.haarman.listviewanimations.swinginadapters.AnimationAdapter:
+    protected static final long DEFAULTANIMATIONDELAYMILLIS
+    protected static final long DEFAULTANIMATIONDURATIONMILLIS
+    private static final long INITIALDELAYMILLIS
+    62:69:public void reset()
+com.haarman.listviewanimations.swinginadapters.ResourceAnimationAdapter
+com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter
+com.haarman.listviewanimations.swinginadapters.prepared.ScaleInAnimationAdapter
+com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter:
+    40:41:public SwingBottomInAnimationAdapter(android.widget.BaseAdapter,long)
+com.haarman.listviewanimations.swinginadapters.prepared.SwingLeftInAnimationAdapter
+com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter
 com.j256.ormlite.android.AndroidCompiledStatement:
     45:45:public int getColumnCount()
     49:49:public java.lang.String getColumnName(int)
@@ -1282,7 +1326,6 @@ com.j256.ormlite.android.AndroidDatabaseConnection:
     99:109:public void commit(java.sql.Savepoint)
     114:123:public void rollback(java.sql.Savepoint)
     126:126:public int executeStatement(java.lang.String,int)
-    168:168:public int update(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[])
     219:235:public long queryForLong(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[])
     242:247:public void close()
     251:255:public void closeQuietly()
@@ -1340,12 +1383,8 @@ com.j256.ormlite.android.apptools.OpenHelperManager:
     private static final java.lang.String HELPER_CLASS_RESOURCE_NAME
     51:56:public static synchronized void setOpenHelperClass(java.lang.Class)
     64:65:public static synchronized void setHelper(com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper)
-    74:75:public static synchronized com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper getHelper(android.content.Context,java.lang.Class)
     97:104:public static synchronized com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper getHelper(android.content.Context)
     112:113:public static void release()
-    147:153:private static void innerSetHelperClass(java.lang.Class)
-    156:198:private static com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper loadHelper(android.content.Context,java.lang.Class)
-    208:217:private static com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper constructHelper(android.content.Context,java.lang.Class)
     227:268:private static java.lang.Class lookupHelperClass(android.content.Context,java.lang.Class)
 com.j256.ormlite.android.apptools.OrmLiteBaseActivity
 com.j256.ormlite.android.apptools.OrmLiteBaseActivityGroup
@@ -1359,12 +1398,10 @@ com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper:
     65:66:public OrmLiteSqliteOpenHelper(android.content.Context,java.lang.String,android.database.sqlite.SQLiteDatabase$CursorFactory,int,java.io.File)
     77:96:public OrmLiteSqliteOpenHelper(android.content.Context,java.lang.String,android.database.sqlite.SQLiteDatabase$CursorFactory,int,java.io.InputStream)
     226:226:public boolean isOpen()
-    239:242:public com.j256.ormlite.dao.Dao getDao(java.lang.Class)
     255:260:public com.j256.ormlite.dao.RuntimeExceptionDao getRuntimeExceptionDao(java.lang.Class)
     270:274:private static java.io.InputStream openFileId(android.content.Context,int)
     279:285:private static java.io.InputStream openFile(java.io.File)
 com.j256.ormlite.dao.BaseDaoImpl:
-    private static com.j256.ormlite.dao.ReferenceObjectCache defaultObjectCache
     92:93:protected BaseDaoImpl(java.lang.Class)
     218:223:public java.lang.Object queryForId(java.lang.Object)
     228:233:public java.lang.Object queryForFirst(com.j256.ormlite.stmt.PreparedQuery)
@@ -1372,14 +1409,12 @@ com.j256.ormlite.dao.BaseDaoImpl:
     243:243:public java.util.List queryForEq(java.lang.String,java.lang.Object)
     252:253:public com.j256.ormlite.stmt.UpdateBuilder updateBuilder()
     257:258:public com.j256.ormlite.stmt.DeleteBuilder deleteBuilder()
-    267:267:public java.util.List queryForMatching(java.lang.Object)
     271:271:public java.util.List queryForMatchingArgs(java.lang.Object)
     275:275:public java.util.List queryForFieldValues(java.util.Map)
     279:279:public java.util.List queryForFieldValuesArgs(java.util.Map)
     283:291:public java.lang.Object queryForSameId(java.lang.Object)
     315:323:public java.lang.Object createIfNotExists(java.lang.Object)
     328:338:public com.j256.ormlite.dao.Dao$CreateOrUpdateStatus createOrUpdate(java.lang.Object)
-    343:352:public int update(java.lang.Object)
     358:367:public int updateId(java.lang.Object,java.lang.Object)
     373:378:public int update(com.j256.ormlite.stmt.PreparedUpdate)
     383:397:public int refresh(java.lang.Object)
@@ -1412,7 +1447,6 @@ com.j256.ormlite.dao.BaseDaoImpl:
     741:758:public void setObjectCache(com.j256.ormlite.dao.ObjectCache)
     761:761:public com.j256.ormlite.dao.ObjectCache getObjectCache()
     765:768:public void clearObjectCache()
-    774:778:public static synchronized void clearAllInternalObjectCaches()
     781:781:public java.lang.Object mapSelectStarRow(com.j256.ormlite.support.DatabaseResults)
     785:785:public com.j256.ormlite.stmt.GenericRowMapper getSelectStarRowMapper()
     789:789:public com.j256.ormlite.dao.RawRowMapper getRawRowMapper()
@@ -1431,7 +1465,6 @@ com.j256.ormlite.dao.BaseDaoImpl:
     874:875:public void setConnectionSource(com.j256.ormlite.support.ConnectionSource)
     882:883:public void setTableConfig(com.j256.ormlite.table.DatabaseTableConfig)
     920:937:private com.j256.ormlite.dao.ForeignCollection makeEmptyForeignCollection(java.lang.Object,java.lang.String)
-    961:979:private java.util.List queryForMatching(java.lang.Object,boolean)
     984:998:private java.util.List queryForFieldValues(java.util.Map,boolean)
     56:56:static synthetic com.j256.ormlite.dao.CloseableIterator access$100(com.j256.ormlite.dao.BaseDaoImpl,int)
     56:56:static synthetic com.j256.ormlite.dao.CloseableIterator access$200(com.j256.ormlite.dao.BaseDaoImpl,com.j256.ormlite.stmt.PreparedQuery,int)
@@ -1459,7 +1492,6 @@ com.j256.ormlite.dao.Dao:
     public abstract java.lang.Object queryForFirst(com.j256.ormlite.stmt.PreparedQuery)
     public abstract java.util.List queryForAll()
     public abstract java.util.List queryForEq(java.lang.String,java.lang.Object)
-    public abstract java.util.List queryForMatching(java.lang.Object)
     public abstract java.util.List queryForMatchingArgs(java.lang.Object)
     public abstract java.util.List queryForFieldValues(java.util.Map)
     public abstract java.util.List queryForFieldValuesArgs(java.util.Map)
@@ -1468,7 +1500,6 @@ com.j256.ormlite.dao.Dao:
     public abstract com.j256.ormlite.stmt.DeleteBuilder deleteBuilder()
     public abstract java.lang.Object createIfNotExists(java.lang.Object)
     public abstract com.j256.ormlite.dao.Dao$CreateOrUpdateStatus createOrUpdate(java.lang.Object)
-    public abstract int update(java.lang.Object)
     public abstract int updateId(java.lang.Object,java.lang.Object)
     public abstract int update(com.j256.ormlite.stmt.PreparedUpdate)
     public abstract int refresh(java.lang.Object)
@@ -1524,7 +1555,6 @@ com.j256.ormlite.dao.DaoManager:
     138:148:public static synchronized com.j256.ormlite.dao.Dao lookupDao(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.table.DatabaseTableConfig)
     190:201:public static synchronized void registerDaoWithTableConfig(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.dao.Dao)
     207:212:public static synchronized void clearCache()
-    218:226:public static synchronized void clearDaoCache()
     234:244:public static synchronized void addCachedDatabaseConfigs(java.util.Collection)
 com.j256.ormlite.dao.EagerForeignCollection:
     private static final long serialVersionUID
@@ -1574,7 +1604,18 @@ com.j256.ormlite.dao.ObjectCache:
     public abstract int size(java.lang.Class)
     public abstract int sizeAll()
 com.j256.ormlite.dao.RawRowMapper
-com.j256.ormlite.dao.ReferenceObjectCache
+com.j256.ormlite.dao.ReferenceObjectCache:
+    29:31:public ReferenceObjectCache(boolean)
+    37:37:public static com.j256.ormlite.dao.ReferenceObjectCache makeWeakCache()
+    44:44:public static com.j256.ormlite.dao.ReferenceObjectCache makeSoftCache()
+    48:53:public synchronized void registerClass(java.lang.Class)
+    87:91:public void clear(java.lang.Class)
+    107:118:public java.lang.Object updateId(java.lang.Class,java.lang.Object,java.lang.Object)
+    122:126:public int size(java.lang.Class)
+    131:135:public int sizeAll()
+    142:146:public void cleanNullReferences(java.lang.Class)
+    152:155:public void cleanNullReferencesAll()
+    158:164:private void cleanMap(java.util.Map)
 com.j256.ormlite.dao.RuntimeExceptionDao
 com.j256.ormlite.db.BaseDatabaseType:
     protected java.sql.Driver driver
@@ -1727,7 +1768,6 @@ com.j256.ormlite.logger.Logger:
     174:175:public void debug(java.lang.Throwable,java.lang.String,java.lang.Object,java.lang.Object)
     181:182:public void debug(java.lang.Throwable,java.lang.String,java.lang.Object,java.lang.Object,java.lang.Object)
     192:193:public void debug(java.lang.Throwable,java.lang.String,java.lang.Object[])
-    199:200:public void info(java.lang.String)
     227:228:public void info(java.lang.String,java.lang.Object[])
     234:235:public void info(java.lang.Throwable,java.lang.String)
     241:242:public void info(java.lang.Throwable,java.lang.String,java.lang.Object)
@@ -1829,7 +1869,6 @@ com.j256.ormlite.stmt.QueryBuilder:
     289:290:public com.j256.ormlite.stmt.QueryBuilder having(java.lang.String)
     299:300:public com.j256.ormlite.stmt.QueryBuilder join(com.j256.ormlite.stmt.QueryBuilder)
     311:312:public com.j256.ormlite.stmt.QueryBuilder leftJoin(com.j256.ormlite.stmt.QueryBuilder)
-    319:319:public java.util.List query()
     326:326:public com.j256.ormlite.dao.GenericRawResults queryRaw()
     333:333:public java.lang.Object queryForFirst()
     340:340:public java.lang.String[] queryRawFirst()
@@ -1851,7 +1890,6 @@ com.j256.ormlite.stmt.SelectArg:
     44:46:public SelectArg(java.lang.String,java.lang.Object)
     60:62:public SelectArg(com.j256.ormlite.field.SqlType,java.lang.Object)
     73:74:public SelectArg(com.j256.ormlite.field.SqlType)
-    85:87:public SelectArg(java.lang.Object)
 com.j256.ormlite.stmt.SelectIterator:
     108:115:public java.lang.Object first()
     120:127:public java.lang.Object previous()
@@ -1868,7 +1906,6 @@ com.j256.ormlite.stmt.StatementBuilder$StatementType:
     229:229:public boolean isOkForUpdate()
 com.j256.ormlite.stmt.StatementExecutor:
     private com.j256.ormlite.stmt.mapped.MappedQueryForId mappedQueryForId
-    private com.j256.ormlite.stmt.mapped.MappedUpdate mappedUpdate
     private com.j256.ormlite.stmt.mapped.MappedUpdateId mappedUpdateId
     private com.j256.ormlite.stmt.mapped.MappedRefresh mappedRefresh
     private java.lang.String countStarQuery
@@ -1889,7 +1926,6 @@ com.j256.ormlite.stmt.StatementExecutor:
     345:356:public int updateRaw(com.j256.ormlite.support.DatabaseConnection,java.lang.String,java.lang.String[])
     364:365:public int executeRawNoArgs(com.j256.ormlite.support.DatabaseConnection,java.lang.String)
     372:383:public int executeRaw(com.j256.ormlite.support.DatabaseConnection,java.lang.String,java.lang.String[])
-    401:404:public int update(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache)
     412:415:public int updateId(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,java.lang.Object,com.j256.ormlite.dao.ObjectCache)
     422:426:public int update(com.j256.ormlite.support.DatabaseConnection,com.j256.ormlite.stmt.PreparedUpdate)
     435:438:public int refresh(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache)
@@ -1909,7 +1945,6 @@ com.j256.ormlite.stmt.Where:
     private static final int START_CLAUSE_SIZE
     153:154:public com.j256.ormlite.stmt.Where and()
     169:173:public varargs com.j256.ormlite.stmt.Where and(com.j256.ormlite.stmt.Where,com.j256.ormlite.stmt.Where,com.j256.ormlite.stmt.Where[])
-    186:194:public com.j256.ormlite.stmt.Where and(int)
     201:202:public com.j256.ormlite.stmt.Where between(java.lang.String,java.lang.Object,java.lang.Object)
     218:220:public com.j256.ormlite.stmt.Where ge(java.lang.String,java.lang.Object)
     227:229:public com.j256.ormlite.stmt.Where gt(java.lang.String,java.lang.Object)
@@ -1948,7 +1983,6 @@ com.j256.ormlite.stmt.Where:
     602:611:private com.j256.ormlite.stmt.Where in(boolean,java.lang.String,com.j256.ormlite.stmt.QueryBuilder)
     616:625:private com.j256.ormlite.stmt.query.Clause[] buildClauseArray(com.j256.ormlite.stmt.Where[],java.lang.String)
     629:635:private void addNeedsFuture(com.j256.ormlite.stmt.query.NeedsFutureClause)
-    668:675:private com.j256.ormlite.stmt.query.Clause pop(java.lang.String)
 com.j256.ormlite.stmt.mapped.MappedDelete:
     63:75:public int deleteById(com.j256.ormlite.support.DatabaseConnection,java.lang.Object,com.j256.ormlite.dao.ObjectCache)
 com.j256.ormlite.stmt.mapped.MappedDeleteCollection
@@ -1957,7 +1991,6 @@ com.j256.ormlite.stmt.mapped.MappedPreparedStmt:
     60:60:public com.j256.ormlite.stmt.StatementBuilder$StatementType getType()
     64:72:public void setArgumentHolderValue(int,java.lang.Object)
 com.j256.ormlite.stmt.mapped.MappedRefresh
-com.j256.ormlite.stmt.mapped.MappedUpdate
 com.j256.ormlite.stmt.mapped.MappedUpdateId
 com.j256.ormlite.stmt.query.BaseComparison:
     private static final java.lang.String NUMBER_CHARACTERS
@@ -1972,7 +2005,11 @@ com.j256.ormlite.stmt.query.In
 com.j256.ormlite.stmt.query.InSubQuery
 com.j256.ormlite.stmt.query.IsNotNull
 com.j256.ormlite.stmt.query.IsNull
-com.j256.ormlite.stmt.query.ManyClause
+com.j256.ormlite.stmt.query.ManyClause:
+    public static final java.lang.String AND_OPERATION
+    public static final java.lang.String OR_OPERATION
+    25:32:public ManyClause(com.j256.ormlite.stmt.query.Clause,java.lang.String)
+    34:40:public ManyClause(com.j256.ormlite.stmt.query.Clause,com.j256.ormlite.stmt.query.Clause,com.j256.ormlite.stmt.query.Clause[],java.lang.String)
 com.j256.ormlite.stmt.query.Not
 com.j256.ormlite.stmt.query.Raw
 com.j256.ormlite.stmt.query.SetExpression
@@ -2007,7 +2044,6 @@ com.j256.ormlite.support.DatabaseConnection:
     public abstract void commit(java.sql.Savepoint)
     public abstract void rollback(java.sql.Savepoint)
     public abstract int executeStatement(java.lang.String,int)
-    public abstract int update(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[])
     public abstract long queryForLong(java.lang.String,java.lang.Object[],com.j256.ormlite.field.FieldType[])
     public abstract void close()
     public abstract void closeQuietly()
@@ -2048,3 +2084,153 @@ com.j256.ormlite.table.TableUtils:
     229:235:private static int createTable(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.table.DatabaseTableConfig,boolean)
     240:259:private static int clearTable(com.j256.ormlite.support.ConnectionSource,java.lang.String)
     517:520:private static java.util.List addCreateTableStatements(com.j256.ormlite.support.ConnectionSource,com.j256.ormlite.table.TableInfo,boolean)
+com.nineoldandroids.animation.Animator:
+    public abstract long getStartDelay()
+    public abstract void setStartDelay(long)
+    public abstract long getDuration()
+    public abstract void setInterpolator(android.view.animation.Interpolator)
+    183:187:public void removeAllListeners()
+    217:217:public void setupStartValues()
+    229:229:public void setupEndValues()
+    240:240:public void setTarget(java.lang.Object)
+com.nineoldandroids.animation.AnimatorInflater
+com.nineoldandroids.animation.AnimatorSet:
+    140:151:public void playTogether(java.util.Collection)
+    160:170:public varargs void playSequentially(com.nineoldandroids.animation.Animator[])
+    179:189:public void playSequentially(java.util.List)
+    200:204:public java.util.ArrayList getChildAnimations()
+    216:224:public void setTarget(java.lang.Object)
+    234:237:public void setInterpolator(android.view.animation.Interpolator)
+    378:378:public long getStartDelay()
+    402:402:public long getDuration()
+    429:432:public void setupStartValues()
+    436:439:public void setupEndValues()
+com.nineoldandroids.animation.AnimatorSet$Builder:
+    1064:1072:public com.nineoldandroids.animation.AnimatorSet$Builder before(com.nineoldandroids.animation.Animator)
+    1084:1092:public com.nineoldandroids.animation.AnimatorSet$Builder after(com.nineoldandroids.animation.Animator)
+    1105:1108:public com.nineoldandroids.animation.AnimatorSet$Builder after(long)
+com.nineoldandroids.animation.AnimatorSet$Dependency:
+    static final int WITH
+    static final int AFTER
+com.nineoldandroids.animation.ArgbEvaluator
+com.nineoldandroids.animation.IntKeyframeSet
+com.nineoldandroids.animation.Keyframe:
+    76:76:public static com.nineoldandroids.animation.Keyframe ofInt(float,int)
+    92:92:public static com.nineoldandroids.animation.Keyframe ofInt(float)
+    140:140:public static com.nineoldandroids.animation.Keyframe ofObject(float,java.lang.Object)
+    156:156:public static com.nineoldandroids.animation.Keyframe ofObject(float)
+    201:202:public void setFraction(float)
+    232:232:public java.lang.Class getType()
+com.nineoldandroids.animation.Keyframe$IntKeyframe
+com.nineoldandroids.animation.Keyframe$ObjectKeyframe
+com.nineoldandroids.animation.KeyframeSet:
+    54:65:public static varargs com.nineoldandroids.animation.KeyframeSet ofInt(int[])
+    85:111:public static varargs com.nineoldandroids.animation.KeyframeSet ofKeyframe(com.nineoldandroids.animation.Keyframe[])
+    116:127:public static varargs com.nineoldandroids.animation.KeyframeSet ofObject(java.lang.Object[])
+com.nineoldandroids.animation.ObjectAnimator:
+    private static final boolean DBG
+    142:142:public java.lang.String getPropertyName()
+    173:176:private ObjectAnimator(java.lang.Object,com.nineoldandroids.util.Property)
+    193:195:public static varargs com.nineoldandroids.animation.ObjectAnimator ofInt(java.lang.Object,java.lang.String,int[])
+    211:213:public static varargs com.nineoldandroids.animation.ObjectAnimator ofInt(java.lang.Object,com.nineoldandroids.util.Property,int[])
+    250:252:public static varargs com.nineoldandroids.animation.ObjectAnimator ofFloat(java.lang.Object,com.nineoldandroids.util.Property,float[])
+    274:277:public static varargs com.nineoldandroids.animation.ObjectAnimator ofObject(java.lang.Object,java.lang.String,com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    297:300:public static varargs com.nineoldandroids.animation.ObjectAnimator ofObject(java.lang.Object,com.nineoldandroids.util.Property,com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    322:325:public static varargs com.nineoldandroids.animation.ObjectAnimator ofPropertyValuesHolder(java.lang.Object,com.nineoldandroids.animation.PropertyValuesHolder[])
+    330:341:public varargs void setIntValues(int[])
+    360:371:public varargs void setObjectValues(java.lang.Object[])
+    438:438:public java.lang.Object getTarget()
+    448:457:public void setTarget(java.lang.Object)
+    461:466:public void setupStartValues()
+    470:475:public void setupEndValues()
+com.nineoldandroids.animation.PreHoneycombCompat:
+    167:167:private PreHoneycombCompat()
+com.nineoldandroids.animation.PreHoneycombCompat$11:
+    123:124:public void setValue(android.view.View,int)
+    1:1:public bridge synthetic void setValue(java.lang.Object,int)
+com.nineoldandroids.animation.PreHoneycombCompat$12:
+    134:135:public void setValue(android.view.View,int)
+    1:1:public bridge synthetic void setValue(java.lang.Object,int)
+com.nineoldandroids.animation.PropertyValuesHolder:
+    154:154:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofInt(java.lang.String,int[])
+    165:165:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofInt(com.nineoldandroids.util.Property,int[])
+    204:207:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofObject(java.lang.String,com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    224:227:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofObject(com.nineoldandroids.util.Property,com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    250:260:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofKeyframe(java.lang.String,com.nineoldandroids.animation.Keyframe[])
+    281:291:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofKeyframe(com.nineoldandroids.util.Property,com.nineoldandroids.animation.Keyframe[])
+    309:311:public varargs void setIntValues(int[])
+    337:344:public varargs void setKeyframes(com.nineoldandroids.animation.Keyframe[])
+    360:362:public varargs void setObjectValues(java.lang.Object[])
+    551:565:private void setupValue(java.lang.Object,com.nineoldandroids.animation.Keyframe)
+    576:577:void setupStartValue(java.lang.Object)
+    588:589:void setupEndValue(java.lang.Object)
+    659:661:public void setEvaluator(com.nineoldandroids.animation.TypeEvaluator)
+com.nineoldandroids.animation.PropertyValuesHolder$FloatPropertyValuesHolder:
+    901:905:public PropertyValuesHolder$FloatPropertyValuesHolder(java.lang.String,com.nineoldandroids.animation.FloatKeyframeSet)
+    908:915:public PropertyValuesHolder$FloatPropertyValuesHolder(com.nineoldandroids.util.Property,com.nineoldandroids.animation.FloatKeyframeSet)
+com.nineoldandroids.animation.PropertyValuesHolder$IntPropertyValuesHolder
+com.nineoldandroids.animation.TimeAnimator
+com.nineoldandroids.animation.TimeAnimator$TimeListener
+com.nineoldandroids.animation.ValueAnimator:
+    private static final long DEFAULT_FRAME_DELAY
+    static final int ANIMATION_START
+    static final int ANIMATION_FRAME
+    static final int STOPPED
+    static final int RUNNING
+    static final int SEEKED
+    public static final int RESTART
+    public static final int REVERSE
+    public static final int INFINITE
+    298:300:public static varargs com.nineoldandroids.animation.ValueAnimator ofInt(int[])
+    329:331:public static varargs com.nineoldandroids.animation.ValueAnimator ofPropertyValuesHolder(com.nineoldandroids.animation.PropertyValuesHolder[])
+    352:355:public static varargs com.nineoldandroids.animation.ValueAnimator ofObject(com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    373:384:public varargs void setIntValues(int[])
+    433:445:public varargs void setObjectValues(java.lang.Object[])
+    476:476:public com.nineoldandroids.animation.PropertyValuesHolder[] getValues()
+    524:524:public long getDuration()
+    692:692:public long getStartDelay()
+    702:703:public void setStartDelay(long)
+    715:715:public static long getFrameDelay()
+    728:729:public static void setFrameDelay(long)
+    744:748:public java.lang.Object getAnimatedValue()
+    762:767:public java.lang.Object getAnimatedValue(java.lang.String)
+    780:781:public void setRepeatCount(int)
+    789:789:public int getRepeatCount()
+    800:801:public void setRepeatMode(int)
+    809:809:public int getRepeatMode()
+    820:824:public void addUpdateListener(com.nineoldandroids.animation.ValueAnimator$AnimatorUpdateListener)
+    830:835:public void removeAllUpdateListeners()
+    844:851:public void removeUpdateListener(com.nineoldandroids.animation.ValueAnimator$AnimatorUpdateListener)
+    865:870:public void setInterpolator(android.view.animation.Interpolator)
+    878:878:public android.view.animation.Interpolator getInterpolator()
+    898:901:public void setEvaluator(com.nineoldandroids.animation.TypeEvaluator)
+    1009:1018:public void reverse()
+    1153:1153:public float getAnimatedFraction()
+    1239:1239:public static int getCurrentAnimationsCount()
+    1249:1252:public static void clearAllAnimations()
+com.nineoldandroids.util.IntProperty:
+    public abstract void setValue(java.lang.Object,int)
+com.nineoldandroids.util.NoSuchPropertyException
+com.nineoldandroids.util.Property:
+    55:55:public static com.nineoldandroids.util.Property of(java.lang.Class,java.lang.Class,java.lang.String)
+    76:76:public boolean isReadOnly()
+    104:104:public java.lang.Class getType()
+com.nineoldandroids.util.ReflectiveProperty
+com.nineoldandroids.view.ViewHelper
+com.nineoldandroids.view.ViewHelper$Honeycomb
+com.nineoldandroids.view.ViewPropertyAnimator
+com.nineoldandroids.view.ViewPropertyAnimatorHC
+com.nineoldandroids.view.ViewPropertyAnimatorHC$1
+com.nineoldandroids.view.ViewPropertyAnimatorHC$AnimatorEventListener
+com.nineoldandroids.view.ViewPropertyAnimatorHC$NameValuesHolder
+com.nineoldandroids.view.ViewPropertyAnimatorHC$PropertyBundle
+com.nineoldandroids.view.ViewPropertyAnimatorICS
+com.nineoldandroids.view.ViewPropertyAnimatorICS$1
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC$1
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC$AnimatorEventListener
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC$NameValuesHolder
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC$PropertyBundle
+com.nineoldandroids.view.animation.AnimatorProxy:
+    163:167:public void setScrollX(int)
+    176:180:public void setScrollY(int)

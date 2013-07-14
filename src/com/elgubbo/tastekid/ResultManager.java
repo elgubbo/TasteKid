@@ -3,7 +3,9 @@ package com.elgubbo.tastekid;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.util.Log;
 
@@ -46,6 +48,7 @@ public class ResultManager implements IQueryCompleteListener {
 			instance = new ResultManager();
 		return instance;
 	}
+	
 
 	/**
 	 * Send results for query to.
@@ -53,9 +56,11 @@ public class ResultManager implements IQueryCompleteListener {
 	 * @param callback the callback
 	 * @param query the query
 	 */
-	public static void sendResultsForQueryTo(IResultsReceiver callback,
+	public void sendResultsForQueryTo(IResultsReceiver callback,
 			String query) {
 		callBack = callback;
+
+		
 		if (query.equalsIgnoreCase(""))
 			return;
 		if (!query.equalsIgnoreCase(oldQuery)) {
@@ -158,7 +163,10 @@ public class ResultManager implements IQueryCompleteListener {
 			Dao<Result, Integer> resultDao = getHelper().getResultDao();
 			int infoId = 0;
 			for (Result inf : info) {
-				resultDao.create(inf);
+				if(resultDao.queryForMatching(inf) == null)
+					resultDao.create(inf);
+				else
+					resultDao.update(inf);
 				infoId = inf.getId();
 			}
 			for (Result result : results) {
