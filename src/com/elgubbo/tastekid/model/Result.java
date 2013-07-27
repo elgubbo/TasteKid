@@ -68,6 +68,10 @@ public class Result implements Parcelable {
 		parentId = parcel.readInt();
 
 	}
+	
+	public String toString(){
+		return this.name;
+	}
 
 	@Override
 	public int describeContents() {

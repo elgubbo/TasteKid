@@ -15,32 +15,35 @@ import com.elgubbo.tastekid.interfaces.IQueryCompleteListener;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.Result;
+import com.elgubbo.tastekid.model.Similar;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
 
 /**
- * The Class ResultManager. It is a central singleton handling results from queries to the api
+ * The Class ResultManager. It is a central singleton handling results from
+ * queries to the api
  */
 public class ResultManager implements IQueryCompleteListener {
 
 	/** The instance. */
 	private static ResultManager instance;
-	
+
 	/** The call back. */
 	private static IResultsReceiver callBack;
-	
+
 	/** The info. */
 	private static ArrayList<Result> info;
-	
+
 	/** The results. */
 	private static ArrayList<Result> results;
-	
+
 	/** The old query. */
 	private static String oldQuery;
 
 	/**
 	 * Gets the single instance of ResultManager.
-	 *
+	 * 
 	 * @return single instance of ResultManager
 	 */
 	public static ResultManager getInstance() {
@@ -48,21 +51,26 @@ public class ResultManager implements IQueryCompleteListener {
 			instance = new ResultManager();
 		return instance;
 	}
-	
 
 	/**
 	 * Send results for query to.
-	 *
-	 * @param callback the callback
-	 * @param query the query
+	 * 
+	 * @param callback
+	 *            the callback
+	 * @param query
+	 *            the query
 	 */
-	public void sendResultsForQueryTo(IResultsReceiver callback,
-			String query) {
+	public void sendResultsForQueryTo(IResultsReceiver callback, String query) {
 		callBack = callback;
 
-		
 		if (query.equalsIgnoreCase(""))
 			return;
+		ApiResponse dbResults = getDatabaseResultsSimilarTo(query);
+		if(dbResults.similar.getResults() != null && dbResults.similar.getResults().size()>0){
+			ArrayList<ApiResponse> apiResponses= new ArrayList<ApiResponse>();
+			apiResponses.add(dbResults);
+			this.onQueryComplete(apiResponses);
+		}
 		if (!query.equalsIgnoreCase(oldQuery)) {
 			APIWrapper.getResultsForType(ResultManager.getInstance(), query);
 		} else {
@@ -75,8 +83,12 @@ public class ResultManager implements IQueryCompleteListener {
 	/** The database helper. */
 	private DBHelper databaseHelper;
 
-	/* (non-Javadoc)
-	 * @see com.elgubbo.tastekid.interfaces.IQueryCompleteListener#onQueryComplete(java.util.ArrayList)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.elgubbo.tastekid.interfaces.IQueryCompleteListener#onQueryComplete
+	 * (java.util.ArrayList)
 	 */
 	@Override
 	public void onQueryComplete(ArrayList<ApiResponse> apiResponses) {
@@ -102,7 +114,7 @@ public class ResultManager implements IQueryCompleteListener {
 
 	/**
 	 * Gets the helper.
-	 *
+	 * 
 	 * @return the helper
 	 */
 	public DBHelper getHelper() {
@@ -115,7 +127,7 @@ public class ResultManager implements IQueryCompleteListener {
 
 	/**
 	 * Results available.
-	 *
+	 * 
 	 * @return true, if successful
 	 */
 	public boolean resultsAvailable() {
@@ -124,14 +136,15 @@ public class ResultManager implements IQueryCompleteListener {
 
 	/**
 	 * Gets the results by type.
-	 *
-	 * @param type the type
+	 * 
+	 * @param type
+	 *            the type
 	 * @return the results by type
 	 */
 	public ArrayList<Result> getresultsByType(String type) {
 		ArrayList<Result> filteredResults = new ArrayList<Result>();
 
-		if (resultsAvailable()){
+		if (resultsAvailable()) {
 			if (type == null)
 				return results;
 			for (Result result : results) {
@@ -146,8 +159,9 @@ public class ResultManager implements IQueryCompleteListener {
 
 	/**
 	 * Gets the results by position.
-	 *
-	 * @param position the position
+	 * 
+	 * @param position
+	 *            the position
 	 * @return the results by position
 	 */
 	public ArrayList<Result> getResultsByPosition(int position) {
@@ -163,45 +177,64 @@ public class ResultManager implements IQueryCompleteListener {
 			Dao<Result, Integer> resultDao = getHelper().getResultDao();
 			int infoId = 0;
 			for (Result inf : info) {
-				if(resultDao.queryForMatching(inf) == null)
+				List<Result> queryResults = resultDao.queryForMatchingArgs(inf);
+				Result foundResult = (queryResults.size() > 0) ? queryResults
+						.get(0) : null;
+				if (foundResult == null)
 					resultDao.create(inf);
-				else
-					resultDao.update(inf);
-				infoId = inf.getId();
-			}
-			for (Result result : results) {
-				result.parentId = infoId;
-				resultDao.create(result);
+				infoId = (foundResult == null) ? inf.getId() : foundResult
+						.getId();
 				if (Configuration.DEVMODE)
-					Log.d("TasteKid", "created persistant result with id: "
-							+ result.getId() + " and parentId: "
-							+ result.parentId);
+					if (foundResult != null)
+						Log.d("TasteKid", "found result is: " + foundResult);
 			}
+			HashMap<String, Object> matchMap = new HashMap<String, Object>();
+			matchMap.put("parentId", infoId);
+			List<Result> resultsFromQuery = resultDao
+					.queryForFieldValuesArgs(matchMap);
+			if (resultsFromQuery.size() != results.size()) {
+				resultDao.delete(results);
+				for (Result result : results) {
+					result.parentId = infoId;
+					resultDao.create(result);
+					if (Configuration.DEVMODE)
+						Log.d("TasteKid", "created persistant result with id: "
+								+ result.getId() + " and parentId: "
+								+ result.parentId);
+				}
+			}
+
 		} catch (SQLException e) {
 			// TODO just catch this? or do something?
 			e.printStackTrace();
 		}
 	}
-	
-	public List<Result> getFavouriteResults(){
-		Result matcher = new Result();
-		matcher.favourite = true;
-		List<Result> results = null;
+
+	public List<Result> getLatestXQueries(long x) {
+		List<Result> queryResults = new ArrayList<Result>();
 		try {
 			Dao<Result, Integer> resultDao = getHelper().getResultDao();
-			results = resultDao.queryForMatching(matcher);
+			PreparedQuery<Result> query = resultDao.queryBuilder().limit(x)
+					.where().eq("parentId", 0).prepare();
+			queryResults = resultDao.query(query);
+			// results = resultDao.query(resultDao.queryBuilder().orderBy("id",
+			// false).join(resultDao.queryBuilder().where().isNull("parentId").pre));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return results;
+		if (Configuration.DEVMODE)
+			Log.d("TasteKid",
+					"Found last queries. size is: " + queryResults.size());
+		return queryResults;
 	}
-	
-	public List<Result> getDatabaseResultsSimilarTo(Result matchResult){
+
+	public List<Result> getFavouriteResults() {
 		List<Result> results = null;
 		try {
 			Dao<Result, Integer> resultDao = getHelper().getResultDao();
-			results = resultDao.queryForMatching(matchResult);
+			results = resultDao.query(resultDao.queryBuilder().where()
+					.eq("favourite", true).prepare());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -209,21 +242,55 @@ public class ResultManager implements IQueryCompleteListener {
 		return results;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.elgubbo.tastekid.interfaces.IQueryCompleteListener#onQueryFailed(java.lang.Exception)
+	public ApiResponse getDatabaseResultsSimilarTo(String query) {
+		List<Result> results = null;
+		ApiResponse response = new ApiResponse();
+
+		try {
+			Dao<Result, Integer> resultDao = getHelper().getResultDao();
+			Result parentResult = resultDao.queryBuilder().where()
+					.eq("parentId", 0).and().like("name", query + "%")
+					.queryForFirst();
+			if (parentResult != null)
+				results = resultDao.query(resultDao.queryBuilder().where()
+						.eq("parentId", parentResult.getId()).prepare());
+			
+			ArrayList<Result> parentResults = new ArrayList<Result>();
+			parentResults.add(parentResult);
+			Similar similar = new Similar();
+			similar.setInfo(parentResults);
+			similar.setResults(results);
+			response.similar = similar;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.elgubbo.tastekid.interfaces.IQueryCompleteListener#onQueryFailed(
+	 * java.lang.Exception)
 	 */
 	@Override
 	public void onQueryFailed(Exception e) {
-		if(e instanceof IOException)
+		if (e instanceof IOException)
 			callBack.onErrorReceived("You currently have no internet connectivity, please try again, when you are on-line.");
 		else
 			callBack.onErrorReceived(e.toString());
-		
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.elgubbo.tastekid.interfaces.IQueryCompleteListener#onDefaultError(java.lang.Exception)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.elgubbo.tastekid.interfaces.IQueryCompleteListener#onDefaultError
+	 * (java.lang.Exception)
 	 */
 	@Override
 	public void onDefaultError(Exception e) {
@@ -233,7 +300,7 @@ public class ResultManager implements IQueryCompleteListener {
 
 	/**
 	 * Gets the info.
-	 *
+	 * 
 	 * @return the info
 	 */
 	public ArrayList<Result> getInfo() {

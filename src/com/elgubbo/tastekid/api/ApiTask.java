@@ -25,7 +25,7 @@ import android.util.Log;
  */
 @SuppressLint("UseSparseArrays")
 public class ApiTask extends
-		AsyncTask<HttpGet, Integer, ArrayList<ApiResponse>> {
+	AsyncTask<HttpGet, Integer, ArrayList<ApiResponse>> {
 
 	/** The call back. */
 	private final IQueryCompleteListener callBack;
@@ -36,12 +36,8 @@ public class ApiTask extends
 	/**
 	 * Instantiates a new query task.
 	 * 
-	 * @param MODE
-	 *            the mode
 	 * @param listener
 	 *            the listener
-	 * @param class1
-	 *            the parser
 	 */
 	public ApiTask(IQueryCompleteListener listener) {
 		this.callBack = listener;

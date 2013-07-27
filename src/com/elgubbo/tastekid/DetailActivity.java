@@ -57,7 +57,9 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity{
 		TextView title = (TextView) findViewById(R.id.title);
 		TextView description = (TextView) findViewById(R.id.description);
 		LinearLayout buttonLayout = (LinearLayout) findViewById(R.id.buttonLayoutItem);
-		buttonLayout.findViewById(R.id.wikiLinearLayout).setOnClickListener(new ItemButtonClickListener(result, this));
+		ItemButtonClickListener itemButtonClickListener = new ItemButtonClickListener(result,this);
+		buttonLayout.findViewById(R.id.wikiLinearLayout).setOnClickListener(itemButtonClickListener);
+		buttonLayout.findViewById(R.id.shareLinearLayout).setOnClickListener(itemButtonClickListener);
 		title.setText(result.name);
 		description.setText(result.wTeaser);
 	}

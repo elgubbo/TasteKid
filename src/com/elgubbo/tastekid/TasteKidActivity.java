@@ -1,9 +1,13 @@
 package com.elgubbo.tastekid;
 
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
+import com.elgubbo.tastekid.adapter.SimpleResultAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
+import com.elgubbo.tastekid.model.Result;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -16,18 +20,22 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * The Class TasteKidActivity. The main activity, contains all fragments (ViewPager etc) and the actionbar
+ * The Class TasteKidActivity. The main activity, contains all fragments
+ * (ViewPager etc) and the actionbar
  */
-public class TasteKidActivity extends FragmentActivity implements
+public class TasteKidActivity extends SlidingFragmentActivity implements
 		ActionBar.TabListener {
-
 
 	// The searchview
 	/** The m search view. */
@@ -38,26 +46,30 @@ public class TasteKidActivity extends FragmentActivity implements
 
 	/** The m view pager. */
 	ViewPager mViewPager;
-	
-    /** The app context. */
-    private static Context appContext;
-    
-    /** The activity instance. */
-    private static Activity activityInstance;
+
+	/** The app context. */
+	private static Context appContext;
+
+	/** The activity instance. */
+	private static Activity activityInstance;
 
 	/** The m search query change listener. */
 	SearchQueryChangeListener mSearchQueryChangeListener;
-	
+
 	/** The database helper. */
 	private DBHelper databaseHelper;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
 	 */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);  
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setBehindContentView(R.layout.slidingmenu);
+
 		setContentView(R.layout.activity_main);
 		appContext = getApplicationContext();
 		activityInstance = this;
@@ -67,6 +79,7 @@ public class TasteKidActivity extends FragmentActivity implements
 		actionBar.setTitle("");
 		actionBar.setSubtitle("explore your taste");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -91,7 +104,7 @@ public class TasteKidActivity extends FragmentActivity implements
 						ViewParent root = findViewById(android.R.id.content)
 								.getParent();
 						findAndUpdateSpinner(root, position);
-						
+
 						if (mSearchView != null) {
 							if (Configuration.DEVMODE)
 								Log.d("TasteKid", "searchQuery is: "
@@ -115,20 +128,50 @@ public class TasteKidActivity extends FragmentActivity implements
 					.setTabListener(this));
 		}
 
+		// set up the sidebar
+		setupSlidingMenu();
+
+		//TODO remove
+		Log.d("TasteKid", "found favourites. size is: "+ResultManager
+						.getInstance().getFavouriteResults().size());
+	}
+
+	private void setupSlidingMenu() {
+		// configure the SlidingMenu
+		SlidingMenu sm = getSlidingMenu();
+		/*
+		 * sm.setShadowWidthRes(R.dimen.shadow_width);
+		 * sm.setShadowDrawable(android
+		 * .R.drawable.screen_background_dark_transparent);
+		 */
+		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		sm.setFadeDegree(0.35f);
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		ListView sideBarList1 = (ListView) sm.findViewById(R.id.sideBarList1);
+		ListView sideBarList2 = (ListView) sm.findViewById(R.id.sideBarList2);
+
+		sideBarList1.setAdapter(new SimpleResultAdapter(appContext,
+				android.R.layout.simple_list_item_1, ResultManager
+						.getInstance().getLatestXQueries(5)));
+
+		sideBarList2.setAdapter(new SimpleResultAdapter(appContext,
+				android.R.layout.simple_list_item_1, ResultManager
+						.getInstance().getFavouriteResults()));
+
 	}
 
 	/**
 	 * Gets the app context.
-	 *
+	 * 
 	 * @return the app context
 	 */
 	public static Context getAppContext() {
 		return appContext;
 	}
-	
+
 	/**
 	 * Gets the activity instance.
-	 *
+	 * 
 	 * @return the activity instance
 	 */
 	public static Context getActivityInstance() {
@@ -167,15 +210,18 @@ public class TasteKidActivity extends FragmentActivity implements
 		// Nothing found
 		return false;
 	}
-	
-	public void showLoadingBar(){
+
+	public void showLoadingBar() {
 		setProgressBarIndeterminateVisibility(true);
 	}
-	public void hideLoadingBar(){
+
+	public void hideLoadingBar() {
 		setProgressBarIndeterminateVisibility(false);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
 	@Override
@@ -189,8 +235,10 @@ public class TasteKidActivity extends FragmentActivity implements
 		setupSearchView(searchItem);
 		return true;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.FragmentActivity#onDestroy()
 	 */
 	@Override
@@ -205,11 +253,10 @@ public class TasteKidActivity extends FragmentActivity implements
 			databaseHelper = null;
 		}
 	}
-	
 
 	/**
 	 * Gets the helper.
-	 *
+	 * 
 	 * @return the helper
 	 */
 	public DBHelper getHelper() {
@@ -221,15 +268,17 @@ public class TasteKidActivity extends FragmentActivity implements
 
 	/**
 	 * Sets the up search view.
-	 *
-	 * @param searchItem the new up search view
+	 * 
+	 * @param searchItem
+	 *            the new up search view
 	 */
 	private void setupSearchView(MenuItem searchItem) {
 
 		SearchManager mSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		
+
 		mSearchView.setSubmitButtonEnabled(true);
-	    mSearchView.setSearchableInfo(mSearchManager.getSearchableInfo(getComponentName()));
+		mSearchView.setSearchableInfo(mSearchManager
+				.getSearchableInfo(getComponentName()));
 		if (mSearchManager != null) {
 			// List<SearchableInfo> searchables = searchManager
 			// .getSearchablesInGlobalSearch();
@@ -247,8 +296,12 @@ public class TasteKidActivity extends FragmentActivity implements
 		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
 	}
 
-	/* (non-Javadoc)
-	 * @see android.app.ActionBar.TabListener#onTabSelected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.app.ActionBar.TabListener#onTabSelected(android.app.ActionBar
+	 * .Tab, android.app.FragmentTransaction)
 	 */
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
@@ -259,21 +312,28 @@ public class TasteKidActivity extends FragmentActivity implements
 
 	}
 
-	/* (non-Javadoc)
-	 * @see android.app.ActionBar.TabListener#onTabUnselected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.app.ActionBar.TabListener#onTabUnselected(android.app.ActionBar
+	 * .Tab, android.app.FragmentTransaction)
 	 */
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
 
-	/* (non-Javadoc)
-	 * @see android.app.ActionBar.TabListener#onTabReselected(android.app.ActionBar.Tab, android.app.FragmentTransaction)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.app.ActionBar.TabListener#onTabReselected(android.app.ActionBar
+	 * .Tab, android.app.FragmentTransaction)
 	 */
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
-	
 
 }
