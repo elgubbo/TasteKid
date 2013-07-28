@@ -1,11 +1,12 @@
 package com.elgubbo.tastekid.model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -30,10 +31,10 @@ public class Result implements Parcelable {
 	public String yUrl;
 	@DatabaseField(canBeNull = true)
 	public String yID;
-	@DatabaseField(canBeNull = true)
-	public int parentId;
-	@DatabaseField
-	Date created;
+	@DatabaseField(canBeNull = true, foreign = true)
+	public Similar parent;
+	@DatabaseField(dataType = DataType.SERIALIZABLE)	
+	Timestamp created;
 	@DatabaseField
 	public boolean favourite;
 
@@ -42,8 +43,8 @@ public class Result implements Parcelable {
 	};
 
 	public Result(int id, String name, String type, String wTeaser,
-			String wUrl, String yTitle, String yUrl, String yID, int parentId,
-			Date created, boolean favourite) {
+			String wUrl, String yTitle, String yUrl, String yID, Similar parentId,
+			Timestamp created, boolean favourite) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
@@ -52,8 +53,8 @@ public class Result implements Parcelable {
 		this.yTitle = yTitle;
 		this.yUrl = yUrl;
 		this.yID = yID;
-		this.parentId = parentId;
-		this.created = created;
+		this.parent = parentId;
+		this.setCreated(created);
 		this.favourite = favourite;
 	}
 
@@ -65,7 +66,6 @@ public class Result implements Parcelable {
 		yTitle = parcel.readString();
 		yUrl = parcel.readString();
 		yID = parcel.readString();
-		parentId = parcel.readInt();
 
 	}
 	
@@ -88,7 +88,6 @@ public class Result implements Parcelable {
 		dest.writeString(yTitle);
 		dest.writeString(yUrl);
 		dest.writeString(yID);
-		dest.writeInt(parentId);
 		// todo think of date solution
 	}
 
@@ -98,6 +97,14 @@ public class Result implements Parcelable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Timestamp getCreated() {
+		return created;
+	}
+
+	public void setCreated(Timestamp created) {
+		this.created = created;
 	}
 
 	public static Creator<Result> CREATOR = new Creator<Result>() {

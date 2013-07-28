@@ -9,6 +9,8 @@
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name="com.elgubbo.tastekid.TasteKidApp"
@@ -34,6 +36,10 @@
             android:name="DetailActivity"
             android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar" >
         </activity>
+
+        <service
+            android:name="com.elgubbo.tastekid.TasteKidSpiceService"
+            android:exported="false" />
     </application>
 
 </manifest>

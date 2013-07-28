@@ -30,6 +30,7 @@ public class ItemButtonClickListener implements OnClickListener {
 		this.appContext = appContext;
 	}
 
+
 	/* (non-Javadoc)
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
@@ -46,6 +47,7 @@ public class ItemButtonClickListener implements OnClickListener {
 			break;
 		case R.id.wikiLinearLayout:
 				Intent wikiIntent = new Intent(Intent.ACTION_VIEW);
+				wikiIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				wikiIntent.setData(Uri.parse(result.wUrl));
 				appContext.startActivity(wikiIntent);
 			break;

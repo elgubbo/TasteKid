@@ -1,40 +1,32 @@
 package com.elgubbo.tastekid;
 
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
-import com.elgubbo.tastekid.adapter.SimpleResultAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
-import com.elgubbo.tastekid.model.Result;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * The Class TasteKidActivity. The main activity, contains all fragments
  * (ViewPager etc) and the actionbar
  */
-public class TasteKidActivity extends SlidingFragmentActivity implements
+public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		ActionBar.TabListener {
 
 	// The searchview
@@ -150,13 +142,13 @@ public class TasteKidActivity extends SlidingFragmentActivity implements
 		ListView sideBarList1 = (ListView) sm.findViewById(R.id.sideBarList1);
 		ListView sideBarList2 = (ListView) sm.findViewById(R.id.sideBarList2);
 
-		sideBarList1.setAdapter(new SimpleResultAdapter(appContext,
-				android.R.layout.simple_list_item_1, ResultManager
-						.getInstance().getLatestXQueries(5)));
-
-		sideBarList2.setAdapter(new SimpleResultAdapter(appContext,
-				android.R.layout.simple_list_item_1, ResultManager
-						.getInstance().getFavouriteResults()));
+//		sideBarList1.setAdapter(new SimpleResultAdapter(appContext,
+//				android.R.layout.simple_list_item_1, ResultManager
+//						.getInstance().getLatestXQueries(5)));
+//
+//		sideBarList2.setAdapter(new SimpleResultAdapter(appContext,
+//				android.R.layout.simple_list_item_1, ResultManager
+//						.getInstance().getFavouriteResults()));
 
 	}
 

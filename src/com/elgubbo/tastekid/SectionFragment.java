@@ -20,12 +20,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -124,6 +118,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		} else
 			wikiButton.setVisibility(View.INVISIBLE);
 	}
+
 
 	/**
 	 * fills the header content with a header listview item that displays the info about the current search result.

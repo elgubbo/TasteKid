@@ -8,34 +8,42 @@ import android.util.Log;
 
 import com.elgubbo.tastekid.Configuration;
 import com.elgubbo.tastekid.TasteKidActivity;
+import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.Result;
+import com.elgubbo.tastekid.model.Similar;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.octo.android.robospice.persistence.ormlite.RoboSpiceDatabaseHelper;
 
 /**
- * The Class DBHelper. Contains helper methods to initialize the ORM models and the database
+ * The Class DBHelper. Contains helper methods to initialize the ORM models and
+ * the database
  */
-public class DBHelper extends OrmLiteSqliteOpenHelper {
-
+public class DBHelper extends RoboSpiceDatabaseHelper {
 
 	/** The Constant DATABASE_NAME. */
 	private static final String DATABASE_NAME = "results.db";
 
 	/** The Constant DATABASE_VERSION. */
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	// the DAO object we use to access the Result table
 	/** The result dao. */
 	private Dao<Result, Integer> resultDao = null;
+	private Dao<Similar, Integer> similarDao = null;
+
+	private Dao<ApiResponse, Integer> apiResponseDao = null;
 
 	/**
 	 * Instantiates a new dB helper.
 	 */
 	public DBHelper() {
-		super(TasteKidActivity.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
+		super(TasteKidActivity.getAppContext(), DATABASE_NAME, null,
+				DATABASE_VERSION);
 	}
+
 	/**
 	 * Instantiates a new dB helper.
 	 */
@@ -47,16 +55,19 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	 * This is called when the database is first created. Usually you should
 	 * call createTable statements here to create the tables that will store
 	 * your data.
-	 *
-	 * @param db the db
-	 * @param connectionSource the connection source
+	 * 
+	 * @param db
+	 *            the db
+	 * @param connectionSource
+	 *            the connection source
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
 		try {
 			if (Configuration.DEVMODE)
 				Log.i(DBHelper.class.getName(), "onCreate");
-
+			TableUtils.createTable(connectionSource, ApiResponse.class);
+			TableUtils.createTable(connectionSource, Similar.class);
 			TableUtils.createTable(connectionSource, Result.class);
 
 		} catch (SQLException e) {
@@ -68,10 +79,12 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	/**
 	 * Returns the Database Access Object (DAO) for our Result class. It will
 	 * create it or just give the cached value.
-	 *
+	 * 
 	 * @return the result dao
-	 * @throws SQLException the sQL exception
-	 * @throws SQLException the sQL exception
+	 * @throws SQLException
+	 *             the sQL exception
+	 * @throws SQLException
+	 *             the sQL exception
 	 */
 	public Dao<Result, Integer> getResultDao() throws SQLException,
 			java.sql.SQLException {
@@ -80,9 +93,51 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 		}
 		return resultDao;
 	}
+	
+	/**
+	 * Returns the Database Access Object (DAO) for our Result class. It will
+	 * create it or just give the cached value.
+	 * 
+	 * @return the result dao
+	 * @throws SQLException
+	 *             the sQL exception
+	 * @throws SQLException
+	 *             the sQL exception
+	 */
+	public Dao<ApiResponse, Integer> getApiResponseDao() throws SQLException,
+			java.sql.SQLException {
+		if (apiResponseDao == null) {
+			apiResponseDao = getDao(ApiResponse.class);
+		}
+		return apiResponseDao;
+	}
 
-	/* (non-Javadoc)
-	 * @see com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, com.j256.ormlite.support.ConnectionSource, int, int)
+	/**
+	 * Returns the Database Access Object (DAO) for our Result class. It will
+	 * create it or just give the cached value.
+	 * 
+	 * @return the result dao
+	 * @throws SQLException
+	 *             the sQL exception
+	 * @throws SQLException
+	 *             the sQL exception
+	 */
+	public Dao<Similar, Integer> getSimilarDao() throws SQLException,
+			java.sql.SQLException {
+		if (similarDao == null) {
+			similarDao = getDao(Similar.class);
+		}
+		return similarDao;
+	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper#onUpgrade(android
+	 * .database.sqlite.SQLiteDatabase,
+	 * com.j256.ormlite.support.ConnectionSource, int, int)
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
@@ -107,5 +162,8 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	public void close() {
 		super.close();
 		resultDao = null;
+		similarDao = null;
+		apiResponseDao = null;
 	}
+
 }
