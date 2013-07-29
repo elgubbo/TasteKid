@@ -14,10 +14,10 @@ public class Similar {
 	public ApiResponse parent;
 
 	@DatabaseField(generatedId = true)
-	protected int id;
+	protected int _id;
 	
 	public int getId() {
-		return id;
+		return _id;
 	}
 
 

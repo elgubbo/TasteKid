@@ -29,6 +29,17 @@
             android:id="@+id/iconView"
             android:layout_width="28dp"
             android:layout_height="28dp" />
+
+        <ToggleButton
+            android:id="@+id/favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/star"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textOff=""
+            android:textOn="" />
     </LinearLayout>
 
     <View

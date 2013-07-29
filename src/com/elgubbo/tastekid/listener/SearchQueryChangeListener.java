@@ -1,12 +1,12 @@
 package com.elgubbo.tastekid.listener;
 
 import com.elgubbo.tastekid.Configuration;
-import com.elgubbo.tastekid.ResultManager;
 import com.elgubbo.tastekid.SectionFragment;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.TasteKidApp;
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
+import com.elgubbo.tastekid.model.ResultManager;
 
 import android.app.Activity;
 import android.content.Context;

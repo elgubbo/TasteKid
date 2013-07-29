@@ -11,7 +11,6 @@ import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.Similar;
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
@@ -27,7 +26,7 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 	private static final String DATABASE_NAME = "results.db";
 
 	/** The Constant DATABASE_VERSION. */
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	// the DAO object we use to access the Result table
 	/** The result dao. */
@@ -146,6 +145,9 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 			if (Configuration.DEVMODE)
 				Log.i(DBHelper.class.getName(), "onUpgrade");
 			TableUtils.dropTable(connectionSource, Result.class, true);
+			TableUtils.dropTable(connectionSource, ApiResponse.class, true);
+			TableUtils.dropTable(connectionSource, Similar.class, true);
+
 			// after we drop the old databases, we create the new ones
 			onCreate(db, connectionSource);
 		} catch (SQLException e) {
@@ -165,5 +167,6 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 		similarDao = null;
 		apiResponseDao = null;
 	}
+	
 
 }

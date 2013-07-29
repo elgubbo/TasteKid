@@ -1,16 +1,23 @@
 package com.elgubbo.tastekid;
 
 
+import java.sql.SQLException;
+
+import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.listener.ItemButtonClickListener;
 import com.elgubbo.tastekid.model.Result;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.j256.ormlite.dao.Dao;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 /**
  * The Class DetailActivity.
@@ -56,11 +63,38 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity{
 			youTubeView.setVisibility(View.GONE);
 		TextView title = (TextView) findViewById(R.id.title);
 		TextView description = (TextView) findViewById(R.id.description);
+		ToggleButton favourite = (ToggleButton) findViewById(R.id.favourite);
 		LinearLayout buttonLayout = (LinearLayout) findViewById(R.id.buttonLayoutItem);
 		ItemButtonClickListener itemButtonClickListener = new ItemButtonClickListener(result,this);
 		buttonLayout.findViewById(R.id.wikiLinearLayout).setOnClickListener(itemButtonClickListener);
 		buttonLayout.findViewById(R.id.shareLinearLayout).setOnClickListener(itemButtonClickListener);
 		title.setText(result.name);
+		favourite.setChecked(result.favourite);
+		favourite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				Log.d("TasteKid", "onCheckdChanged");
+				Log.d("TasteKid", "Result id is: "+ result.getId());
+		  		DBHelper db = new DBHelper();
+		  		Dao<Result, Integer> resultDao;
+
+				try {
+					
+					resultDao = db.getResultDao();
+			  		result.favourite = isChecked;
+
+
+					resultDao.update(result);
+
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				buttonView.setChecked(result.favourite);
+				
+			}
+		});
 		description.setText(result.wTeaser);
 	}
 	 
@@ -82,4 +116,6 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity{
 	  protected YouTubePlayer.Provider getYouTubePlayerProvider() {
 	    return (YouTubePlayerView) findViewById(R.id.youtube_view);
 	  }
+  	
+
 }

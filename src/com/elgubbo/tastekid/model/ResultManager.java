@@ -1,21 +1,23 @@
-package com.elgubbo.tastekid;
+package com.elgubbo.tastekid.model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import android.util.Log;
 
+import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.TasteKidActivity;
+import com.elgubbo.tastekid.TasteKidApp;
 import com.elgubbo.tastekid.api.TasteKidSpiceRequest;
 import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
-import com.elgubbo.tastekid.model.ApiResponse;
-import com.elgubbo.tastekid.model.Result;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ResultManager. It is a central singleton handling results from
  * queries to the api
@@ -37,6 +39,9 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	/** The old query. */
 	private static String oldQuery;
 
+	/** The database helper. */
+	private DBHelper databaseHelper;
+
 	/**
 	 * Gets the single instance of ResultManager.
 	 * 
@@ -46,6 +51,13 @@ public class ResultManager implements RequestListener<ApiResponse> {
 		if (instance == null)
 			instance = new ResultManager();
 		return instance;
+	}
+
+	/**
+	 * Instantiates a new result manager.
+	 */
+	private ResultManager() {
+		// empty private constructor for singleton pattern
 	}
 
 	/**
@@ -62,18 +74,16 @@ public class ResultManager implements RequestListener<ApiResponse> {
 		if (query.equalsIgnoreCase(""))
 			return;
 		if (!query.equalsIgnoreCase(oldQuery)) {
-			TasteKidActivity activity = (TasteKidActivity)TasteKidActivity.getActivityInstance();
-			activity.getSpiceManager().execute(new TasteKidSpiceRequest(ApiResponse.class, query), this);
+			TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
+					.getActivityInstance();
+			activity.getSpiceManager().execute(
+					new TasteKidSpiceRequest(ApiResponse.class, query), this);
 		} else {
 			callback.onResultsReady();
 		}
 		oldQuery = query;
 
 	}
-
-	/** The database helper. */
-	private DBHelper databaseHelper;
-
 
 	/**
 	 * Gets the helper.
@@ -131,26 +141,30 @@ public class ResultManager implements RequestListener<ApiResponse> {
 		return getresultsByType(TasteKidApp.TYPE_ARRAY[position]);
 	}
 
-
-	public List<Result> getLatestXQueries(long x) {
-		List<Result> queryResults = new ArrayList<Result>();
-		try {
-			Dao<Result, Integer> resultDao = getHelper().getResultDao();
-			PreparedQuery<Result> query = resultDao.queryBuilder().limit(x)
-					.where().eq("parentId", 0).prepare();
-			queryResults = resultDao.query(query);
-			// results = resultDao.query(resultDao.queryBuilder().orderBy("id",
-			// false).join(resultDao.queryBuilder().where().isNull("parentId").pre));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (Configuration.DEVMODE)
-			Log.d("TasteKid",
-					"Found last queries. size is: " + queryResults.size());
-		return queryResults;
+	/**
+	 * Gets the info.
+	 * 
+	 * @return the info
+	 */
+	public ArrayList<Result> getInfo() {
+		if (info == null)
+			info = new ArrayList<Result>();
+		return info;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.octo.android.robospice.request.listener.RequestListener#onRequestFailure
+	 * (com.octo.android.robospice.persistence.exception.SpiceException)
+	 */
+	@Override
+	public void onRequestFailure(SpiceException arg0) {
+		// TODO Auto-generated method stub
+
+	}
+	
 	public List<Result> getFavouriteResults() {
 		List<Result> results = null;
 		try {
@@ -164,26 +178,13 @@ public class ResultManager implements RequestListener<ApiResponse> {
 		return results;
 	}
 
-
-
-
-	/**
-	 * Gets the info.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @return the info
+	 * @see
+	 * com.octo.android.robospice.request.listener.RequestListener#onRequestSuccess
+	 * (java.lang.Object)
 	 */
-	public ArrayList<Result> getInfo() {
-		if (info == null)
-			info = new ArrayList<Result>();
-		return info;
-	}
-
-	@Override
-	public void onRequestFailure(SpiceException arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public void onRequestSuccess(ApiResponse apiResponse) {
 		String error = null;
@@ -194,8 +195,8 @@ public class ResultManager implements RequestListener<ApiResponse> {
 			error = apiResponse.error;
 			if (Configuration.DEVMODE)
 				Log.d("TasteKid", error);
-		}	
-		
+		}
+
 		if (error != null)
 			callBack.onErrorReceived(error);
 		else {

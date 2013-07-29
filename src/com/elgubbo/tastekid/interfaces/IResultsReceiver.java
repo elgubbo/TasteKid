@@ -1,6 +1,6 @@
 package com.elgubbo.tastekid.interfaces;
 
-import com.elgubbo.tastekid.ResultManager;
+import com.elgubbo.tastekid.model.ResultManager;
 
 /**
  * The Interface IResultsReceiver. Must be implemented by any

@@ -1,5 +1,7 @@
 package com.elgubbo.tastekid;
 
+import com.elgubbo.tastekid.model.ResultManager;
+
 import android.app.Application;
 
 /**

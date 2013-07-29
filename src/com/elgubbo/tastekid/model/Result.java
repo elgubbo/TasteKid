@@ -14,7 +14,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Result implements Parcelable {
 
 	@DatabaseField(generatedId = true)
-	private int id;
+	private int _id;
 	@DatabaseField
 	@SerializedName("Name")
 	public String name;
@@ -45,7 +45,7 @@ public class Result implements Parcelable {
 	public Result(int id, String name, String type, String wTeaser,
 			String wUrl, String yTitle, String yUrl, String yID, Similar parentId,
 			Timestamp created, boolean favourite) {
-		this.id = id;
+		this._id = id;
 		this.name = name;
 		this.type = type;
 		this.wTeaser = wTeaser;
@@ -59,6 +59,7 @@ public class Result implements Parcelable {
 	}
 
 	public Result(Parcel parcel) {
+		_id = parcel.readInt();
 		name = parcel.readString();
 		type = parcel.readString();
 		wTeaser = parcel.readString();
@@ -66,6 +67,7 @@ public class Result implements Parcelable {
 		yTitle = parcel.readString();
 		yUrl = parcel.readString();
 		yID = parcel.readString();
+		favourite = parcel.readInt() == 0 ? false : true;
 
 	}
 	
@@ -81,6 +83,7 @@ public class Result implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(_id);
 		dest.writeString(name);
 		dest.writeString(type);
 		dest.writeString(wTeaser);
@@ -88,15 +91,16 @@ public class Result implements Parcelable {
 		dest.writeString(yTitle);
 		dest.writeString(yUrl);
 		dest.writeString(yID);
+		dest.writeInt(favourite ? 1 : 0);
 		// todo think of date solution
 	}
 
 	public int getId() {
-		return id;
+		return _id;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this._id = id;
 	}
 
 	public Timestamp getCreated() {

@@ -15,7 +15,7 @@ public class ApiResponse {
 	public Timestamp created;
 	
 	@DatabaseField(generatedId = true)
-	protected int id;
+	protected int _id;
 	/** The similar results. */
     @DatabaseField(canBeNull = false, foreign = true)
 	@SerializedName("Similar")

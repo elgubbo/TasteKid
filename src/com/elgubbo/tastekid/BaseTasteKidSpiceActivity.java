@@ -1,5 +1,6 @@
 package com.elgubbo.tastekid;
 
+import com.elgubbo.tastekid.api.TasteKidSpiceService;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.octo.android.robospice.SpiceManager;
 

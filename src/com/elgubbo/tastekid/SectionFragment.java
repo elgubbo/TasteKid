@@ -8,6 +8,7 @@ import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.elgubbo.tastekid.listener.ItemButtonClickListener;
 import com.elgubbo.tastekid.listener.ListItemClickListener;
 import com.elgubbo.tastekid.model.Result;
+import com.elgubbo.tastekid.model.ResultManager;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import android.app.ActionBar.LayoutParams;
@@ -15,7 +16,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +40,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	 * @param adapterHolder the adapter holder
 	 * @return the section fragment
 	 */
-	public static SectionFragment init(int position,
-			SparseArray<CardListArrayAdapter> adapterHolder) {
+	public static SectionFragment init(int position) {
 
 		SectionFragment fragment = new SectionFragment();
 		fragment.position = position;

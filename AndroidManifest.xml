@@ -38,7 +38,7 @@
         </activity>
 
         <service
-            android:name="com.elgubbo.tastekid.TasteKidSpiceService"
+            android:name="com.elgubbo.tastekid.api.TasteKidSpiceService"
             android:exported="false" />
     </application>
 

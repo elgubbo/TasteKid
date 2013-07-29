@@ -1,8 +1,12 @@
 package com.elgubbo.tastekid;
 
+import com.elgubbo.tastekid.adapter.FavouriteResultArrayAdapter;
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
+import com.elgubbo.tastekid.listener.FavouriteItemClickListener;
+import com.elgubbo.tastekid.listener.ListItemClickListener;
 import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
+import com.elgubbo.tastekid.model.ResultManager;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import android.app.ActionBar;
@@ -122,10 +126,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 		// set up the sidebar
 		setupSlidingMenu();
-
-		//TODO remove
-		Log.d("TasteKid", "found favourites. size is: "+ResultManager
-						.getInstance().getFavouriteResults().size());
 	}
 
 	private void setupSlidingMenu() {
@@ -142,14 +142,10 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		ListView sideBarList1 = (ListView) sm.findViewById(R.id.sideBarList1);
 		ListView sideBarList2 = (ListView) sm.findViewById(R.id.sideBarList2);
 
-//		sideBarList1.setAdapter(new SimpleResultAdapter(appContext,
-//				android.R.layout.simple_list_item_1, ResultManager
-//						.getInstance().getLatestXQueries(5)));
-//
-//		sideBarList2.setAdapter(new SimpleResultAdapter(appContext,
-//				android.R.layout.simple_list_item_1, ResultManager
-//						.getInstance().getFavouriteResults()));
-
+		sideBarList2.setAdapter(new FavouriteResultArrayAdapter(this,
+				R.layout.sidebar_list_item, ResultManager.getInstance()
+						.getFavouriteResults()));
+		sideBarList2.setOnItemClickListener(new FavouriteItemClickListener());
 	}
 
 	/**

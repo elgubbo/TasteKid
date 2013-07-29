@@ -17,80 +17,92 @@ import android.util.SparseArray;
 /**
  * The Class SectionsPagerAdapter.
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter{
-	
+public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
 	/** The m fragment manager. */
 	FragmentManager mFragmentManager;
-	
+
 	/** The fragment holder. */
 	SparseArray<Fragment> fragmentHolder;
-	
+
 	/** The adapter holder. */
-	SparseArray<CardListArrayAdapter> adapterHolder;
-	
+	// SparseArray<CardListArrayAdapter> adapterHolder;
+
 	/**
 	 * Instantiates a new sections pager adapter.
-	 *
-	 * @param fm the fm
-	 * @param context the context
+	 * 
+	 * @param fm
+	 *            the fragmentManager
+	 * @param context
+	 *            the context
 	 */
 	public SectionsPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
 		this.mFragmentManager = fm;
 		this.fragmentHolder = new SparseArray<Fragment>();
-		this.adapterHolder = new SparseArray<CardListArrayAdapter>();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
 	 */
 	@Override
 	public Fragment getItem(int position) {
-		if(fragmentHolder.get(position) != null)
+		if (fragmentHolder.get(position) != null)
 			return fragmentHolder.get(position);
 		else {
-			Fragment fragment = SectionFragment.init(position, adapterHolder);
-			Bundle b = new Bundle();
-			b.putInt("position", position);
-			fragment.setArguments(b);
-//			fragment.setRetainInstance(true);
+			Fragment fragment = SectionFragment.init(position);
+			/*
+			 * Bundle b = new Bundle(); b.putInt("position", position);
+			 * fragment.setArguments(b);
+			 */
+			// fragment.setRetainInstance(true);
 			fragmentHolder.append(position, fragment);
 			return fragment;
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.view.PagerAdapter#getCount()
 	 */
 	@Override
 	public int getCount() {
 		return 6;
 	}
-	
+
 	/**
 	 * Gets the active fragment.
-	 *
-	 * @param container the container
-	 * @param position the position
+	 * 
+	 * @param container
+	 *            the container
+	 * @param position
+	 *            the position
 	 * @return the active fragment
 	 */
 	public Fragment getActiveFragment(ViewPager container, int position) {
 		String name = makeFragmentName(container.getId(), position);
-		return  mFragmentManager.findFragmentByTag(name);
+		return mFragmentManager.findFragmentByTag(name);
 	}
 
 	/**
 	 * Make fragment name.
-	 *
-	 * @param viewId the view id
-	 * @param index the index
+	 * 
+	 * @param viewId
+	 *            the view id
+	 * @param index
+	 *            the index
 	 * @return the string
 	 */
 	private String makeFragmentName(int viewId, int index) {
-		    return "android:switcher:" + viewId + ":" + index;
+		return "android:switcher:" + viewId + ":" + index;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
 	 */
 	@Override
@@ -98,17 +110,23 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 		Locale l = Locale.getDefault();
 		switch (position) {
 		case 0:
-			return TasteKidActivity.getAppContext().getString(R.string.title_section1).toUpperCase(l);
+			return TasteKidActivity.getAppContext()
+					.getString(R.string.title_section1).toUpperCase(l);
 		case 1:
-			return TasteKidActivity.getAppContext().getString(R.string.title_section2).toUpperCase(l);
+			return TasteKidActivity.getAppContext()
+					.getString(R.string.title_section2).toUpperCase(l);
 		case 2:
-			return TasteKidActivity.getAppContext().getString(R.string.title_section3).toUpperCase(l);
+			return TasteKidActivity.getAppContext()
+					.getString(R.string.title_section3).toUpperCase(l);
 		case 3:
-			return TasteKidActivity.getAppContext().getString(R.string.title_section4).toUpperCase(l);
+			return TasteKidActivity.getAppContext()
+					.getString(R.string.title_section4).toUpperCase(l);
 		case 4:
-			return TasteKidActivity.getAppContext().getString(R.string.title_section5).toUpperCase(l);
+			return TasteKidActivity.getAppContext()
+					.getString(R.string.title_section5).toUpperCase(l);
 		case 5:
-			return TasteKidActivity.getAppContext().getString(R.string.title_section6).toUpperCase(l);
+			return TasteKidActivity.getAppContext()
+					.getString(R.string.title_section6).toUpperCase(l);
 		}
 		return null;
 	}

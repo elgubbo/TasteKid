@@ -64,8 +64,6 @@ public class CardListArrayAdapter extends ArrayAdapter<Result>{
 		if(convertView == null)
 			convertView = inflater.inflate(
 					R.layout.list_item, parent, false);
-//		View rowView = (convertView == null) ? inflater.inflate(
-//				R.layout.list_item, parent, false) : convertView;
 		Result currentResult = results.get(position);
 		TextView title = (TextView) convertView.findViewById(R.id.title);
 		ImageView iconView = (ImageView) convertView.findViewById(R.id.iconView);
