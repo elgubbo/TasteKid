@@ -1,5 +1,9 @@
 package com.elgubbo.tastekid;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.elgubbo.tastekid.model.ResultManager;
 
 import android.app.Application;
@@ -36,9 +40,30 @@ public class TasteKidApp extends Application {
 
 	/** The result manager. */
 	public static ResultManager resultManager;
+	
+	public static long ONE_WEEK_MILLIS = 604800000;
+	public static long ONE_DAY_MILLIS = 86400000;
+	public static long ONE_HOUR_MILLIS = 3600000;
+	public static long ONE_MINUTE_MILLIS = 60000;
 
 	/** The current query. */
 	private static String currentQuery;
+	
+
+	/**
+	 * A static map of possible icon resources
+	 */
+    public static final Map<String, Integer> ICON_MAP;
+    static {
+        HashMap<String, Integer> iconMapInit = new HashMap<String, Integer>();
+	    iconMapInit.put("movie", R.drawable.movie);
+	    iconMapInit.put("book", R.drawable.book);
+	    iconMapInit.put("music", R.drawable.music);
+	    iconMapInit.put("show", R.drawable.show);
+	    iconMapInit.put("game", R.drawable.game);
+	    iconMapInit.put("author", R.drawable.author);
+        ICON_MAP = Collections.unmodifiableMap(iconMapInit);
+    }
 
 	/*
 	 * (non-Javadoc)

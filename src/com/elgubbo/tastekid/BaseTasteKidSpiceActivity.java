@@ -24,5 +24,7 @@ public abstract class BaseTasteKidSpiceActivity extends SlidingFragmentActivity{
     public SpiceManager getSpiceManager() {
         return spiceManager;
     }
+    
+    
 	
 }

@@ -1,10 +1,11 @@
 package com.elgubbo.tastekid;
 
 import com.elgubbo.tastekid.adapter.FavouriteResultArrayAdapter;
+import com.elgubbo.tastekid.adapter.RecentSearchesArrayAdapter;
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.listener.FavouriteItemClickListener;
-import com.elgubbo.tastekid.listener.ListItemClickListener;
+import com.elgubbo.tastekid.listener.RecentSearchItemClickListener;
 import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -37,11 +38,29 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	/** The m search view. */
 	SearchView mSearchView;
 
+	public SearchView getmSearchView() {
+		return mSearchView;
+	}
+
 	/** The m sections pager adapter. */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
 	/** The m view pager. */
 	ViewPager mViewPager;
+
+	/** the Favourites Listview **/
+	ListView favouriteListView;
+
+	public ListView getFavouriteListView() {
+		return favouriteListView;
+	}
+
+	/** the Recent searches listview **/
+	ListView recentListView;
+
+	public ListView getRecentListView() {
+		return recentListView;
+	}
 
 	/** The app context. */
 	private static Context appContext;
@@ -52,8 +71,18 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	/** The m search query change listener. */
 	SearchQueryChangeListener mSearchQueryChangeListener;
 
+	public SearchQueryChangeListener getmSearchQueryChangeListener() {
+		return mSearchQueryChangeListener;
+	}
+
 	/** The database helper. */
 	private DBHelper databaseHelper;
+
+	private Menu menu;
+
+	public Menu getMenu() {
+		return menu;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -139,13 +168,18 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		sm.setFadeDegree(0.35f);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		ListView sideBarList1 = (ListView) sm.findViewById(R.id.sideBarList1);
-		ListView sideBarList2 = (ListView) sm.findViewById(R.id.sideBarList2);
+		recentListView = (ListView) sm.findViewById(R.id.sideBarList1);
+		favouriteListView = (ListView) sm.findViewById(R.id.sideBarList2);
 
-		sideBarList2.setAdapter(new FavouriteResultArrayAdapter(this,
+		favouriteListView.setAdapter(new FavouriteResultArrayAdapter(this,
 				R.layout.sidebar_list_item, ResultManager.getInstance()
 						.getFavouriteResults()));
-		sideBarList2.setOnItemClickListener(new FavouriteItemClickListener());
+		favouriteListView
+				.setOnItemClickListener(new FavouriteItemClickListener());
+		recentListView.setAdapter(new RecentSearchesArrayAdapter(this,
+				R.layout.sidebar_list_item, ResultManager.getInstance()
+						.getRecentSearches()));
+		recentListView.setOnItemClickListener(new RecentSearchItemClickListener());
 	}
 
 	/**
@@ -214,10 +248,10 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		this.menu = menu;
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-
 		mSearchView = (SearchView) searchItem.getActionView();
 
 		setupSearchView(searchItem);
@@ -322,6 +356,18 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case android.R.id.home:
+	        toggle();
+	        return true;
+
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
 	}
 
 }

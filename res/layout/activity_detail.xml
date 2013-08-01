@@ -3,50 +3,51 @@
     android:id="@+id/listItemRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="4dp"
-    android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp"
-    android:layout_marginTop="4dp"
-    android:background="@drawable/card_background"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/card_background"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="8dp"
         android:paddingRight="8dp" >
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="title"
-            android:textSize="20sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-        <ImageView
-            android:id="@+id/iconView"
-            android:layout_width="28dp"
-            android:layout_height="28dp" />
+            <CheckBox
+                android:id="@+id/favourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:button="@drawable/star" />
 
-        <ToggleButton
-            android:id="@+id/favourite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/star"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:textOff=""
-            android:textOn="" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="title"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/iconView"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/favourite" />
+        </RelativeLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="4dp"
-        android:background="@color/dark_grey" />
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -64,19 +65,28 @@
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/card_background"
                 android:ellipsize="end"
                 android:text="foo" />
 
             <com.google.android.youtube.player.YouTubePlayerView
                 android:id="@+id/youtube_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="4dp" />
 
             <LinearLayout
                 android:id="@+id/buttonLayoutItem"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:baselineAligned="false"
                 android:clickable="true"
                 android:gravity="bottom"
                 android:paddingBottom="10dp"
@@ -88,8 +98,12 @@
                     android:id="@+id/wikiLinearLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="100"
-                    android:background="@drawable/buttons_background"
+                    android:background="@drawable/card_background"
                     android:clickable="true"
                     android:padding="4dp" >
 
@@ -113,8 +127,12 @@
                     android:id="@+id/shareLinearLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="100"
-                    android:background="@drawable/buttons_background"
+                    android:background="@drawable/card_background"
                     android:clickable="true"
                     android:padding="4dp" >
 

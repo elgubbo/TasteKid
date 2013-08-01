@@ -9,6 +9,7 @@ import java.util.Map;
 import com.elgubbo.tastekid.Configuration;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.TasteKidActivity;
+import com.elgubbo.tastekid.TasteKidApp;
 import com.elgubbo.tastekid.listener.ItemButtonClickListener;
 import com.elgubbo.tastekid.model.Result;
 
@@ -31,20 +32,6 @@ public class CardListArrayAdapter extends ArrayAdapter<Result>{
 	
 	
 
-	/**
-	 * A static map of possible icon resources
-	 */
-    public static final Map<String, Integer> iconMap;
-    static {
-        HashMap<String, Integer> iconMapInit = new HashMap<String, Integer>();
-	    iconMapInit.put("movie", R.drawable.movie);
-	    iconMapInit.put("book", R.drawable.book);
-	    iconMapInit.put("music", R.drawable.music);
-	    iconMapInit.put("show", R.drawable.show);
-	    iconMapInit.put("game", R.drawable.game);
-	    iconMapInit.put("author", R.drawable.author);
-        iconMap = Collections.unmodifiableMap(iconMapInit);
-    }
 
 	ArrayList<Result> results;
 	/**
@@ -67,9 +54,8 @@ public class CardListArrayAdapter extends ArrayAdapter<Result>{
 		Result currentResult = results.get(position);
 		TextView title = (TextView) convertView.findViewById(R.id.title);
 		ImageView iconView = (ImageView) convertView.findViewById(R.id.iconView);
-		if (Configuration.DEVMODE)
-			Log.d("TasteKid", "Type of currentResult is: " + currentResult.type);
-		iconView.setBackgroundResource((currentResult.type != null) ? iconMap
+		iconView.setBackgroundResource(TasteKidApp.ICON_MAP
+				.get(currentResult.type)!= null ? TasteKidApp.ICON_MAP
 				.get(currentResult.type) : 0);
 		title.setText(currentResult.name);
 		TextView description = (TextView) convertView

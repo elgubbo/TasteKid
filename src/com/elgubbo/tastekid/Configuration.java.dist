@@ -27,6 +27,7 @@ public abstract class Configuration {
 	// the url of the API
 	/** The Constant API_URL. */
 	public static final String API_URL = "http://www.tastekid.com/ask/ws/";
-
+	/** The constant YOUTUBE_API_KEY *. */
+	public static final String YOUTUBE_API_KEY = "YOUR YOUTUBE API KEY";
 
 }

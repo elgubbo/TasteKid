@@ -6,7 +6,7 @@ import com.elgubbo.tastekid.adapter.CardListArrayAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.elgubbo.tastekid.listener.ItemButtonClickListener;
-import com.elgubbo.tastekid.listener.ListItemClickListener;
+import com.elgubbo.tastekid.listener.CardListItemClickListener;
 import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
@@ -44,8 +44,13 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 
 		SectionFragment fragment = new SectionFragment();
 		fragment.position = position;
-		fragment.results = new ArrayList<Result>();
-		fragment.info = new ArrayList<Result>();
+		if(ResultManager.getInstance().resultsAvailable()){
+			fragment.results = ResultManager.getInstance().getResultsByPosition(position);
+			fragment.info = ResultManager.getInstance().getInfo();
+		}else{
+			fragment.results = new ArrayList<Result>();
+			fragment.info = new ArrayList<Result>();
+		}
 		return fragment;
 	}
 	
@@ -380,7 +385,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		swingBottomInAnimationAdapter.setAbsListView(listView);
 		setupHeader();
 		listView.setAdapter(swingBottomInAnimationAdapter);
-		listView.setOnItemClickListener(new ListItemClickListener());
+		listView.setOnItemClickListener(new CardListItemClickListener());
 
 	}
 	

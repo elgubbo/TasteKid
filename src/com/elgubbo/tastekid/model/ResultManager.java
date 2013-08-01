@@ -1,7 +1,9 @@
 package com.elgubbo.tastekid.model;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.util.Log;
@@ -14,6 +16,7 @@ import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -164,13 +167,31 @@ public class ResultManager implements RequestListener<ApiResponse> {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public List<Result> getFavouriteResults() {
 		List<Result> results = null;
 		try {
 			Dao<Result, Integer> resultDao = getHelper().getResultDao();
 			results = resultDao.query(resultDao.queryBuilder().where()
 					.eq("favourite", true).prepare());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
+	public List<ApiResponse> getRecentSearches(){
+		List<ApiResponse> results = new ArrayList<ApiResponse>();
+		try {
+			Dao<ApiResponse, Integer> apiResponseDao = getHelper().getApiResponseDao();
+			QueryBuilder<ApiResponse, Integer> apiResponseQuery = apiResponseDao.queryBuilder();
+			apiResponseQuery.orderBy("_id", false);
+			List<ApiResponse> temp = apiResponseDao.query(apiResponseQuery.prepare());
+			for(int i = 0; i<Configuration.RECENT_SEARCH_COUNT; i++){
+				if(temp.size() > i)
+					results.add(temp.get(i));
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

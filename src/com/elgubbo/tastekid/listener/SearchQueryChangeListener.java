@@ -1,9 +1,11 @@
 package com.elgubbo.tastekid.listener;
 
 import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.SectionFragment;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.TasteKidApp;
+import com.elgubbo.tastekid.adapter.RecentSearchesArrayAdapter;
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.elgubbo.tastekid.model.ResultManager;
@@ -13,6 +15,7 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
@@ -58,6 +61,15 @@ public class SearchQueryChangeListener implements
 	 */
 	@Override
 	public boolean onQueryTextSubmit(String query) {
+		TasteKidActivity tasteKidActivity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
+		MenuItem searchItem = tasteKidActivity.getMenu().findItem(R.id.action_search);
+		searchItem.collapseActionView();
+		
+		RecentSearchesArrayAdapter recentsAdapter = (RecentSearchesArrayAdapter) tasteKidActivity.getRecentListView().getAdapter();
+		recentsAdapter.clear();
+		recentsAdapter.addAll(ResultManager.getInstance().getRecentSearches());
+		recentsAdapter.notifyDataSetChanged();
+
 		InputMethodManager inputManager = 
 		        (InputMethodManager) TasteKidActivity.getAppContext().
 		            getSystemService(Context.INPUT_METHOD_SERVICE); 
