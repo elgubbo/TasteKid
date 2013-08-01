@@ -5,6 +5,8 @@ import java.util.Locale;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.SectionFragment;
 import com.elgubbo.tastekid.TasteKidActivity;
+import com.elgubbo.tastekid.TasteKidApp;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -70,7 +72,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 	 */
 	@Override
 	public int getCount() {
-		return 6;
+		return TasteKidApp.TYPE_ARRAY.length;
 	}
 
 	/**

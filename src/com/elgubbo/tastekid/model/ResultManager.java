@@ -33,17 +33,13 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	/** The call back. */
 	private static IResultsReceiver callBack;
 
-	/** The info. */
-	private static ArrayList<Result> info;
-
-	/** The results. */
-	private static ArrayList<Result> results;
-
 	/** The old query. */
 	private static String oldQuery;
 
 	/** The database helper. */
 	private DBHelper databaseHelper;
+
+	private ApiResponse apiResponse;
 
 	/**
 	 * Gets the single instance of ResultManager.
@@ -74,9 +70,7 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	public void sendResultsForQueryTo(IResultsReceiver callback, String query) {
 		callBack = callback;
 
-		if (query.equalsIgnoreCase(""))
-			return;
-		if (!query.equalsIgnoreCase(oldQuery)) {
+		if (!query.trim().equalsIgnoreCase(oldQuery) && !query.trim().equalsIgnoreCase("")) {
 			TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
 					.getActivityInstance();
 			activity.getSpiceManager().execute(
@@ -107,7 +101,9 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	 * @return true, if successful
 	 */
 	public boolean resultsAvailable() {
-		return (info != null && results != null) ? true : false;
+		if(apiResponse == null)
+			return false;
+		return (apiResponse.similar.info != null && apiResponse.similar.results != null) ? true : false;
 	}
 
 	/**
@@ -122,8 +118,8 @@ public class ResultManager implements RequestListener<ApiResponse> {
 
 		if (resultsAvailable()) {
 			if (type == null)
-				return results;
-			for (Result result : results) {
+				return (ArrayList<Result>) apiResponse.similar.results;
+			for (Result result : apiResponse.similar.results) {
 				if (result.type.equalsIgnoreCase(type)) {
 					filteredResults.add(result);
 				}
@@ -150,9 +146,11 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	 * @return the info
 	 */
 	public ArrayList<Result> getInfo() {
-		if (info == null)
-			info = new ArrayList<Result>();
-		return info;
+		if(apiResponse == null)
+			return new ArrayList<Result>();
+		if (apiResponse.similar.info == null)
+			apiResponse.similar.info = new ArrayList<Result>();
+		return (ArrayList<Result>) apiResponse.similar.info;
 	}
 
 	/*
@@ -208,10 +206,11 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	 */
 	@Override
 	public void onRequestSuccess(ApiResponse apiResponse) {
+		this.apiResponse = apiResponse;;
 		String error = null;
 		if (apiResponse.error == null) {
-			info = apiResponse.similar.getInfo();
-			results = apiResponse.similar.getResults();
+			apiResponse.similar.info = apiResponse.similar.getInfo();
+			apiResponse.similar.results = apiResponse.similar.getResults();
 		} else {
 			error = apiResponse.error;
 			if (Configuration.DEVMODE)
@@ -224,5 +223,10 @@ public class ResultManager implements RequestListener<ApiResponse> {
 			callBack.onResultsReady();
 		}
 	}
+
+	public ApiResponse getApiResponse() {
+		return apiResponse;
+	}
+
 
 }

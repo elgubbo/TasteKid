@@ -7,6 +7,7 @@ import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.elgubbo.tastekid.listener.ItemButtonClickListener;
 import com.elgubbo.tastekid.listener.CardListItemClickListener;
+import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
@@ -54,6 +55,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		return fragment;
 	}
 	
+	ApiResponse apiResponse;
 	/** The results. */
 	ArrayList<Result> results;
 	
@@ -153,7 +155,7 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		TextView title = (TextView) infoLayout.findViewById(R.id.title);
 		TextView description = (TextView) infoLayout
 				.findViewById(R.id.description);
-		title.setText("No results for " + TasteKidApp.getCurrentQuery());
+		title.setText("No results for " + ResultManager.getInstance().getApiResponse().query);
 		description.setText("Try searching for something different");
 		infoLayout.setVisibility(View.VISIBLE);
 		helpLayout.setVisibility(View.GONE);

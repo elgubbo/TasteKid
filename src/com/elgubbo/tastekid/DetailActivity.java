@@ -20,13 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 /**
  * The Class DetailActivity.
@@ -48,7 +45,8 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(R.anim.bottom_side_slide_out, R.anim.right_slide_out);
+		overridePendingTransition(R.anim.bottom_side_slide_out,
+				R.anim.right_slide_out);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		if (savedInstanceState != null) {
@@ -111,18 +109,20 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 							e1.printStackTrace();
 						}
 						buttonView.setChecked(result.favourite);
-						TasteKidActivity tastekidActivity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
-						FavouriteResultArrayAdapter adapter = (FavouriteResultArrayAdapter) tastekidActivity.getFavouriteListView().getAdapter();
+						TasteKidActivity tastekidActivity = (TasteKidActivity) TasteKidActivity
+								.getActivityInstance();
+						FavouriteResultArrayAdapter adapter = (FavouriteResultArrayAdapter) tastekidActivity
+								.getFavouriteListView().getAdapter();
 						adapter.clear();
-						adapter.addAll(ResultManager.getInstance().getFavouriteResults());
+						adapter.addAll(ResultManager.getInstance()
+								.getFavouriteResults());
 						adapter.notifyDataSetChanged();
 					}
 				});
 		description.setText(result.wTeaser);
-		
+
 		ImageView iconView = (ImageView) findViewById(R.id.iconView);
-		iconView.setBackgroundResource(TasteKidApp.ICON_MAP
-				.get(result.type) != null ? TasteKidApp.ICON_MAP
+		iconView.setBackgroundResource(TasteKidApp.ICON_MAP.get(result.type) != null ? TasteKidApp.ICON_MAP
 				.get(result.type) : 0);
 	}
 
@@ -154,18 +154,18 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	protected YouTubePlayer.Provider getYouTubePlayerProvider() {
 		return (YouTubePlayerView) findViewById(R.id.youtube_view);
 	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) { 
-	        switch (item.getItemId()) {
-	        case android.R.id.home: 
-	            onBackPressed();
-	            return true;
-	        }
 
-	    return super.onOptionsItemSelected(item);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -173,35 +173,37 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    // Inflate menu resource file.
-	    getMenuInflater().inflate(R.menu.detail, menu);
+		// Inflate menu resource file.
+		getMenuInflater().inflate(R.menu.detail, menu);
 
-	    // Locate MenuItem with ShareActionProvider
-	    MenuItem item = menu.findItem(R.id.menu_item_share);
+		// Locate MenuItem with ShareActionProvider
+		MenuItem item = menu.findItem(R.id.menu_item_share);
 
-	    // Fetch and store ShareActionProvider
-	    ShareActionProvider mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+		// Fetch and store ShareActionProvider
+		ShareActionProvider mShareActionProvider = (ShareActionProvider) item
+				.getActionProvider();
 
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
 		shareIntent.setType("text/plain");
-		String shareBody = "Check out this cool "+result.type+" i found with the TasteKid for Android app!";
-		if(result.yUrl != null && !result.yUrl.trim().equalsIgnoreCase(""))
-			shareBody+="Youtube link:"+result.yUrl;
-		shareBody+="Wiki link: "+result.wUrl;
-		String shareHeader = "I have a "+result.type+" recommendation!";
-		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,shareHeader);
+		String shareBody = "Check out this cool " + result.type
+				+ " i found with the TasteKid for Android app!";
+		if (result.yUrl != null && !result.yUrl.trim().equalsIgnoreCase(""))
+			shareBody += "Youtube link:" + result.yUrl;
+		shareBody += "Wiki link: " + result.wUrl;
+		String shareHeader = "I have a " + result.type + " recommendation!";
+		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareHeader);
 		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-		
+
 		mShareActionProvider.setShareIntent(shareIntent);
-	    // Return true to display menu
-	    return true;
+		// Return true to display menu
+		return true;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
-	    finish();
-	    overridePendingTransition(R.anim.right_slide_in, R.anim.bottom_side_slide_in);
+		finish();
+		overridePendingTransition(R.anim.right_slide_in,
+				R.anim.bottom_side_slide_in);
 	}
-	
 
 }
