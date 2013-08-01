@@ -15,6 +15,9 @@ public abstract class Configuration {
 	 * This value toggles the app specific logging on and off
 	 */
 	public static final boolean DEVMODE = true;
+	
+		public static final int RECENT_SEARCH_COUNT = 40;
+	
 
 
 	/*
