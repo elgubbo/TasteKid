@@ -54,6 +54,12 @@
             android:textColor="@android:color/white" />
     </LinearLayout>
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/dark_grey" />
+
     <LinearLayout
         android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
@@ -66,7 +72,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:background="@drawable/buttons_background_header"
             android:clickable="true"
             android:padding="4dp" >
 
@@ -92,7 +97,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:background="@drawable/buttons_background_header"
             android:clickable="true"
             android:padding="4dp" >
 

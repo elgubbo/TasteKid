@@ -2,6 +2,7 @@ package com.elgubbo.tastekid.adapter;
 
 import java.util.Locale;
 
+import com.elgubbo.tastekid.Configuration;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.SectionFragment;
 import com.elgubbo.tastekid.TasteKidActivity;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.SparseArray;
 
 // TODO: Auto-generated Javadoc
@@ -54,12 +56,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		if (fragmentHolder.get(position) != null)
 			return fragmentHolder.get(position);
 		else {
+			if(Configuration.DEVMODE)
+				Log.d("TasteKid", "Creating new fragment on position: "+position);
 			Fragment fragment = SectionFragment.init(position);
-			/*
-			 * Bundle b = new Bundle(); b.putInt("position", position);
-			 * fragment.setArguments(b);
-			 */
-			// fragment.setRetainInstance(true);
 			fragmentHolder.append(position, fragment);
 			return fragment;
 		}

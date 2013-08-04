@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -82,6 +83,20 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 			if(result!=null){
 				similarDao.refresh(result.similar);
 				apiResponseDao.refresh(result);
+				//TODO BAD BAD BAD - just a temporary fix.
+				ArrayList<Result> newInfo = new ArrayList<Result>();
+				ArrayList<Result> newResults = new ArrayList<Result>();
+				for (Result res : result.similar.getInfo()) {
+					if(res.isInfo)
+						newInfo.add(res);
+				}
+				for (Result resres : result.similar.getResults()) {
+					if(!resres.isInfo)
+						newResults.add(resres);
+				}
+				result.similar.setInfo(newInfo);
+				result.similar.setResults(newResults);
+				Log.d("TasteKid", "Info in loadFromdatabase is: "+result.similar.getInfo().size());
 			}
 			return result;
 		} catch (SQLException e) {
@@ -112,6 +127,7 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 
 			for (Result info : apiResponse.similar.getInfo()) {
 				info.parent = apiResponse.similar;
+				info.isInfo = true;
 				info.setCreated(currentTime);
 				resultDao.create(info);
 			}
@@ -157,33 +173,6 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 		return get;
 	}
 
-	/**
-	 * Builds the url from get request
-	 * 
-	 * @param prefix
-	 *            will be prefixed to the url
-	 * @param mapcontex
-	 *            a hashmap containing key,value pairs for the request url
-	 * @return the HttpGet representing the get call to the api
-	 */
-	private static String buildUrlString(String prefix,
-			HashMap<String, String> map) {
-		String urlString = (prefix == null) ? Configuration.API_URL
-				: Configuration.API_URL + prefix;
-		urlString += "?" + "k=" + Configuration.API_K;
-		urlString += "&" + "f=" + Configuration.API_F;
-		// urlString += "&" + "format=JSON";
-		urlString += "&" + "verbose=1";
-		// add keys to urlString if needed
-		if (map.containsKey("q")) {
-			urlString += "&q=" + map.get("q").replaceAll("_", "+");
-		}
-
-		if (Configuration.DEVMODE) {
-			Log.d("APIWRAPPER", "the url string is: " + urlString);
-		}
-		return urlString;
-	}
 
 	/**
 	 * Gets the request.

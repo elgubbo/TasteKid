@@ -45,8 +45,12 @@ public class SearchQueryChangeListener implements
 		this.lastSearches = new SparseArray<String>();
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.SearchView.OnQueryTextListener#onQueryTextChange(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.SearchView.OnQueryTextListener#onQueryTextChange(java.
+	 * lang.String)
 	 */
 	@Override
 	public boolean onQueryTextChange(String newText) {
@@ -56,31 +60,40 @@ public class SearchQueryChangeListener implements
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.SearchView.OnQueryTextListener#onQueryTextSubmit(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.SearchView.OnQueryTextListener#onQueryTextSubmit(java.
+	 * lang.String)
 	 */
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-		TasteKidActivity tasteKidActivity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
-		MenuItem searchItem = tasteKidActivity.getMenu().findItem(R.id.action_search);
-		searchItem.collapseActionView();
-		
-		RecentSearchesArrayAdapter recentsAdapter = (RecentSearchesArrayAdapter) tasteKidActivity.getRecentListView().getAdapter();
+		TasteKidApp.setCurrentQuery(query);
+
+		TasteKidActivity tasteKidActivity = (TasteKidActivity) TasteKidActivity
+				.getActivityInstance();
+			MenuItem searchItem = tasteKidActivity.getMenu().findItem(
+					R.id.action_search);
+			searchItem.collapseActionView();
+
+		RecentSearchesArrayAdapter recentsAdapter = (RecentSearchesArrayAdapter) tasteKidActivity
+				.getRecentListView().getAdapter();
 		recentsAdapter.clear();
 		recentsAdapter.addAll(ResultManager.getInstance().getRecentSearches());
 		recentsAdapter.notifyDataSetChanged();
 
-		InputMethodManager inputManager = 
-		        (InputMethodManager) TasteKidActivity.getAppContext().
-		            getSystemService(Context.INPUT_METHOD_SERVICE); 
-		inputManager.hideSoftInputFromWindow(
-		        ((Activity) TasteKidActivity.getActivityInstance()).getCurrentFocus().getWindowToken(),
-		        InputMethodManager.HIDE_NOT_ALWAYS); 
+		InputMethodManager inputManager = (InputMethodManager) TasteKidActivity
+				.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		inputManager.hideSoftInputFromWindow(((Activity) TasteKidActivity
+				.getActivityInstance()).getCurrentFocus().getWindowToken(),
+				InputMethodManager.HIDE_NOT_ALWAYS);
+
 		SectionFragment currentFragment = (SectionFragment) mSectionsPagerAdapter
 				.getActiveFragment(mViewPager, mViewPager.getCurrentItem());
-		TasteKidApp.setCurrentQuery(query);
 		this.position = currentFragment.getPosition();
-		if(lastSearches.get(position, "").equals(query)){
+		if (lastSearches.get(position, "").equals(query)) {
 			return false;
 		}
 		if (query.trim().equalsIgnoreCase("")) {
@@ -92,12 +105,13 @@ public class SearchQueryChangeListener implements
 		currentFragment.showLoadingBar();
 
 		String type = TasteKidApp.TYPE_ARRAY[position];
-		
+
 		if (Configuration.DEVMODE) {
 			Log.d("TasteKid", "Position is:" + this.position);
 			Log.d("TasteKid", "type is: " + type);
 		}
-		ResultManager.getInstance().sendResultsForQueryTo((IResultsReceiver) currentFragment, query);
+		ResultManager.getInstance().sendResultsForQueryTo(
+				(IResultsReceiver) currentFragment, query);
 
 		lastSearches.append(position, query);
 		return true;

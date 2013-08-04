@@ -37,6 +37,8 @@ public class Result implements Parcelable {
 	Timestamp created;
 	@DatabaseField
 	public boolean favourite;
+	@DatabaseField
+	public boolean isInfo;
 
 	public Result() {
 		// no args constructor
@@ -44,7 +46,7 @@ public class Result implements Parcelable {
 
 	public Result(int id, String name, String type, String wTeaser,
 			String wUrl, String yTitle, String yUrl, String yID, Similar parentId,
-			Timestamp created, boolean favourite) {
+			Timestamp created, boolean favourite, boolean isInfo) {
 		this._id = id;
 		this.name = name;
 		this.type = type;
@@ -56,6 +58,7 @@ public class Result implements Parcelable {
 		this.parent = parentId;
 		this.setCreated(created);
 		this.favourite = favourite;
+		this.isInfo = isInfo;
 	}
 
 	public Result(Parcel parcel) {
@@ -68,7 +71,7 @@ public class Result implements Parcelable {
 		yUrl = parcel.readString();
 		yID = parcel.readString();
 		favourite = parcel.readInt() == 0 ? false : true;
-
+		isInfo = parcel.readInt() == 0 ? false : true;;
 	}
 	
 	public String toString(){
@@ -92,6 +95,7 @@ public class Result implements Parcelable {
 		dest.writeString(yUrl);
 		dest.writeString(yID);
 		dest.writeInt(favourite ? 1 : 0);
+		dest.writeInt(isInfo ? 1 : 0);
 		// todo think of date solution
 	}
 

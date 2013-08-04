@@ -45,6 +45,7 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+			
 		overridePendingTransition(R.anim.bottom_side_slide_out,
 				R.anim.right_slide_out);
 		ActionBar actionBar = getActionBar();
@@ -60,7 +61,11 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 			Log.d("TasteKid", "Result passed to Popup is: " + result.name);
 		setContentView(R.layout.activity_detail);
 		setupViews();
-
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle b){
+		b.putParcelable("result", this.result);
 	}
 
 	/**
@@ -186,14 +191,14 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
 		shareIntent.setType("text/plain");
 		String shareBody = "Check out this cool " + result.type
-				+ " i found with the TasteKid for Android app!";
+				+ " i found with the TasteKid for Android app! ";
 		if (result.yUrl != null && !result.yUrl.trim().equalsIgnoreCase(""))
-			shareBody += "Youtube link:" + result.yUrl;
-		shareBody += "Wiki link: " + result.wUrl;
-		String shareHeader = "I have a " + result.type + " recommendation!";
-		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareHeader);
+			shareBody += "This is the trailer " + result.yUrl;
+		shareBody += " ,and here is the link to the wikipedia entry " + result.wUrl;
+		String shareHeader = "I have a " + result.type + " recommendation for you!";
+		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+				shareHeader);
 		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-
 		mShareActionProvider.setShareIntent(shareIntent);
 		// Return true to display menu
 		return true;

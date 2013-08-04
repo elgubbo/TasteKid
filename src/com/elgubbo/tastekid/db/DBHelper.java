@@ -26,7 +26,7 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 	private static final String DATABASE_NAME = "results.db";
 
 	/** The Constant DATABASE_VERSION. */
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	// the DAO object we use to access the Result table
 	/** The result dao. */

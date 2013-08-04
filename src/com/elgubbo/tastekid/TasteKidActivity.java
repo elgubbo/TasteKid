@@ -7,17 +7,17 @@ import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.listener.FavouriteItemClickListener;
 import com.elgubbo.tastekid.listener.RecentSearchItemClickListener;
 import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
+import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -92,6 +92,15 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			TasteKidApp.setCurrentQuery(savedInstanceState.getString("query"));
+			ApiResponse restoredResponse = (ApiResponse)
+					savedInstanceState.getParcelable("apiResponse");
+			if(restoredResponse!=null){
+				ResultManager.getInstance().setApiResponse(restoredResponse);
+			}
+
+		}
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setBehindContentView(R.layout.slidingmenu);
 
@@ -130,15 +139,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 								.getParent();
 						findAndUpdateSpinner(root, position);
 
-						if (mSearchView != null) {
-							if (Configuration.DEVMODE)
-								Log.d("TasteKid", "searchQuery is: "
-										+ mSearchView.getQuery().toString());
-							mSearchQueryChangeListener
-									.onQueryTextSubmit(mSearchView.getQuery()
-											.toString());
-						}
-
 					}
 				});
 
@@ -155,7 +155,26 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 		// set up the sidebar
 		setupSlidingMenu();
+
 	}
+
+	@Override
+	public void onSaveInstanceState(Bundle b) {
+		b.putString("query", TasteKidApp.getCurrentQuery());
+		b.putParcelable("apiResponse", ResultManager.getInstance()
+				.getApiResponse());
+		super.onSaveInstanceState(b);
+	}
+
+	// @Override
+	// public void onRestoreInstanceState(Bundle b){
+	// SectionFragment currentFragment = (SectionFragment) mSectionsPagerAdapter
+	// .getActiveFragment(mViewPager, mViewPager.getCurrentItem());
+	// ResultManager.getInstance().restoreApiResponseFromQuery(
+	// TasteKidApp.getCurrentQuery());
+	// currentFragment.onResultsReady();
+	// super.onRestoreInstanceState(b);
+	// }
 
 	private void setupSlidingMenu() {
 		// configure the SlidingMenu
@@ -179,7 +198,8 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		recentListView.setAdapter(new RecentSearchesArrayAdapter(this,
 				R.layout.sidebar_list_item, ResultManager.getInstance()
 						.getRecentSearches()));
-		recentListView.setOnItemClickListener(new RecentSearchItemClickListener());
+		recentListView
+				.setOnItemClickListener(new RecentSearchItemClickListener());
 	}
 
 	/**
@@ -255,6 +275,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		mSearchView = (SearchView) searchItem.getActionView();
 
 		setupSearchView(searchItem);
+
 		return true;
 	}
 
@@ -295,27 +316,10 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	 *            the new up search view
 	 */
 	private void setupSearchView(MenuItem searchItem) {
-
-		SearchManager mSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
 		mSearchView.setSubmitButtonEnabled(true);
-		mSearchView.setSearchableInfo(mSearchManager
-				.getSearchableInfo(getComponentName()));
-		if (mSearchManager != null) {
-			// List<SearchableInfo> searchables = searchManager
-			// .getSearchablesInGlobalSearch();
-			//
-			// SearchableInfo info = searchManager
-			// .getSearchableInfo(getComponentName());
-			// for (SearchableInfo inf : searchables) {
-			// if (inf.getSuggestAuthority() != null
-			// && inf.getSuggestAuthority().startsWith("applications")) {
-			// info = inf;
-			// }
-			// }
-			// mSearchView.setSearchableInfo(info);
-		}
+
 		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
+
 	}
 
 	/*
@@ -357,17 +361,17 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	    case android.R.id.home:
-	        toggle();
-	        return true;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			toggle();
+			return true;
 
-	    default:
-	        return super.onOptionsItemSelected(item);
-	    }
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 }

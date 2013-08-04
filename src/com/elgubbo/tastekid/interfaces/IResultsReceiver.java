@@ -21,4 +21,5 @@ public interface IResultsReceiver {
 	 *            the error
 	 */
 	public void onErrorReceived(String error);
+
 }

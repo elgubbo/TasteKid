@@ -16,6 +16,7 @@ import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -33,6 +34,10 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	/** The call back. */
 	private static IResultsReceiver callBack;
 
+	public static void setCallBack(IResultsReceiver callBack) {
+		ResultManager.callBack = callBack;
+	}
+
 	/** The old query. */
 	private static String oldQuery;
 
@@ -40,6 +45,10 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	private DBHelper databaseHelper;
 
 	private ApiResponse apiResponse;
+
+	public void setApiResponse(ApiResponse apiResponse) {
+		this.apiResponse = apiResponse;
+	}
 
 	/**
 	 * Gets the single instance of ResultManager.
@@ -93,6 +102,46 @@ public class ResultManager implements RequestListener<ApiResponse> {
 					TasteKidActivity.getAppContext(), DBHelper.class);
 		}
 		return databaseHelper;
+	}
+	
+	//TODO duplicate code to TasteKidSpiceRequest.loadfromdatabase()
+	public void restoreApiResponseFromQuery(String query){
+		if(query==null)
+			return;
+		Dao<ApiResponse, Integer> apiResponseDao;
+		DBHelper databaseHelper = OpenHelperManager.getHelper(
+				TasteKidActivity.getAppContext(), DBHelper.class);
+		Dao<Similar, Integer> similarDao;
+
+		PreparedQuery<ApiResponse> dbQuery;
+		try {
+			apiResponseDao = databaseHelper.getApiResponseDao();
+			similarDao = databaseHelper.getSimilarDao();
+			dbQuery = apiResponseDao.queryBuilder().where().eq("query", query)
+					.prepare();
+			ApiResponse result =  apiResponseDao.queryForFirst(dbQuery);
+			if(result!=null){
+				similarDao.refresh(result.similar);
+				apiResponseDao.refresh(result);
+				//TODO BAD BAD BAD - just a temporary fix.
+				ArrayList<Result> newInfo = new ArrayList<Result>();
+				ArrayList<Result> newResults = new ArrayList<Result>();
+				for (Result res : result.similar.getInfo()) {
+					if(res.isInfo)
+						newInfo.add(res);
+				}
+				for (Result resres : result.similar.getResults()) {
+					if(!resres.isInfo)
+						newResults.add(resres);
+				}
+				result.similar.setInfo(newInfo);
+				result.similar.setResults(newResults);
+			}
+			this.apiResponse = result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -177,6 +226,18 @@ public class ResultManager implements RequestListener<ApiResponse> {
 			e.printStackTrace();
 		}
 		return results;
+	}
+	
+	public Result getResultById(int id) {
+		Result result = null;
+		try {
+			Dao<Result, Integer> resultDao = getHelper().getResultDao();
+			result = resultDao.queryForId(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	public List<ApiResponse> getRecentSearches(){

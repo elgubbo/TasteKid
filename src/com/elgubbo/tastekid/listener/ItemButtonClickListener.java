@@ -77,11 +77,11 @@ public class ItemButtonClickListener implements OnClickListener {
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType("text/plain");
 			String shareBody = "Check out this cool " + result.type
-					+ " i found with the TasteKid for Android app!";
+					+ " i found with the TasteKid for Android app! ";
 			if (result.yUrl != null && !result.yUrl.trim().equalsIgnoreCase(""))
-				shareBody += "Youtube link:" + result.yUrl;
-			shareBody += "Wiki link: " + result.wUrl;
-			String shareHeader = "I have a " + result.type + " recommendation!";
+				shareBody += "This is the trailer " + result.yUrl;
+			shareBody += " ,and here is the link to the wikipedia entry " + result.wUrl;
+			String shareHeader = "I have a " + result.type + " recommendation for you!";
 			shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
 					shareHeader);
 			shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
