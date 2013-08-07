@@ -21,6 +21,7 @@ public class RecentSearchItemClickListener implements OnItemClickListener{
 		
 		TasteKidActivity tasteKidAcitivity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
 		tasteKidAcitivity.getmSearchView().setQuery(res.query, true);
+		tasteKidAcitivity.getmDrawerLayout().closeDrawers();
 	}
 
 }

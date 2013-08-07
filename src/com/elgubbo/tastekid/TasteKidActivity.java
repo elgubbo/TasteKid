@@ -13,7 +13,6 @@ import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
 import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -24,11 +23,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
@@ -70,9 +71,13 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	/** the Recent searches listview **/
 	ListView recentListView;
 	
-    private DrawerLayout mDrawerLayout;
+    DrawerLayout mDrawerLayout;
 
 	
+	public DrawerLayout getmDrawerLayout() {
+		return mDrawerLayout;
+	}
+
 	/** The app context. */
 	private static Context appContext;
 
@@ -136,6 +141,8 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 			}
 		}
 	};
+
+	private ActionBarDrawerToggle mDrawerToggle;
 
 	/**
 	 * Searches the view hierarchy excluding the content view for a possible
@@ -240,10 +247,20 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		actionBar.setSubtitle("explore your taste");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
 
 		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer icon to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description */
+                R.string.drawer_close  /* "close drawer" description */
+                );
+        
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -305,6 +322,20 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		if (Configuration.DEVMODE)
 			ViewServer.get(this).addWindow(this);
 	}
+	
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+    
+    @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
 
 	/*
 	 * (non-Javadoc)
@@ -347,14 +378,11 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-//			toggle();
-			return true;
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+          }
 
-		default:
 			return super.onOptionsItemSelected(item);
-		}
 	}
 
 	@Override
