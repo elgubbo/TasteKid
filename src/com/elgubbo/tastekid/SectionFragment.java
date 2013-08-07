@@ -13,9 +13,14 @@ import com.elgubbo.tastekid.model.ResultManager;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import android.app.ActionBar.LayoutParams;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -33,7 +38,7 @@ import android.widget.TextView;
  * 
  * @author alexander reichert
  */
-public class SectionFragment extends Fragment implements IResultsReceiver {
+public class SectionFragment extends Fragment {
 
 	/**
 	 * Inits the.
@@ -48,9 +53,9 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 
 		SectionFragment fragment = new SectionFragment();
 		fragment.position = position;
-		fragment.results = ResultManager.getInstance().getResultsByPosition(
-				position);
-		fragment.info = ResultManager.getInstance().getInfo();
+		// fragment.results = ResultManager.getInstance().getResultsByPosition(
+		// position);
+		// fragment.info = ResultManager.getInstance().getInfo();
 
 		return fragment;
 	}
@@ -97,6 +102,23 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	private DBHelper databaseHelper;
 	private SwingBottomInAnimationAdapter swingBottomInAnimationAdapter;
 	private CardListItemClickListener listItemClickListener;
+
+	// handler for received Intents for the "my-event" event
+	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// Extract data included in the Intent
+			String error =null;
+			if(intent.getExtras() != null)
+			error = intent.getExtras().getString("error");
+			if (error != null) {
+				onErrorReceived(error);
+			} else {
+				onResultsReady();
+
+			}
+		}
+	};
 
 	/**
 	 * Adds the on click listener to buttons.
@@ -298,7 +320,6 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	 * com.elgubbo.tastekid.interfaces.IResultsReceiver#onErrorReceived(java
 	 * .lang.String)
 	 */
-	@Override
 	public void onErrorReceived(String error) {
 		headerLayout.removeView(errorLayout);
 		errorLayout.setBackgroundColor(getResources().getColor(
@@ -316,21 +337,37 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		hideLoadingBar();
 	}
 
+	@Override
+	public void onPause() {
+		// Unregister since the activity is not visible
+		LocalBroadcastManager.getInstance(
+				TasteKidActivity.getActivityInstance()).unregisterReceiver(
+				mMessageReceiver);
+		super.onPause();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.elgubbo.tastekid.interfaces.IResultsReceiver#onResultsReady()
 	 */
-	@Override
 	public void onResultsReady() {
 		results = TasteKidApp.resultManager.getResultsByPosition(position);
 		info = TasteKidApp.resultManager.getInfo();
-		if(adapter==null)
-			Log.d("TasteKid", "Adapter is NULL");
 		adapter.clear();
 		adapter.addAll(results);
 		updateCards();
 		hideLoadingBar();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		// Register mMessageReceiver to receive messages.
+		LocalBroadcastManager.getInstance(
+				TasteKidActivity.getActivityInstance()).registerReceiver(
+				mMessageReceiver, new IntentFilter("update-event"));
 	}
 
 	/*
@@ -398,17 +435,14 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 	private void setupListView() {
 		listView = (ListView) rootView.findViewById(R.id.cardListView);
 
-		// TODO find a way to recycle the adapters
-		if (adapter == null) {
-			adapter = new CardListArrayAdapter(
-					TasteKidActivity.getAppContext(), results);
+		adapter = new CardListArrayAdapter(TasteKidActivity.getAppContext(),
+				results);
 
-			swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
-					adapter);
-			swingBottomInAnimationAdapter.setAbsListView(listView);
-			listItemClickListener = new CardListItemClickListener();
+		swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
+				adapter);
+		swingBottomInAnimationAdapter.setAbsListView(listView);
+		listItemClickListener = new CardListItemClickListener();
 
-		}
 		setupHeader();
 		listView.setOnItemClickListener(listItemClickListener);
 		listView.setAdapter(swingBottomInAnimationAdapter);
@@ -460,6 +494,5 @@ public class SectionFragment extends Fragment implements IResultsReceiver {
 		adapter.notifyDataSetChanged();
 		listView.smoothScrollToPosition(0);
 	}
-
 
 }

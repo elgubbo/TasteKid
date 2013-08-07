@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 
 import android.util.Log;
@@ -27,11 +28,61 @@ import com.octo.android.robospice.request.SpiceRequest;
 
 public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 
+	/**
+	 * Builds the url from get request
+	 * 
+	 * @param prefix
+	 *            will be prefixed to the url
+	 * @param mapcontex
+	 *            a hashmap containing key,value pairs for the request url
+	 * @return the HttpGet representing the get call to the api
+	 */
+	private static HttpGet buildHttpGet(String prefix,
+			HashMap<String, String> map) {
+		String urlString = (prefix == null) ? Configuration.API_URL
+				: Configuration.API_URL + prefix;
+		urlString += "?" + "k=" + Configuration.API_K;
+		urlString += "&" + "f=" + Configuration.API_F;
+		urlString += "&" + "format=JSON";
+		urlString += "&" + "verbose=1";
+		// add keys to urlString if needed
+		if (map.containsKey("q")) {
+			urlString += "&q=" + map.get("q").replaceAll("_", "%20");
+		}
+
+		if (Configuration.DEVMODE) {
+			Log.d("APIWRAPPER", "the url string is: " + urlString);
+		}
+		HttpGet get = new HttpGet(urlString);
+		return get;
+	}
+
 	String query;
 
 	public TasteKidSpiceRequest(Class<ApiResponse> clazz, String query) {
 		super(clazz);
 		this.query = query.trim();
+	}
+
+	/**
+	 * Gets the request.
+	 * 
+	 * @param url
+	 *            the url
+	 * @return the request
+	 * @throws IOException
+	 */
+	private String getRequest(HttpGet get) throws IOException {
+		// TODO implement error handling!!
+		String json = "";
+		HashMap<Integer, String> hashMap = UnsecureHttpClient
+				.executeForResponse(get);
+		if (hashMap.get(200) == null) {
+			UnsecureHttpClient.handleErrors(hashMap);
+		} else {
+			return hashMap.get(200);
+		}
+		return json;
 	}
 
 	@Override
@@ -106,6 +157,7 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 		return null;
 	}
 
+
 	private boolean saveToDatabase(ApiResponse apiResponse) {
 		// Save similar
 		DBHelper databaseHelper = OpenHelperManager.getHelper(
@@ -142,57 +194,6 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Builds the url from get request
-	 * 
-	 * @param prefix
-	 *            will be prefixed to the url
-	 * @param mapcontex
-	 *            a hashmap containing key,value pairs for the request url
-	 * @return the HttpGet representing the get call to the api
-	 */
-	private static HttpGet buildHttpGet(String prefix,
-			HashMap<String, String> map) {
-		String urlString = (prefix == null) ? Configuration.API_URL
-				: Configuration.API_URL + prefix;
-		urlString += "?" + "k=" + Configuration.API_K;
-		urlString += "&" + "f=" + Configuration.API_F;
-		urlString += "&" + "format=JSON";
-		urlString += "&" + "verbose=1";
-		// add keys to urlString if needed
-		if (map.containsKey("q")) {
-			urlString += "&q=" + map.get("q").replaceAll("_", "%20");
-		}
-
-		if (Configuration.DEVMODE) {
-			Log.d("APIWRAPPER", "the url string is: " + urlString);
-		}
-		HttpGet get = new HttpGet(urlString);
-		return get;
-	}
-
-
-	/**
-	 * Gets the request.
-	 * 
-	 * @param url
-	 *            the url
-	 * @return the request
-	 * @throws IOException
-	 */
-	private String getRequest(HttpGet get) throws IOException {
-		// TODO implement error handling!!
-		String json = "";
-		HashMap<Integer, String> hashMap = UnsecureHttpClient
-				.executeForResponse(get);
-		if (hashMap.get(200) == null) {
-			UnsecureHttpClient.handleErrors(hashMap);
-		} else {
-			return hashMap.get(200);
-		}
-		return json;
 	}
 
 }

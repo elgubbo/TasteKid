@@ -33,6 +33,24 @@ public abstract class YouTubeFailureRecoveryActivity extends YouTubeBaseActivity
   /** The Constant RECOVERY_DIALOG_REQUEST. */
   private static final int RECOVERY_DIALOG_REQUEST = 1;
 
+  /**
+   * Gets the you tube player provider.
+   *
+   * @return the you tube player provider
+   */
+  protected abstract YouTubePlayer.Provider getYouTubePlayerProvider();
+
+  /* (non-Javadoc)
+   * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+   */
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == RECOVERY_DIALOG_REQUEST) {
+      // Retry initialization if user performed a recovery action
+      getYouTubePlayerProvider().initialize(Configuration.YOUTUBE_API_KEY, this);
+    }
+  }
+
   /* (non-Javadoc)
    * @see com.google.android.youtube.player.YouTubePlayer.OnInitializedListener#onInitializationFailure(com.google.android.youtube.player.YouTubePlayer.Provider, com.google.android.youtube.player.YouTubeInitializationResult)
    */
@@ -47,23 +65,5 @@ public abstract class YouTubeFailureRecoveryActivity extends YouTubeBaseActivity
       Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
   }
-
-  /* (non-Javadoc)
-   * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-   */
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == RECOVERY_DIALOG_REQUEST) {
-      // Retry initialization if user performed a recovery action
-      getYouTubePlayerProvider().initialize(Configuration.YOUTUBE_API_KEY, this);
-    }
-  }
-
-  /**
-   * Gets the you tube player provider.
-   *
-   * @return the you tube player provider
-   */
-  protected abstract YouTubePlayer.Provider getYouTubePlayerProvider();
 
 }

@@ -25,8 +25,6 @@ import org.apache.http.params.HttpParams;
 public class UnsecureSSLSocketFactory implements SocketFactory,
 		LayeredSocketFactory {
 
-	private SSLContext sslcontext = null;
-	
 	/**
 	 * Constructor for an easy SSL Context
 	 * @return easy SSL Context
@@ -44,18 +42,8 @@ public class UnsecureSSLSocketFactory implements SocketFactory,
 		}
 	}
 	
-	/**
-	 * Simple getter methode witch first Controll if the Contex exist or not
-	 * @return sslcontext
-	 * @throws IOException
-	 */
-	private SSLContext getSSLContext() throws IOException {
-		if (this.sslcontext == null) {
-			this.sslcontext = createEasySSLContext();
-		}
-		return this.sslcontext;
-	}
-
+	private SSLContext sslcontext = null;
+	
 	/**
 	 * @see org.apache.http.conn.scheme.SocketFactory#connectSocket(java.net.Socket,
 	 *      java.lang.String, int, java.net.InetAddress, int,
@@ -96,14 +84,6 @@ public class UnsecureSSLSocketFactory implements SocketFactory,
 	}
 
 	/**
-	 * @see org.apache.http.conn.scheme.SocketFactory#isSecure(java.net.Socket)
-	 */
-	@Override
-	public boolean isSecure(Socket socket) throws IllegalArgumentException {
-		return true;
-	}
-
-	/**
 	 * @see org.apache.http.conn.scheme.LayeredSocketFactory#createSocket(java.net.Socket,
 	 *      java.lang.String, int, boolean)
 	 */
@@ -125,9 +105,29 @@ public class UnsecureSSLSocketFactory implements SocketFactory,
 				UnsecureSSLSocketFactory.class));
 	}
 
+	/**
+	 * Simple getter methode witch first Controll if the Contex exist or not
+	 * @return sslcontext
+	 * @throws IOException
+	 */
+	private SSLContext getSSLContext() throws IOException {
+		if (this.sslcontext == null) {
+			this.sslcontext = createEasySSLContext();
+		}
+		return this.sslcontext;
+	}
+
 	@Override
 	public int hashCode() {
 		return UnsecureSSLSocketFactory.class.hashCode();
+	}
+
+	/**
+	 * @see org.apache.http.conn.scheme.SocketFactory#isSecure(java.net.Socket)
+	 */
+	@Override
+	public boolean isSecure(Socket socket) throws IllegalArgumentException {
+		return true;
 	}
 
 }

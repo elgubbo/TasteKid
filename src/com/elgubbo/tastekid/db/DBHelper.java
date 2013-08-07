@@ -51,6 +51,72 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 	}
 
 	/**
+	 * Close the database connections and clear any cached DAOs.
+	 */
+	@Override
+	public void close() {
+		super.close();
+		resultDao = null;
+		similarDao = null;
+		apiResponseDao = null;
+	}
+
+	/**
+	 * Returns the Database Access Object (DAO) for our Result class. It will
+	 * create it or just give the cached value.
+	 * 
+	 * @return the result dao
+	 * @throws SQLException
+	 *             the sQL exception
+	 * @throws SQLException
+	 *             the sQL exception
+	 */
+	public Dao<ApiResponse, Integer> getApiResponseDao() throws SQLException,
+			java.sql.SQLException {
+		if (apiResponseDao == null) {
+			apiResponseDao = getDao(ApiResponse.class);
+		}
+		return apiResponseDao;
+	}
+	
+	/**
+	 * Returns the Database Access Object (DAO) for our Result class. It will
+	 * create it or just give the cached value.
+	 * 
+	 * @return the result dao
+	 * @throws SQLException
+	 *             the sQL exception
+	 * @throws SQLException
+	 *             the sQL exception
+	 */
+	public Dao<Result, Integer> getResultDao() throws SQLException,
+			java.sql.SQLException {
+		if (resultDao == null) {
+			resultDao = getDao(Result.class);
+		}
+		return resultDao;
+	}
+
+	/**
+	 * Returns the Database Access Object (DAO) for our Result class. It will
+	 * create it or just give the cached value.
+	 * 
+	 * @return the result dao
+	 * @throws SQLException
+	 *             the sQL exception
+	 * @throws SQLException
+	 *             the sQL exception
+	 */
+	public Dao<Similar, Integer> getSimilarDao() throws SQLException,
+			java.sql.SQLException {
+		if (similarDao == null) {
+			similarDao = getDao(Similar.class);
+		}
+		return similarDao;
+	}
+
+
+	/**
 	 * This is called when the database is first created. Usually you should
 	 * call createTable statements here to create the tables that will store
 	 * your data.
@@ -74,61 +140,6 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 			throw new RuntimeException(e);
 		}
 	}
-
-	/**
-	 * Returns the Database Access Object (DAO) for our Result class. It will
-	 * create it or just give the cached value.
-	 * 
-	 * @return the result dao
-	 * @throws SQLException
-	 *             the sQL exception
-	 * @throws SQLException
-	 *             the sQL exception
-	 */
-	public Dao<Result, Integer> getResultDao() throws SQLException,
-			java.sql.SQLException {
-		if (resultDao == null) {
-			resultDao = getDao(Result.class);
-		}
-		return resultDao;
-	}
-	
-	/**
-	 * Returns the Database Access Object (DAO) for our Result class. It will
-	 * create it or just give the cached value.
-	 * 
-	 * @return the result dao
-	 * @throws SQLException
-	 *             the sQL exception
-	 * @throws SQLException
-	 *             the sQL exception
-	 */
-	public Dao<ApiResponse, Integer> getApiResponseDao() throws SQLException,
-			java.sql.SQLException {
-		if (apiResponseDao == null) {
-			apiResponseDao = getDao(ApiResponse.class);
-		}
-		return apiResponseDao;
-	}
-
-	/**
-	 * Returns the Database Access Object (DAO) for our Result class. It will
-	 * create it or just give the cached value.
-	 * 
-	 * @return the result dao
-	 * @throws SQLException
-	 *             the sQL exception
-	 * @throws SQLException
-	 *             the sQL exception
-	 */
-	public Dao<Similar, Integer> getSimilarDao() throws SQLException,
-			java.sql.SQLException {
-		if (similarDao == null) {
-			similarDao = getDao(Similar.class);
-		}
-		return similarDao;
-	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -155,17 +166,6 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 				Log.e(DBHelper.class.getName(), "Can't drop databases", e);
 			throw new RuntimeException(e);
 		}
-	}
-
-	/**
-	 * Close the database connections and clear any cached DAOs.
-	 */
-	@Override
-	public void close() {
-		super.close();
-		resultDao = null;
-		similarDao = null;
-		apiResponseDao = null;
 	}
 	
 

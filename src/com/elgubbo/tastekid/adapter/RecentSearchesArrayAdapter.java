@@ -25,6 +25,17 @@ public class RecentSearchesArrayAdapter extends ArrayAdapter<ApiResponse>{
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see android.widget.ArrayAdapter#getItem(int)
+	 */
+	@Override
+	public ApiResponse getItem(int position) {
+		if(results!=null && results.size()!=0)
+			return results.get(position);
+		else return null;
+	}
+
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) TasteKidActivity.getAppContext()
@@ -43,16 +54,5 @@ public class RecentSearchesArrayAdapter extends ArrayAdapter<ApiResponse>{
 		
 
 		return convertView;
-	}
-
-	
-	/* (non-Javadoc)
-	 * @see android.widget.ArrayAdapter#getItem(int)
-	 */
-	@Override
-	public ApiResponse getItem(int position) {
-		if(results!=null && results.size()!=0)
-			return results.get(position);
-		else return null;
 	}
 }

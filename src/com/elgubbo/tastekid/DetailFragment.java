@@ -59,6 +59,30 @@ public class DetailFragment extends Fragment implements OnInitializedListener {
 		return view;
 	}
 
+	@Override
+	public void onInitializationFailure(YouTubePlayer.Provider provider,
+			YouTubeInitializationResult errorReason) {
+		if (errorReason.isUserRecoverableError()) {
+			errorReason.getErrorDialog(
+					(TasteKidActivity) TasteKidActivity.getActivityInstance(),
+					RECOVERY_DIALOG_REQUEST).show();
+		} else {
+			// TODO add string resource
+			String errorMessage = String.format(
+					"Error with the youtube Player", errorReason.toString());
+			Toast.makeText(TasteKidActivity.getAppContext(), errorMessage,
+					Toast.LENGTH_LONG).show();
+		}
+	}
+
+	@Override
+	public void onInitializationSuccess(YouTubePlayer.Provider provider,
+			YouTubePlayer player, boolean wasRestored) {
+		if (!wasRestored) {
+			player.cueVideo(result.yID);
+		}
+	}
+
 	/**
 	 * helper method to set up views in this activity.
 	 */
@@ -123,30 +147,6 @@ public class DetailFragment extends Fragment implements OnInitializedListener {
 		ImageView iconView = (ImageView) v.findViewById(R.id.iconView);
 		iconView.setBackgroundResource((result.type != null) ? TasteKidApp.ICON_MAP
 				.get(result.type) : 0);
-	}
-
-	@Override
-	public void onInitializationFailure(YouTubePlayer.Provider provider,
-			YouTubeInitializationResult errorReason) {
-		if (errorReason.isUserRecoverableError()) {
-			errorReason.getErrorDialog(
-					(TasteKidActivity) TasteKidActivity.getActivityInstance(),
-					RECOVERY_DIALOG_REQUEST).show();
-		} else {
-			// TODO add string resource
-			String errorMessage = String.format(
-					"Error with the youtube Player", errorReason.toString());
-			Toast.makeText(TasteKidActivity.getAppContext(), errorMessage,
-					Toast.LENGTH_LONG).show();
-		}
-	}
-
-	@Override
-	public void onInitializationSuccess(YouTubePlayer.Provider provider,
-			YouTubePlayer player, boolean wasRestored) {
-		if (!wasRestored) {
-			player.cueVideo(result.yID);
-		}
 	}
 
 }

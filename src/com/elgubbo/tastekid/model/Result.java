@@ -40,9 +40,19 @@ public class Result implements Parcelable {
 	@DatabaseField
 	public boolean isInfo;
 
+	public static Creator<Result> CREATOR = new Creator<Result>() {
+		public Result createFromParcel(Parcel parcel) {
+			return new Result(parcel);
+		}
+
+		public Result[] newArray(int size) {
+			return new Result[size];
+		}
+	};;
+
 	public Result() {
 		// no args constructor
-	};
+	}
 
 	public Result(int id, String name, String type, String wTeaser,
 			String wUrl, String yTitle, String yUrl, String yID, Similar parentId,
@@ -60,7 +70,7 @@ public class Result implements Parcelable {
 		this.favourite = favourite;
 		this.isInfo = isInfo;
 	}
-
+	
 	public Result(Parcel parcel) {
 		_id = parcel.readInt();
 		name = parcel.readString();
@@ -73,15 +83,31 @@ public class Result implements Parcelable {
 		favourite = parcel.readInt() == 0 ? false : true;
 		isInfo = parcel.readInt() == 0 ? false : true;;
 	}
-	
-	public String toString(){
-		return this.name;
-	}
 
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public Timestamp getCreated() {
+		return created;
+	}
+
+	public int getId() {
+		return _id;
+	}
+
+	public void setCreated(Timestamp created) {
+		this.created = created;
+	}
+
+	public void setId(int id) {
+		this._id = id;
+	}
+
+	public String toString(){
+		return this.name;
 	}
 
 	@Override
@@ -98,31 +124,5 @@ public class Result implements Parcelable {
 		dest.writeInt(isInfo ? 1 : 0);
 		// todo think of date solution
 	}
-
-	public int getId() {
-		return _id;
-	}
-
-	public void setId(int id) {
-		this._id = id;
-	}
-
-	public Timestamp getCreated() {
-		return created;
-	}
-
-	public void setCreated(Timestamp created) {
-		this.created = created;
-	}
-
-	public static Creator<Result> CREATOR = new Creator<Result>() {
-		public Result createFromParcel(Parcel parcel) {
-			return new Result(parcel);
-		}
-
-		public Result[] newArray(int size) {
-			return new Result[size];
-		}
-	};
 
 }

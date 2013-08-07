@@ -40,6 +40,12 @@ public class ItemButtonClickListener implements OnClickListener {
 		this.appContext = appContext;
 	}
 
+	private boolean canResolveIntent(Intent intent) {
+		List<ResolveInfo> resolveInfo = TasteKidActivity.getActivityInstance()
+				.getPackageManager().queryIntentActivities(intent, 0);
+		return resolveInfo != null && !resolveInfo.isEmpty();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -91,12 +97,6 @@ public class ItemButtonClickListener implements OnClickListener {
 		default:
 			break;
 		}
-	}
-
-	private boolean canResolveIntent(Intent intent) {
-		List<ResolveInfo> resolveInfo = TasteKidActivity.getActivityInstance()
-				.getPackageManager().queryIntentActivities(intent, 0);
-		return resolveInfo != null && !resolveInfo.isEmpty();
 	}
 
 }

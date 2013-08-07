@@ -1,9 +1,12 @@
 package com.elgubbo.tastekid;
 
+import java.util.ArrayList;
+
 import com.elgubbo.tastekid.adapter.FavouriteResultArrayAdapter;
 import com.elgubbo.tastekid.adapter.RecentSearchesArrayAdapter;
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
+import com.elgubbo.tastekid.helper.ViewServer;
 import com.elgubbo.tastekid.listener.FavouriteItemClickListener;
 import com.elgubbo.tastekid.listener.RecentSearchItemClickListener;
 import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
@@ -15,8 +18,13 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +33,8 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnSuggestionListener;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 /**
@@ -34,13 +44,18 @@ import android.widget.Spinner;
 public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		ActionBar.TabListener {
 
+	/**
+	 * Gets the activity instance.
+	 * 
+	 * @return the activity instance
+	 */
+	public static Context getActivityInstance() {
+		return activityInstance;
+	}
+
 	// The searchview
 	/** The m search view. */
 	SearchView mSearchView;
-
-	public SearchView getmSearchView() {
-		return mSearchView;
-	}
 
 	/** The m sections pager adapter. */
 	SectionsPagerAdapter mSectionsPagerAdapter;
@@ -51,156 +66,14 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	/** the Favourites Listview **/
 	ListView favouriteListView;
 
-	public ListView getFavouriteListView() {
-		return favouriteListView;
-	}
-
 	/** the Recent searches listview **/
 	ListView recentListView;
-
-	public ListView getRecentListView() {
-		return recentListView;
-	}
-
+	
 	/** The app context. */
 	private static Context appContext;
 
 	/** The activity instance. */
 	private static Activity activityInstance;
-
-	/** The m search query change listener. */
-	SearchQueryChangeListener mSearchQueryChangeListener;
-
-	public SearchQueryChangeListener getmSearchQueryChangeListener() {
-		return mSearchQueryChangeListener;
-	}
-
-	/** The database helper. */
-	private DBHelper databaseHelper;
-
-	private Menu menu;
-
-	public Menu getMenu() {
-		return menu;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
-	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (savedInstanceState != null) {
-			TasteKidApp.setCurrentQuery(savedInstanceState.getString("query"));
-			ApiResponse restoredResponse = (ApiResponse)
-					savedInstanceState.getParcelable("apiResponse");
-			if(restoredResponse!=null){
-				ResultManager.getInstance().setApiResponse(restoredResponse);
-			}
-
-		}
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setBehindContentView(R.layout.slidingmenu);
-
-		setContentView(R.layout.activity_main);
-		appContext = getApplicationContext();
-		activityInstance = this;
-		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
-		// TODO fix this dirty workaround
-		actionBar.setTitle("");
-		actionBar.setSubtitle("explore your taste");
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager(), this);
-
-		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		mSearchQueryChangeListener = new SearchQueryChangeListener(
-				mSectionsPagerAdapter, mViewPager.getCurrentItem(), mViewPager);
-
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-						ViewParent root = findViewById(android.R.id.content)
-								.getParent();
-						findAndUpdateSpinner(root, position);
-
-					}
-				});
-
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
-
-		// set up the sidebar
-		setupSlidingMenu();
-
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle b) {
-		b.putString("query", TasteKidApp.getCurrentQuery());
-		b.putParcelable("apiResponse", ResultManager.getInstance()
-				.getApiResponse());
-		super.onSaveInstanceState(b);
-	}
-
-	// @Override
-	// public void onRestoreInstanceState(Bundle b){
-	// SectionFragment currentFragment = (SectionFragment) mSectionsPagerAdapter
-	// .getActiveFragment(mViewPager, mViewPager.getCurrentItem());
-	// ResultManager.getInstance().restoreApiResponseFromQuery(
-	// TasteKidApp.getCurrentQuery());
-	// currentFragment.onResultsReady();
-	// super.onRestoreInstanceState(b);
-	// }
-
-	private void setupSlidingMenu() {
-		// configure the SlidingMenu
-		SlidingMenu sm = getSlidingMenu();
-		/*
-		 * sm.setShadowWidthRes(R.dimen.shadow_width);
-		 * sm.setShadowDrawable(android
-		 * .R.drawable.screen_background_dark_transparent);
-		 */
-		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		sm.setFadeDegree(0.35f);
-		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		recentListView = (ListView) sm.findViewById(R.id.sideBarList1);
-		favouriteListView = (ListView) sm.findViewById(R.id.sideBarList2);
-
-		favouriteListView.setAdapter(new FavouriteResultArrayAdapter(this,
-				R.layout.sidebar_list_item, ResultManager.getInstance()
-						.getFavouriteResults()));
-		favouriteListView
-				.setOnItemClickListener(new FavouriteItemClickListener());
-		recentListView.setAdapter(new RecentSearchesArrayAdapter(this,
-				R.layout.sidebar_list_item, ResultManager.getInstance()
-						.getRecentSearches()));
-		recentListView
-				.setOnItemClickListener(new RecentSearchItemClickListener());
-	}
 
 	/**
 	 * Gets the app context.
@@ -211,14 +84,54 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		return appContext;
 	}
 
-	/**
-	 * Gets the activity instance.
-	 * 
-	 * @return the activity instance
-	 */
-	public static Context getActivityInstance() {
-		return activityInstance;
-	}
+	/** The m search query change listener. */
+	SearchQueryChangeListener mSearchQueryChangeListener;
+
+	/** The database helper. */
+	private DBHelper databaseHelper;
+
+	private Menu menu;
+
+	// handler for received Intents for the "my-event" event
+	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// Extract data included in the Intent
+			String error = null;
+			if (intent.getExtras() != null) {
+				final ArrayList<String> suggestions = intent.getExtras()
+						.getStringArrayList("autocompletesuggestions");
+				MatrixCursor matrixCursor = new MatrixCursor(new String[] {
+						"_id", "name" });
+				int cursorId = 0;
+				for (String suggestion : suggestions) {
+					matrixCursor.addRow(new Object[] { cursorId, suggestion });
+					cursorId++;
+				}
+				SimpleCursorAdapter mSimpleCursorAdapter = new SimpleCursorAdapter(
+						appContext, R.layout.suggestion_list_item,
+						matrixCursor, new String[] { "name" },
+						new int[] { R.id.itemTitle },
+						SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+				mSearchView.setSuggestionsAdapter(mSimpleCursorAdapter);
+				mSearchView.setOnSuggestionListener(new OnSuggestionListener() {
+
+					@Override
+					public boolean onSuggestionClick(int position) {
+						mSearchView.setQuery(suggestions.get(position), true);
+						return true;
+					}
+
+					@Override
+					public boolean onSuggestionSelect(int position) {
+						// TODO Auto-generated method stub
+						return false;
+					}
+				});
+
+			}
+		}
+	};
 
 	/**
 	 * Searches the view hierarchy excluding the content view for a possible
@@ -253,12 +166,122 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		return false;
 	}
 
-	public void showLoadingBar() {
-		setProgressBarIndeterminateVisibility(true);
+	public ListView getFavouriteListView() {
+		return favouriteListView;
+	}
+
+	/**
+	 * Gets the helper.
+	 * 
+	 * @return the helper
+	 */
+	public DBHelper getHelper() {
+		if (databaseHelper == null) {
+			databaseHelper = OpenHelperManager.getHelper(this, DBHelper.class);
+		}
+		return databaseHelper;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public SearchQueryChangeListener getmSearchQueryChangeListener() {
+		return mSearchQueryChangeListener;
+	}
+
+	public SearchView getmSearchView() {
+		return mSearchView;
+	}
+
+	public ViewPager getmViewPager() {
+		return mViewPager;
+	}
+
+	public ListView getRecentListView() {
+		return recentListView;
 	}
 
 	public void hideLoadingBar() {
 		setProgressBarIndeterminateVisibility(false);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			TasteKidApp.setCurrentQuery(savedInstanceState.getString("query"));
+			ApiResponse restoredResponse = (ApiResponse) savedInstanceState
+					.getParcelable("apiResponse");
+			if (restoredResponse != null) {
+				ResultManager.getInstance().setApiResponse(restoredResponse);
+			}
+
+		}
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setBehindContentView(R.layout.slidingmenu);
+
+		setContentView(R.layout.activity_main);
+		appContext = getApplicationContext();
+		activityInstance = this;
+		// Set up the action bar.
+		final ActionBar actionBar = getActionBar();
+		// TODO fix this dirty workaround
+		actionBar.setTitle("");
+		actionBar.setSubtitle("explore your taste");
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+
+		// Create the adapter that will return a fragment for each of the three
+		// primary sections of the app.
+		mSectionsPagerAdapter = new SectionsPagerAdapter(
+				getSupportFragmentManager(), this);
+
+		// Set up the ViewPager with the sections adapter.
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setOffscreenPageLimit(0);
+
+		mViewPager.setAdapter(mSectionsPagerAdapter);
+
+		mSearchQueryChangeListener = new SearchQueryChangeListener(
+				mSectionsPagerAdapter, mViewPager.getCurrentItem(), mViewPager);
+
+		// When swiping between different sections, select the corresponding
+		// tab. We can also use ActionBar.Tab#select() to do this if we have
+		// a reference to the Tab.
+		mViewPager
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					@Override
+					public void onPageSelected(int position) {
+						actionBar.setSelectedNavigationItem(position);
+						ViewParent root = findViewById(android.R.id.content)
+								.getParent();
+						findAndUpdateSpinner(root, position);
+
+					}
+				});
+
+		// For each of the sections in the app, add a tab to the action bar.
+		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+			// Create a tab with text corresponding to the page title defined by
+			// the adapter. Also specify this Activity object, which implements
+			// the TabListener interface, as the callback (listener) for when
+			// this tab is selected.
+			actionBar.addTab(actionBar.newTab()
+					.setText(mSectionsPagerAdapter.getPageTitle(i))
+					.setTabListener(this));
+		}
+
+
+		// set up the sidebar
+		setupSlidingMenu();
+		if (Configuration.DEVMODE)
+			ViewServer.get(this).addWindow(this);
 	}
 
 	/*
@@ -272,7 +295,9 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		MenuItem searchItem = menu.findItem(R.id.action_search);
+
 		mSearchView = (SearchView) searchItem.getActionView();
+		
 
 		setupSearchView(searchItem);
 
@@ -295,31 +320,52 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 			OpenHelperManager.releaseHelper();
 			databaseHelper = null;
 		}
+    	ViewServer.get(this).removeWindow(this);
 	}
 
-	/**
-	 * Gets the helper.
-	 * 
-	 * @return the helper
-	 */
-	public DBHelper getHelper() {
-		if (databaseHelper == null) {
-			databaseHelper = OpenHelperManager.getHelper(this, DBHelper.class);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			toggle();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return databaseHelper;
 	}
 
-	/**
-	 * Sets the up search view.
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		// Register mMessageReceiver to receive messages.
+		LocalBroadcastManager.getInstance(
+				TasteKidActivity.getActivityInstance()).registerReceiver(
+				mMessageReceiver, new IntentFilter("update-autocomplete"));
+		if (Configuration.DEVMODE)
+			ViewServer.get(this).setFocusedWindow(this);
+
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle b) {
+		b.putString("query", TasteKidApp.getCurrentQuery());
+		b.putParcelable("apiResponse", ResultManager.getInstance()
+				.getApiResponse());
+		super.onSaveInstanceState(b);
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param searchItem
-	 *            the new up search view
+	 * @see
+	 * android.app.ActionBar.TabListener#onTabReselected(android.app.ActionBar
+	 * .Tab, android.app.FragmentTransaction)
 	 */
-	private void setupSearchView(MenuItem searchItem) {
-		mSearchView.setSubmitButtonEnabled(true);
-
-		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
-
+	@Override
+	public void onTabReselected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
 	}
 
 	/*
@@ -350,28 +396,47 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Sets the up search view.
 	 * 
-	 * @see
-	 * android.app.ActionBar.TabListener#onTabReselected(android.app.ActionBar
-	 * .Tab, android.app.FragmentTransaction)
+	 * @param searchItem
+	 *            the new up search view
 	 */
-	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	private void setupSearchView(MenuItem searchItem) {
+		mSearchView.setSubmitButtonEnabled(true);
+
+		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
+
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			toggle();
-			return true;
+	private void setupSlidingMenu() {
+		// configure the SlidingMenu
+		SlidingMenu sm = getSlidingMenu();
+		/*
+		 * sm.setShadowWidthRes(R.dimen.shadow_width);
+		 * sm.setShadowDrawable(android
+		 * .R.drawable.screen_background_dark_transparent);
+		 */
+		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		sm.setFadeDegree(0.35f);
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		recentListView = (ListView) sm.findViewById(R.id.sideBarList1);
+		favouriteListView = (ListView) sm.findViewById(R.id.sideBarList2);
 
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+		favouriteListView.setAdapter(new FavouriteResultArrayAdapter(this,
+				R.layout.sidebar_list_item, ResultManager.getInstance()
+						.getFavouriteResults()));
+		favouriteListView
+				.setOnItemClickListener(new FavouriteItemClickListener());
+		recentListView.setAdapter(new RecentSearchesArrayAdapter(this,
+				R.layout.sidebar_list_item, ResultManager.getInstance()
+						.getRecentSearches()));
+		recentListView
+				.setOnItemClickListener(new RecentSearchItemClickListener());
+	}
+
+	public void showLoadingBar() {
+		setProgressBarIndeterminateVisibility(true);
 	}
 
 }

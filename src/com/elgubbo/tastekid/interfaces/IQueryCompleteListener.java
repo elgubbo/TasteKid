@@ -21,6 +21,14 @@ import st.foodquest.foodquest.model.Place.Wrapper;
 public interface IQueryCompleteListener {
 
 	/**
+	 * On default error.
+	 * 
+	 * @param e
+	 *            the e
+	 */
+	public void onDefaultError(Exception e);
+
+	/**
 	 * On query complete.
 	 * 
 	 * @param result
@@ -35,12 +43,4 @@ public interface IQueryCompleteListener {
 	 *            the e
 	 */
 	public void onQueryFailed(Exception e);
-
-	/**
-	 * On default error.
-	 * 
-	 * @param e
-	 *            the e
-	 */
-	public void onDefaultError(Exception e);
 }

@@ -26,6 +26,17 @@ public class FavouriteResultArrayAdapter extends ArrayAdapter<Result>{
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see android.widget.ArrayAdapter#getItem(int)
+	 */
+	@Override
+	public Result getItem(int position) {
+		if(results!=null && results.size()!=0)
+			return results.get(position);
+		else return null;
+	}
+
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) TasteKidActivity.getAppContext()
@@ -44,16 +55,5 @@ public class FavouriteResultArrayAdapter extends ArrayAdapter<Result>{
 		
 
 		return convertView;
-	}
-
-	
-	/* (non-Javadoc)
-	 * @see android.widget.ArrayAdapter#getItem(int)
-	 */
-	@Override
-	public Result getItem(int position) {
-		if(results!=null && results.size()!=0)
-			return results.get(position);
-		else return null;
 	}
 }

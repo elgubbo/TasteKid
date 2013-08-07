@@ -9,6 +9,10 @@ public abstract class BaseTasteKidSpiceActivity extends SlidingFragmentActivity{
 	
     private SpiceManager spiceManager = new SpiceManager( TasteKidSpiceService.class );
 
+    public SpiceManager getSpiceManager() {
+        return spiceManager;
+    }
+
     @Override
     protected void onStart() {
         spiceManager.start( this );
@@ -19,10 +23,6 @@ public abstract class BaseTasteKidSpiceActivity extends SlidingFragmentActivity{
     protected void onStop() {
         spiceManager.shouldStop();
         super.onStop();
-    }
-
-    public SpiceManager getSpiceManager() {
-        return spiceManager;
     }
     
     

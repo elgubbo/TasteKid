@@ -65,16 +65,6 @@ public class TasteKidApp extends Application {
         ICON_MAP = Collections.unmodifiableMap(iconMapInit);
     }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Application#onCreate()
-	 */
-	@Override
-	public void onCreate() {
-		resultManager = ResultManager.getInstance();
-	}
-
 	/**
 	 * Gets the current query.
 	 * 
@@ -92,6 +82,16 @@ public class TasteKidApp extends Application {
 	 */
 	public static void setCurrentQuery(String currentQuery) {
 		TasteKidApp.currentQuery = currentQuery;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Application#onCreate()
+	 */
+	@Override
+	public void onCreate() {
+		resultManager = ResultManager.getInstance();
 	}
 
 }

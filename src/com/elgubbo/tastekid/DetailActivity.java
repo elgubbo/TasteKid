@@ -39,6 +39,25 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	 * (non-Javadoc)
 	 * 
 	 * @see
+	 * com.elgubbo.tastekid.YouTubeFailureRecoveryActivity#getYouTubePlayerProvider
+	 * ()
+	 */
+	@Override
+	protected YouTubePlayer.Provider getYouTubePlayerProvider() {
+		return (YouTubePlayerView) findViewById(R.id.youtube_view);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.right_slide_in,
+				R.anim.bottom_side_slide_in);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
 	 * com.google.android.youtube.player.YouTubeBaseActivity#onCreate(android
 	 * .os.Bundle)
 	 */
@@ -62,7 +81,68 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 		setContentView(R.layout.activity_detail);
 		setupViews();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate menu resource file.
+		getMenuInflater().inflate(R.menu.detail, menu);
+
+		// Locate MenuItem with ShareActionProvider
+		MenuItem item = menu.findItem(R.id.menu_item_share);
+
+		// Fetch and store ShareActionProvider
+		ShareActionProvider mShareActionProvider = (ShareActionProvider) item
+				.getActionProvider();
+
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		String shareBody = "Check out this cool " + result.type
+				+ " i found with the TasteKid for Android app! ";
+		if (result.yUrl != null && !result.yUrl.trim().equalsIgnoreCase(""))
+			shareBody += "This is the trailer " + result.yUrl;
+		shareBody += " ,and here is the link to the wikipedia entry " + result.wUrl;
+		String shareHeader = "I have a " + result.type + " recommendation for you!";
+		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+				shareHeader);
+		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+		mShareActionProvider.setShareIntent(shareIntent);
+		// Return true to display menu
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.google.android.youtube.player.YouTubePlayer.OnInitializedListener
+	 * #onInitializationSuccess
+	 * (com.google.android.youtube.player.YouTubePlayer.Provider,
+	 * com.google.android.youtube.player.YouTubePlayer, boolean)
+	 */
+	@Override
+	public void onInitializationSuccess(YouTubePlayer.Provider provider,
+			YouTubePlayer player, boolean wasRestored) {
+		if (!wasRestored) {
+			player.cueVideo(result.yID);
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
 	@Override
 	public void onSaveInstanceState(Bundle b){
 		b.putParcelable("result", this.result);
@@ -129,86 +209,6 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 		ImageView iconView = (ImageView) findViewById(R.id.iconView);
 		iconView.setBackgroundResource(TasteKidApp.ICON_MAP.get(result.type) != null ? TasteKidApp.ICON_MAP
 				.get(result.type) : 0);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.android.youtube.player.YouTubePlayer.OnInitializedListener
-	 * #onInitializationSuccess
-	 * (com.google.android.youtube.player.YouTubePlayer.Provider,
-	 * com.google.android.youtube.player.YouTubePlayer, boolean)
-	 */
-	@Override
-	public void onInitializationSuccess(YouTubePlayer.Provider provider,
-			YouTubePlayer player, boolean wasRestored) {
-		if (!wasRestored) {
-			player.cueVideo(result.yID);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.elgubbo.tastekid.YouTubeFailureRecoveryActivity#getYouTubePlayerProvider
-	 * ()
-	 */
-	@Override
-	protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-		return (YouTubePlayerView) findViewById(R.id.youtube_view);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			onBackPressed();
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate menu resource file.
-		getMenuInflater().inflate(R.menu.detail, menu);
-
-		// Locate MenuItem with ShareActionProvider
-		MenuItem item = menu.findItem(R.id.menu_item_share);
-
-		// Fetch and store ShareActionProvider
-		ShareActionProvider mShareActionProvider = (ShareActionProvider) item
-				.getActionProvider();
-
-		Intent shareIntent = new Intent(Intent.ACTION_SEND);
-		shareIntent.setType("text/plain");
-		String shareBody = "Check out this cool " + result.type
-				+ " i found with the TasteKid for Android app! ";
-		if (result.yUrl != null && !result.yUrl.trim().equalsIgnoreCase(""))
-			shareBody += "This is the trailer " + result.yUrl;
-		shareBody += " ,and here is the link to the wikipedia entry " + result.wUrl;
-		String shareHeader = "I have a " + result.type + " recommendation for you!";
-		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-				shareHeader);
-		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-		mShareActionProvider.setShareIntent(shareIntent);
-		// Return true to display menu
-		return true;
-	}
-
-	@Override
-	public void onBackPressed() {
-		finish();
-		overridePendingTransition(R.anim.right_slide_in,
-				R.anim.bottom_side_slide_in);
 	}
 
 }

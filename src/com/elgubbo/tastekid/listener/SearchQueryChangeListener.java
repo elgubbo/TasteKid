@@ -8,34 +8,35 @@ import com.elgubbo.tastekid.TasteKidApp;
 import com.elgubbo.tastekid.adapter.RecentSearchesArrayAdapter;
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
 import com.elgubbo.tastekid.interfaces.IResultsReceiver;
+import com.elgubbo.tastekid.model.AutoCompleteManager;
 import com.elgubbo.tastekid.model.ResultManager;
 
 import android.app.Activity;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
+import android.widget.SimpleCursorAdapter;
 
 public class SearchQueryChangeListener implements
 		SearchView.OnQueryTextListener {
 
 	int position;
 
-	public int getPosition() {
-		return position;
-	}
-
-	public void setPosition(int position) {
-		this.position = position;
-	}
-
 	SectionsPagerAdapter mSectionsPagerAdapter;
-	ViewPager mViewPager;
-	private SparseArray<String> lastSearches;
 
+	ViewPager mViewPager;
+
+	private SparseArray<String> lastSearches;
 	public SearchQueryChangeListener(
 			SectionsPagerAdapter mSectionsPagerAdapter, int position,
 			ViewPager mViewPager) {
@@ -43,6 +44,9 @@ public class SearchQueryChangeListener implements
 		this.position = position;
 		this.mViewPager = mViewPager;
 		this.lastSearches = new SparseArray<String>();
+	}
+	public int getPosition() {
+		return position;
 	}
 
 	/*
@@ -54,9 +58,9 @@ public class SearchQueryChangeListener implements
 	 */
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		if (newText.length() > 2) {
+		if (newText.length() > 1) 
+			AutoCompleteManager.getInstance().getAutoCompleteSuggestions(newText);
 
-		}
 		return false;
 	}
 
@@ -73,9 +77,9 @@ public class SearchQueryChangeListener implements
 
 		TasteKidActivity tasteKidActivity = (TasteKidActivity) TasteKidActivity
 				.getActivityInstance();
-			MenuItem searchItem = tasteKidActivity.getMenu().findItem(
-					R.id.action_search);
-			searchItem.collapseActionView();
+		MenuItem searchItem = tasteKidActivity.getMenu().findItem(
+				R.id.action_search);
+		searchItem.collapseActionView();
 
 		RecentSearchesArrayAdapter recentsAdapter = (RecentSearchesArrayAdapter) tasteKidActivity
 				.getRecentListView().getAdapter();
@@ -110,11 +114,14 @@ public class SearchQueryChangeListener implements
 			Log.d("TasteKid", "Position is:" + this.position);
 			Log.d("TasteKid", "type is: " + type);
 		}
-		ResultManager.getInstance().sendResultsForQueryTo(
-				(IResultsReceiver) currentFragment, query);
+		ResultManager.getInstance().getResultsForQuery(query);
 
 		lastSearches.append(position, query);
 		return true;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
 	}
 
 }

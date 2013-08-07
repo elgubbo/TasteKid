@@ -1,11 +1,11 @@
 package com.elgubbo.tastekid.model;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.elgubbo.tastekid.Configuration;
@@ -13,7 +13,6 @@ import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.TasteKidApp;
 import com.elgubbo.tastekid.api.TasteKidSpiceRequest;
 import com.elgubbo.tastekid.db.DBHelper;
-import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -32,23 +31,9 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	private static ResultManager instance;
 
 	/** The call back. */
-	private static IResultsReceiver callBack;
-
-	public static void setCallBack(IResultsReceiver callBack) {
-		ResultManager.callBack = callBack;
-	}
 
 	/** The old query. */
 	private static String oldQuery;
-
-	/** The database helper. */
-	private DBHelper databaseHelper;
-
-	private ApiResponse apiResponse;
-
-	public void setApiResponse(ApiResponse apiResponse) {
-		this.apiResponse = apiResponse;
-	}
 
 	/**
 	 * Gets the single instance of ResultManager.
@@ -61,6 +46,11 @@ public class ResultManager implements RequestListener<ApiResponse> {
 		return instance;
 	}
 
+	/** The database helper. */
+	private DBHelper databaseHelper;
+
+	private ApiResponse apiResponse;
+
 	/**
 	 * Instantiates a new result manager.
 	 */
@@ -68,29 +58,23 @@ public class ResultManager implements RequestListener<ApiResponse> {
 		// empty private constructor for singleton pattern
 	}
 
-	/**
-	 * Send results for query to.
-	 * 
-	 * @param callback
-	 *            the callback
-	 * @param query
-	 *            the query
-	 */
-	public void sendResultsForQueryTo(IResultsReceiver callback, String query) {
-		callBack = callback;
-
-		if (!query.trim().equalsIgnoreCase(oldQuery) && !query.trim().equalsIgnoreCase("")) {
-			TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
-					.getActivityInstance();
-			activity.getSpiceManager().execute(
-					new TasteKidSpiceRequest(ApiResponse.class, query), this);
-		} else {
-			callback.onResultsReady();
-		}
-		oldQuery = query;
-
+	public ApiResponse getApiResponse() {
+		return apiResponse;
 	}
 
+	public List<Result> getFavouriteResults() {
+		List<Result> results = null;
+		try {
+			Dao<Result, Integer> resultDao = getHelper().getResultDao();
+			results = resultDao.query(resultDao.queryBuilder().where()
+					.eq("favourite", true).prepare());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
 	/**
 	 * Gets the helper.
 	 * 
@@ -102,6 +86,145 @@ public class ResultManager implements RequestListener<ApiResponse> {
 					TasteKidActivity.getAppContext(), DBHelper.class);
 		}
 		return databaseHelper;
+	} 
+
+	/**
+	 * Gets the info.
+	 * 
+	 * @return the info
+	 */
+	public ArrayList<Result> getInfo() {
+		if(apiResponse == null)
+			return new ArrayList<Result>();
+		if (apiResponse.similar.info == null)
+			apiResponse.similar.info = new ArrayList<Result>();
+		return (ArrayList<Result>) apiResponse.similar.info;
+	}
+	
+	public List<ApiResponse> getRecentSearches(){
+		List<ApiResponse> results = new ArrayList<ApiResponse>();
+		try {
+			Dao<ApiResponse, Integer> apiResponseDao = getHelper().getApiResponseDao();
+			QueryBuilder<ApiResponse, Integer> apiResponseQuery = apiResponseDao.queryBuilder();
+			apiResponseQuery.orderBy("_id", false);
+			List<ApiResponse> temp = apiResponseDao.query(apiResponseQuery.prepare());
+			for(int i = 0; i<Configuration.RECENT_SEARCH_COUNT; i++){
+				if(temp.size() > i)
+					results.add(temp.get(i));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return results;
+	}
+
+	public Result getResultById(int id) {
+		Result result = null;
+		try {
+			Dao<Result, Integer> resultDao = getHelper().getResultDao();
+			result = resultDao.queryForId(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Gets the results by position.
+	 * 
+	 * @param position
+	 *            the position
+	 * @return the results by position
+	 */
+	public ArrayList<Result> getResultsByPosition(int position) {
+		return getresultsByType(TasteKidApp.TYPE_ARRAY[position]);
+	}
+
+	/**
+	 * Gets the results by type.
+	 * 
+	 * @param type
+	 *            the type
+	 * @return the results by type
+	 */
+	public ArrayList<Result> getresultsByType(String type) {
+		ArrayList<Result> filteredResults = new ArrayList<Result>();
+
+		if (resultsAvailable()) {
+			if (type == null)
+				return (ArrayList<Result>) apiResponse.similar.results;
+			for (Result result : apiResponse.similar.results) {
+				if (result.type.equalsIgnoreCase(type)) {
+					filteredResults.add(result);
+				}
+			}
+		}
+
+		return filteredResults;
+	}
+
+	/**
+	 * Send results for query to.
+	 * 
+	 * @param callback
+	 *            the callback
+	 * @param query
+	 *            the query
+	 */
+	public void getResultsForQuery(String query) {
+//		callBack = callback;
+		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
+				.getActivityInstance();
+		if (!query.trim().equalsIgnoreCase(oldQuery) && !query.trim().equalsIgnoreCase("")) {
+
+			activity.getSpiceManager().execute(
+					new TasteKidSpiceRequest(ApiResponse.class, query), this);
+		} else {
+			update(null);
+		}
+		oldQuery = query;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.octo.android.robospice.request.listener.RequestListener#onRequestFailure
+	 * (com.octo.android.robospice.persistence.exception.SpiceException)
+	 */
+	@Override
+	public void onRequestFailure(SpiceException arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.octo.android.robospice.request.listener.RequestListener#onRequestSuccess
+	 * (java.lang.Object)
+	 */
+	@Override
+	public void onRequestSuccess(ApiResponse apiResponse) {
+		this.apiResponse = apiResponse;;
+		String error = null;
+		if (apiResponse.error == null) {
+			apiResponse.similar.info = apiResponse.similar.getInfo();
+			apiResponse.similar.results = apiResponse.similar.getResults();
+		} else {
+			error = apiResponse.error;
+			if (Configuration.DEVMODE)
+				Log.d("TasteKid", error);
+		}
+
+		if (error != null)
+			update(error);
+		else {
+			update(null);
+		}
 	}
 	
 	//TODO duplicate code to TasteKidSpiceRequest.loadfromdatabase()
@@ -143,7 +266,7 @@ public class ResultManager implements RequestListener<ApiResponse> {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Results available.
 	 * 
@@ -155,138 +278,16 @@ public class ResultManager implements RequestListener<ApiResponse> {
 		return (apiResponse.similar.info != null && apiResponse.similar.results != null) ? true : false;
 	}
 
-	/**
-	 * Gets the results by type.
-	 * 
-	 * @param type
-	 *            the type
-	 * @return the results by type
-	 */
-	public ArrayList<Result> getresultsByType(String type) {
-		ArrayList<Result> filteredResults = new ArrayList<Result>();
-
-		if (resultsAvailable()) {
-			if (type == null)
-				return (ArrayList<Result>) apiResponse.similar.results;
-			for (Result result : apiResponse.similar.results) {
-				if (result.type.equalsIgnoreCase(type)) {
-					filteredResults.add(result);
-				}
-			}
-		}
-
-		return filteredResults;
+	public void setApiResponse(ApiResponse apiResponse) {
+		this.apiResponse = apiResponse;
 	}
 
-	/**
-	 * Gets the results by position.
-	 * 
-	 * @param position
-	 *            the position
-	 * @return the results by position
-	 */
-	public ArrayList<Result> getResultsByPosition(int position) {
-		return getresultsByType(TasteKidApp.TYPE_ARRAY[position]);
-	}
-
-	/**
-	 * Gets the info.
-	 * 
-	 * @return the info
-	 */
-	public ArrayList<Result> getInfo() {
-		if(apiResponse == null)
-			return new ArrayList<Result>();
-		if (apiResponse.similar.info == null)
-			apiResponse.similar.info = new ArrayList<Result>();
-		return (ArrayList<Result>) apiResponse.similar.info;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.octo.android.robospice.request.listener.RequestListener#onRequestFailure
-	 * (com.octo.android.robospice.persistence.exception.SpiceException)
-	 */
-	@Override
-	public void onRequestFailure(SpiceException arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public List<Result> getFavouriteResults() {
-		List<Result> results = null;
-		try {
-			Dao<Result, Integer> resultDao = getHelper().getResultDao();
-			results = resultDao.query(resultDao.queryBuilder().where()
-					.eq("favourite", true).prepare());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return results;
-	}
-	
-	public Result getResultById(int id) {
-		Result result = null;
-		try {
-			Dao<Result, Integer> resultDao = getHelper().getResultDao();
-			result = resultDao.queryForId(id);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	public List<ApiResponse> getRecentSearches(){
-		List<ApiResponse> results = new ArrayList<ApiResponse>();
-		try {
-			Dao<ApiResponse, Integer> apiResponseDao = getHelper().getApiResponseDao();
-			QueryBuilder<ApiResponse, Integer> apiResponseQuery = apiResponseDao.queryBuilder();
-			apiResponseQuery.orderBy("_id", false);
-			List<ApiResponse> temp = apiResponseDao.query(apiResponseQuery.prepare());
-			for(int i = 0; i<Configuration.RECENT_SEARCH_COUNT; i++){
-				if(temp.size() > i)
-					results.add(temp.get(i));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return results;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.octo.android.robospice.request.listener.RequestListener#onRequestSuccess
-	 * (java.lang.Object)
-	 */
-	@Override
-	public void onRequestSuccess(ApiResponse apiResponse) {
-		this.apiResponse = apiResponse;;
-		String error = null;
-		if (apiResponse.error == null) {
-			apiResponse.similar.info = apiResponse.similar.getInfo();
-			apiResponse.similar.results = apiResponse.similar.getResults();
-		} else {
-			error = apiResponse.error;
-			if (Configuration.DEVMODE)
-				Log.d("TasteKid", error);
-		}
-
-		if (error != null)
-			callBack.onErrorReceived(error);
-		else {
-			callBack.onResultsReady();
-		}
-	}
-
-	public ApiResponse getApiResponse() {
-		return apiResponse;
+	// Send an Intent with an action named "my-event". 
+	private void update(String error) {
+	  Intent intent = new Intent("update-event");
+	  if(error!=null)
+		  intent.putExtra("error", error);
+	  LocalBroadcastManager.getInstance(TasteKidActivity.getActivityInstance()).sendBroadcast(intent);
 	}
 
 

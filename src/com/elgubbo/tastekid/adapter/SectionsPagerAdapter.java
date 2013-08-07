@@ -2,19 +2,16 @@ package com.elgubbo.tastekid.adapter;
 
 import java.util.Locale;
 
-import com.elgubbo.tastekid.Configuration;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.SectionFragment;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.TasteKidApp;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.SparseArray;
 
 // TODO: Auto-generated Javadoc
@@ -46,34 +43,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		this.fragmentHolder = new SparseArray<Fragment>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
-	 */
-	@Override
-	public Fragment getItem(int position) {
-		if (fragmentHolder.get(position) != null)
-			return fragmentHolder.get(position);
-		else {
-			if(Configuration.DEVMODE)
-				Log.d("TasteKid", "Creating new fragment on position: "+position);
-			Fragment fragment = SectionFragment.init(position);
-			fragmentHolder.append(position, fragment);
-			return fragment;
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.view.PagerAdapter#getCount()
-	 */
-	@Override
-	public int getCount() {
-		return TasteKidApp.TYPE_ARRAY.length;
-	}
-
 	/**
 	 * Gets the active fragment.
 	 * 
@@ -88,17 +57,33 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		return mFragmentManager.findFragmentByTag(name);
 	}
 
-	/**
-	 * Make fragment name.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param viewId
-	 *            the view id
-	 * @param index
-	 *            the index
-	 * @return the string
+	 * @see android.support.v4.view.PagerAdapter#getCount()
 	 */
-	private String makeFragmentName(int viewId, int index) {
-		return "android:switcher:" + viewId + ":" + index;
+	@Override
+	public int getCount() {
+		return TasteKidApp.TYPE_ARRAY.length;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
+	 */
+	@Override
+	public Fragment getItem(int position) {
+		return SectionFragment.init(position);
+//		if (fragmentHolder.get(position) != null)
+//			return fragmentHolder.get(position);
+//		else {
+//			if(Configuration.DEVMODE)
+//				Log.d("TasteKid", "Creating new fragment on position: "+position);
+//			Fragment fragment = SectionFragment.init(position);
+//			fragmentHolder.append(position, fragment);
+//			return fragment;
+//		}
 	}
 
 	/*
@@ -130,5 +115,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 					.getString(R.string.title_section6).toUpperCase(l);
 		}
 		return null;
+	}
+
+	/**
+	 * Make fragment name.
+	 * 
+	 * @param viewId
+	 *            the view id
+	 * @param index
+	 *            the index
+	 * @return the string
+	 */
+	private String makeFragmentName(int viewId, int index) {
+		return "android:switcher:" + viewId + ":" + index;
 	}
 }
