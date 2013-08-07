@@ -26,6 +26,7 @@ import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -68,6 +69,9 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 	/** the Recent searches listview **/
 	ListView recentListView;
+	
+    private DrawerLayout mDrawerLayout;
+
 	
 	/** The app context. */
 	private static Context appContext;
@@ -213,7 +217,10 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		appContext = getApplicationContext();
+		activityInstance = this;
 		super.onCreate(savedInstanceState);
+
 		if (savedInstanceState != null) {
 			TasteKidApp.setCurrentQuery(savedInstanceState.getString("query"));
 			ApiResponse restoredResponse = (ApiResponse) savedInstanceState
@@ -224,11 +231,8 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 		}
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setBehindContentView(R.layout.slidingmenu);
+		setContentView(R.layout.main_layout);
 
-		setContentView(R.layout.activity_main);
-		appContext = getApplicationContext();
-		activityInstance = this;
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		// TODO fix this dirty workaround
@@ -237,6 +241,10 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		
+
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -244,13 +252,8 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setOffscreenPageLimit(0);
-
+		mViewPager.setOffscreenPageLimit(5);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		mSearchQueryChangeListener = new SearchQueryChangeListener(
-				mSectionsPagerAdapter, mViewPager.getCurrentItem(), mViewPager);
-
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
@@ -265,6 +268,12 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 					}
 				});
+		
+		
+		mSearchQueryChangeListener = new SearchQueryChangeListener(
+				mSectionsPagerAdapter, mViewPager.getCurrentItem(), mViewPager);
+
+
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -276,10 +285,23 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		//Setup navigation drawer listviews
+		recentListView = (ListView) findViewById(R.id.sideBarList1);
+		favouriteListView = (ListView) findViewById(R.id.sideBarList2);
+
+		favouriteListView.setAdapter(new FavouriteResultArrayAdapter(this,
+				R.layout.sidebar_list_item, ResultManager.getInstance()
+						.getFavouriteResults()));
+		favouriteListView
+				.setOnItemClickListener(new FavouriteItemClickListener());
+		recentListView.setAdapter(new RecentSearchesArrayAdapter(this,
+				R.layout.sidebar_list_item, ResultManager.getInstance()
+						.getRecentSearches()));
+		recentListView
+				.setOnItemClickListener(new RecentSearchItemClickListener());
 
 
-		// set up the sidebar
-		setupSlidingMenu();
 		if (Configuration.DEVMODE)
 			ViewServer.get(this).addWindow(this);
 	}
@@ -327,7 +349,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			toggle();
+//			toggle();
 			return true;
 
 		default:
@@ -408,32 +430,32 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
 
 	}
-
-	private void setupSlidingMenu() {
-		// configure the SlidingMenu
-		SlidingMenu sm = getSlidingMenu();
-		/*
-		 * sm.setShadowWidthRes(R.dimen.shadow_width);
-		 * sm.setShadowDrawable(android
-		 * .R.drawable.screen_background_dark_transparent);
-		 */
-		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		sm.setFadeDegree(0.35f);
-		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		recentListView = (ListView) sm.findViewById(R.id.sideBarList1);
-		favouriteListView = (ListView) sm.findViewById(R.id.sideBarList2);
-
-		favouriteListView.setAdapter(new FavouriteResultArrayAdapter(this,
-				R.layout.sidebar_list_item, ResultManager.getInstance()
-						.getFavouriteResults()));
-		favouriteListView
-				.setOnItemClickListener(new FavouriteItemClickListener());
-		recentListView.setAdapter(new RecentSearchesArrayAdapter(this,
-				R.layout.sidebar_list_item, ResultManager.getInstance()
-						.getRecentSearches()));
-		recentListView
-				.setOnItemClickListener(new RecentSearchItemClickListener());
-	}
+//
+//	private void setupSlidingMenu() {
+//		// configure the SlidingMenu
+//		SlidingMenu sm = getSlidingMenu();
+//		/*
+//		 * sm.setShadowWidthRes(R.dimen.shadow_width);
+//		 * sm.setShadowDrawable(android
+//		 * .R.drawable.screen_background_dark_transparent);
+//		 */
+//		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+//		sm.setFadeDegree(0.35f);
+//		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+//		recentListView = (ListView) sm.findViewById(R.id.sideBarList1);
+//		favouriteListView = (ListView) sm.findViewById(R.id.sideBarList2);
+//
+//		favouriteListView.setAdapter(new FavouriteResultArrayAdapter(this,
+//				R.layout.sidebar_list_item, ResultManager.getInstance()
+//						.getFavouriteResults()));
+//		favouriteListView
+//				.setOnItemClickListener(new FavouriteItemClickListener());
+//		recentListView.setAdapter(new RecentSearchesArrayAdapter(this,
+//				R.layout.sidebar_list_item, ResultManager.getInstance()
+//						.getRecentSearches()));
+//		recentListView
+//				.setOnItemClickListener(new RecentSearchItemClickListener());
+//	}
 
 	public void showLoadingBar() {
 		setProgressBarIndeterminateVisibility(true);

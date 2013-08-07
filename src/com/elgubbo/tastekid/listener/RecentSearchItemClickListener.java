@@ -13,7 +13,6 @@ public class RecentSearchItemClickListener implements OnItemClickListener{
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		// TODO Auto-generated method stub
 		
 		ListView listView = (ListView) arg0;
 		RecentSearchesArrayAdapter adapter = (RecentSearchesArrayAdapter) listView.getAdapter();
@@ -22,7 +21,6 @@ public class RecentSearchItemClickListener implements OnItemClickListener{
 		
 		TasteKidActivity tasteKidAcitivity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
 		tasteKidAcitivity.getmSearchView().setQuery(res.query, true);
-		tasteKidAcitivity.getSlidingMenu().toggle();
 	}
 
 }
