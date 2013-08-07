@@ -352,10 +352,13 @@ public class SectionFragment extends Fragment {
 	 * @see com.elgubbo.tastekid.interfaces.IResultsReceiver#onResultsReady()
 	 */
 	public void onResultsReady() {
-		results = TasteKidApp.resultManager.getResultsByPosition(position);
-		info = TasteKidApp.resultManager.getInfo();
+		results = ResultManager.getInstance().getResultsByPosition(position);
+		info = ResultManager.getInstance().getInfo();
 		adapter.clear();
-		adapter.addAll(results);
+		for (Result res : results) {
+			adapter.add(res);
+		}
+//		adapter.addAll(results);
 		updateCards();
 		hideLoadingBar();
 	}

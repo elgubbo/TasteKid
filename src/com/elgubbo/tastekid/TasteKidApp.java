@@ -91,7 +91,8 @@ public class TasteKidApp extends Application {
 	 */
 	@Override
 	public void onCreate() {
-		resultManager = ResultManager.getInstance();
+		//resultManager = ResultManager.getInstance();
+		super.onCreate();
 	}
 
 }

@@ -2,27 +2,30 @@ package com.elgubbo.tastekid;
 
 import java.sql.SQLException;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 import com.elgubbo.tastekid.adapter.FavouriteResultArrayAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.listener.ItemButtonClickListener;
 import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.j256.ormlite.dao.Dao;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 /**
@@ -44,9 +47,11 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	 */
 	@Override
 	protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-		return (YouTubePlayerView) findViewById(R.id.youtube_view);
+		// return (YouTubePlayerView) findViewById(R.id.youtube_view);
+
+		return null;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		finish();
@@ -64,10 +69,10 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-			
+
 		overridePendingTransition(R.anim.bottom_side_slide_out,
 				R.anim.right_slide_out);
-		ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		if (savedInstanceState != null) {
 			result = savedInstanceState.getParcelable("result");
@@ -90,7 +95,7 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate menu resource file.
-		getMenuInflater().inflate(R.menu.detail, menu);
+		getSupportMenuInflater().inflate(R.menu.detail, menu);
 
 		// Locate MenuItem with ShareActionProvider
 		MenuItem item = menu.findItem(R.id.menu_item_share);
@@ -105,10 +110,11 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 				+ " i found with the TasteKid for Android app! ";
 		if (result.yUrl != null && !result.yUrl.trim().equalsIgnoreCase(""))
 			shareBody += "This is the trailer " + result.yUrl;
-		shareBody += " ,and here is the link to the wikipedia entry " + result.wUrl;
-		String shareHeader = "I have a " + result.type + " recommendation for you!";
-		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-				shareHeader);
+		shareBody += " ,and here is the link to the wikipedia entry "
+				+ result.wUrl;
+		String shareHeader = "I have a " + result.type
+				+ " recommendation for you!";
+		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareHeader);
 		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 		mShareActionProvider.setShareIntent(shareIntent);
 		// Return true to display menu
@@ -144,7 +150,7 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle b){
+	public void onSaveInstanceState(Bundle b) {
 		b.putParcelable("result", this.result);
 	}
 
@@ -152,11 +158,19 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	 * helper method to set up views in this activity.
 	 */
 	private void setupViews() {
-		YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
+		LinearLayout youTubeView = (LinearLayout) findViewById(R.id.youtube_view);
 
 		// When there is a video for the current result, show the youtube player
-		if (result.yID != null && !result.yID.trim().equalsIgnoreCase(""))
-			youTubeView.initialize(Configuration.YOUTUBE_API_KEY, this);
+		if (result.yID != null && !result.yID.trim().equalsIgnoreCase("")) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction fragmentTransaction = fragmentManager
+					.beginTransaction();
+			YouTubePlayerSupportFragment fragment = new YouTubePlayerSupportFragment();
+			fragment.initialize(Configuration.YOUTUBE_API_KEY, this);
+			fragmentTransaction.add(R.id.youtube_view, fragment);
+			fragmentTransaction.commit();
+		}
+		// youTubeView.initialize(Configuration.YOUTUBE_API_KEY, this);
 		else
 			youTubeView.setVisibility(View.GONE);
 		TextView title = (TextView) findViewById(R.id.title);
@@ -199,8 +213,11 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 						FavouriteResultArrayAdapter adapter = (FavouriteResultArrayAdapter) tastekidActivity
 								.getFavouriteListView().getAdapter();
 						adapter.clear();
-						adapter.addAll(ResultManager.getInstance()
-								.getFavouriteResults());
+						for (Result result : ResultManager.getInstance().getFavouriteResults()) {
+							adapter.add(result);
+						}
+//						adapter.addAll(ResultManager.getInstance()
+//								.getFavouriteResults());
 						adapter.notifyDataSetChanged();
 					}
 				});

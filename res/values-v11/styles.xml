@@ -4,14 +4,6 @@
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
-        <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
-    </style>
-
-    <style name="MyActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:displayOptions">showHome|useLogo</item>
-        <item name="android:titleTextStyle">@style/NoTitleText</item>
-        <item name="android:subtitleTextStyle">@style/NoTitleText</item>
-    </style>
+    <style name="AppBaseTheme" parent="Theme.Sherlock.Light.DarkActionBar"></style>
 
 </resources>

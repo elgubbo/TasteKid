@@ -73,7 +73,19 @@
                 android:ellipsize="end"
                 android:text="foo" />
 
-            <com.google.android.youtube.player.YouTubePlayerView
+            <LinearLayout
+                android:id="@+id/youtube_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="4dp"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <!--
+                 <com.google.android.youtube.player.YouTubePlayerView
                 android:id="@+id/youtube_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,6 +93,8 @@
                 android:layout_marginLeft="6dp"
                 android:layout_marginRight="6dp"
                 android:layout_marginTop="4dp" />
+            -->
+
 
             <LinearLayout
                 android:id="@+id/buttonLayoutItem"

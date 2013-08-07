@@ -2,10 +2,11 @@ package com.elgubbo.tastekid;
 
 import android.support.v4.app.FragmentActivity;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.elgubbo.tastekid.api.TasteKidSpiceService;
 import com.octo.android.robospice.SpiceManager;
 
-public abstract class BaseTasteKidSpiceActivity extends FragmentActivity{
+public abstract class BaseTasteKidSpiceActivity extends SherlockFragmentActivity{
 
 	
     private SpiceManager spiceManager = new SpiceManager( TasteKidSpiceService.class );

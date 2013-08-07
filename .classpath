@@ -3,7 +3,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="lib" path="libs/gson-2.2.2.jar"/>
-	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
 	<classpathentry kind="lib" path="libs/nineoldandroids-2.4.0.jar"/>
 	<classpathentry kind="lib" path="libs/ormlite-android-4.45-javadoc.jar"/>
 	<classpathentry kind="lib" path="libs/ormlite-android-4.45.jar"/>

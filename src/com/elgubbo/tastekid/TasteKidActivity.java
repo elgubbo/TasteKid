@@ -2,6 +2,13 @@ package com.elgubbo.tastekid;
 
 import java.util.ArrayList;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.ActionBar.TabListener;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
+import com.actionbarsherlock.widget.SearchView.OnSuggestionListener;
 import com.elgubbo.tastekid.adapter.FavouriteResultArrayAdapter;
 import com.elgubbo.tastekid.adapter.RecentSearchesArrayAdapter;
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
@@ -14,9 +21,7 @@ import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,27 +29,26 @@ import android.content.IntentFilter;
 import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.support.v4.widget.SimpleCursorAdapter;
+
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnSuggestionListener;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+
 
 /**
  * The Class TasteKidActivity. The main activity, contains all fragments
  * (ViewPager etc) and the actionbar
  */
 public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
-		ActionBar.TabListener {
+		TabListener {
 
 	/**
 	 * Gets the activity instance.
@@ -72,6 +76,8 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	ListView recentListView;
 	
     DrawerLayout mDrawerLayout;
+    
+    LinearLayout drawerLinearLayout;
 
 	
 	public DrawerLayout getmDrawerLayout() {
@@ -241,7 +247,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		setContentView(R.layout.main_layout);
 
 		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
+		final ActionBar actionBar = getSupportActionBar();
 		// TODO fix this dirty workaround
 		actionBar.setTitle("");
 		actionBar.setSubtitle("explore your taste");
@@ -261,7 +267,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
         
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-
+        drawerLinearLayout = (LinearLayout) findViewById(R.id.drawer_linear_layout);
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -346,7 +352,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.menu = menu;
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getSupportMenuInflater().inflate(R.menu.main, menu);
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 
 		mSearchView = (SearchView) searchItem.getActionView();
@@ -378,9 +384,15 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-          }
+
+        if (item.getItemId() == android.R.id.home) {
+ 
+            if (mDrawerLayout.isDrawerOpen(drawerLinearLayout)) {
+                mDrawerLayout.closeDrawer(drawerLinearLayout);
+            } else {
+                mDrawerLayout.openDrawer(drawerLinearLayout);
+            }
+        }
 
 			return super.onOptionsItemSelected(item);
 	}
@@ -414,7 +426,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	 * .Tab, android.app.FragmentTransaction)
 	 */
 	@Override
-	public void onTabReselected(ActionBar.Tab tab,
+	public void onTabReselected(Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
 
@@ -426,7 +438,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	 * .Tab, android.app.FragmentTransaction)
 	 */
 	@Override
-	public void onTabSelected(ActionBar.Tab tab,
+	public void onTabSelected(Tab tab,
 			FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
@@ -442,7 +454,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	 * .Tab, android.app.FragmentTransaction)
 	 */
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
+	public void onTabUnselected(Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
 

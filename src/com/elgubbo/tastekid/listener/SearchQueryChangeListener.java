@@ -1,5 +1,7 @@
 package com.elgubbo.tastekid.listener;
 
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.elgubbo.tastekid.Configuration;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.SectionFragment;
@@ -7,28 +9,19 @@ import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.TasteKidApp;
 import com.elgubbo.tastekid.adapter.RecentSearchesArrayAdapter;
 import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
-import com.elgubbo.tastekid.interfaces.IResultsReceiver;
+import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.AutoCompleteManager;
 import com.elgubbo.tastekid.model.ResultManager;
 
 import android.app.Activity;
-import android.app.TaskStackBuilder;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.SearchView;
-import android.widget.SimpleCursorAdapter;
 
 public class SearchQueryChangeListener implements
-		SearchView.OnQueryTextListener {
+		OnQueryTextListener {
 
 	int position;
 
@@ -84,7 +77,10 @@ public class SearchQueryChangeListener implements
 		RecentSearchesArrayAdapter recentsAdapter = (RecentSearchesArrayAdapter) tasteKidActivity
 				.getRecentListView().getAdapter();
 		recentsAdapter.clear();
-		recentsAdapter.addAll(ResultManager.getInstance().getRecentSearches());
+		for (ApiResponse response : ResultManager.getInstance().getRecentSearches()) {
+			recentsAdapter.add(response);
+		}
+//		recentsAdapter.addAll(ResultManager.getInstance().getRecentSearches());
 		recentsAdapter.notifyDataSetChanged();
 
 		InputMethodManager inputManager = (InputMethodManager) TasteKidActivity

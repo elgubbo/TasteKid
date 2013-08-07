@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.model.ApiResponse;
-import com.elgubbo.tastekid.model.Result;
 
 public class RecentSearchesArrayAdapter extends ArrayAdapter<ApiResponse>{
 	
