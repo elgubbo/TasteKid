@@ -2,7 +2,7 @@ package com.elgubbo.tastekid.listener;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
-import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.Config;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.SectionFragment;
 import com.elgubbo.tastekid.TasteKidActivity;
@@ -97,7 +97,7 @@ public class SearchQueryChangeListener implements
 			return false;
 		}
 		if (query.trim().equalsIgnoreCase("")) {
-			if (Configuration.DEVMODE)
+			if (Config.DEVMODE)
 				Log.d("TasteKid", "onQueryTextSubmit doing nothing");
 			return false;
 		}
@@ -106,7 +106,7 @@ public class SearchQueryChangeListener implements
 
 		String type = TasteKidApp.TYPE_ARRAY[position];
 
-		if (Configuration.DEVMODE) {
+		if (Config.DEVMODE) {
 			Log.d("TasteKid", "Position is:" + this.position);
 			Log.d("TasteKid", "type is: " + type);
 		}

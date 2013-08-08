@@ -2,7 +2,7 @@ package com.elgubbo.tastekid.listener;
 
 import java.util.List;
 
-import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.Config;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.model.Result;
@@ -34,7 +34,7 @@ public class ItemButtonClickListener implements OnClickListener {
 	 *            the appContext to startA new Activity
 	 */
 	public ItemButtonClickListener(Result result, Context appContext) {
-		if (Configuration.DEVMODE)
+		if (Config.DEVMODE)
 			Log.d("TasteKid", "Created on ClickListener");
 		this.result = result;
 		this.appContext = appContext;
@@ -53,14 +53,14 @@ public class ItemButtonClickListener implements OnClickListener {
 	 */
 	@Override
 	public void onClick(View v) {
-		if (Configuration.DEVMODE)
+		if (Config.DEVMODE)
 			Log.d("TasteKid", "Clicked: " + v.getId());
 		switch (v.getId()) {
 		case R.id.youtubeLinearLayout:
 			TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
 					.getActivityInstance();
 			Intent youtubeIntent = YouTubeStandalonePlayer.createVideoIntent(
-					activity, Configuration.YOUTUBE_API_KEY, result.yID, 0,
+					activity, Config.YOUTUBE_API_KEY, result.yID, 0,
 					true, true);
 			if (canResolveIntent(youtubeIntent)) {
 				activity.startActivityForResult(youtubeIntent,

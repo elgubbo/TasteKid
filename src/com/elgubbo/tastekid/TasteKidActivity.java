@@ -7,6 +7,7 @@ import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnSuggestionListener;
 import com.elgubbo.tastekid.adapter.FavouriteResultArrayAdapter;
@@ -37,7 +38,6 @@ import android.support.v4.widget.SimpleCursorAdapter;
 
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -219,9 +219,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		return recentListView;
 	}
 
-	public void hideLoadingBar() {
-		setProgressBarIndeterminateVisibility(false);
-	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -244,6 +242,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 		}
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		setContentView(R.layout.main_layout);
 
 		// Set up the action bar.
@@ -324,8 +323,8 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		recentListView
 				.setOnItemClickListener(new RecentSearchItemClickListener());
 
-
-		if (Configuration.DEVMODE)
+		showLoadingBar(false);
+		if (Config.DEVMODE)
 			ViewServer.get(this).addWindow(this);
 	}
 	
@@ -405,7 +404,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		LocalBroadcastManager.getInstance(
 				TasteKidActivity.getActivityInstance()).registerReceiver(
 				mMessageReceiver, new IntentFilter("update-autocomplete"));
-		if (Configuration.DEVMODE)
+		if (Config.DEVMODE)
 			ViewServer.get(this).setFocusedWindow(this);
 
 	}
@@ -470,35 +469,11 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
 
 	}
-//
-//	private void setupSlidingMenu() {
-//		// configure the SlidingMenu
-//		SlidingMenu sm = getSlidingMenu();
-//		/*
-//		 * sm.setShadowWidthRes(R.dimen.shadow_width);
-//		 * sm.setShadowDrawable(android
-//		 * .R.drawable.screen_background_dark_transparent);
-//		 */
-//		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-//		sm.setFadeDegree(0.35f);
-//		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-//		recentListView = (ListView) sm.findViewById(R.id.sideBarList1);
-//		favouriteListView = (ListView) sm.findViewById(R.id.sideBarList2);
-//
-//		favouriteListView.setAdapter(new FavouriteResultArrayAdapter(this,
-//				R.layout.sidebar_list_item, ResultManager.getInstance()
-//						.getFavouriteResults()));
-//		favouriteListView
-//				.setOnItemClickListener(new FavouriteItemClickListener());
-//		recentListView.setAdapter(new RecentSearchesArrayAdapter(this,
-//				R.layout.sidebar_list_item, ResultManager.getInstance()
-//						.getRecentSearches()));
-//		recentListView
-//				.setOnItemClickListener(new RecentSearchItemClickListener());
-//	}
 
-	public void showLoadingBar() {
-		setProgressBarIndeterminateVisibility(true);
+
+	public void showLoadingBar(boolean show) {
+		getSherlock().setProgressBarIndeterminateVisibility(show);
+		setSupportProgressBarIndeterminateVisibility(show);
 	}
 
 }

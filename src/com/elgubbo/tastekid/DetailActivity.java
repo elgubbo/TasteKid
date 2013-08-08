@@ -13,6 +13,7 @@ import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.j256.ormlite.dao.Dao;
 
 import android.content.Intent;
@@ -81,7 +82,7 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 		if (extras != null) {
 			result = extras.getParcelable("result");
 		}
-		if (Configuration.DEVMODE)
+		if (Config.DEVMODE)
 			Log.d("TasteKid", "Result passed to Popup is: " + result.name);
 		setContentView(R.layout.activity_detail);
 		setupViews();
@@ -136,6 +137,7 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 		if (!wasRestored) {
 			player.cueVideo(result.yID);
 		}
+		player.setShowFullscreenButton(false);
 	}
 
 	@Override
@@ -158,19 +160,12 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 	 * helper method to set up views in this activity.
 	 */
 	private void setupViews() {
-		LinearLayout youTubeView = (LinearLayout) findViewById(R.id.youtube_view);
-
+		YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
+	
 		// When there is a video for the current result, show the youtube player
 		if (result.yID != null && !result.yID.trim().equalsIgnoreCase("")) {
-			FragmentManager fragmentManager = getSupportFragmentManager();
-			FragmentTransaction fragmentTransaction = fragmentManager
-					.beginTransaction();
-			YouTubePlayerSupportFragment fragment = new YouTubePlayerSupportFragment();
-			fragment.initialize(Configuration.YOUTUBE_API_KEY, this);
-			fragmentTransaction.add(R.id.youtube_view, fragment);
-			fragmentTransaction.commit();
+			 youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
 		}
-		// youTubeView.initialize(Configuration.YOUTUBE_API_KEY, this);
 		else
 			youTubeView.setVisibility(View.GONE);
 		TextView title = (TextView) findViewById(R.id.title);

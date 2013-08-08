@@ -258,7 +258,7 @@ public class SectionFragment extends Fragment {
 	public void hideLoadingBar() {
 		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
 				.getActivityInstance();
-		activity.hideLoadingBar();
+		activity.showLoadingBar(false);
 		progressLayout.setVisibility(View.GONE);
 	}
 
@@ -382,7 +382,7 @@ public class SectionFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle state) {
 		super.onSaveInstanceState(state);
-		if (Configuration.DEVMODE)
+		if (Config.DEVMODE)
 			Log.i("TasteKid", "onSaveInstanceState()");
 		state.putParcelableArrayList("results", results);
 		state.putParcelableArrayList("info", info);
@@ -474,11 +474,11 @@ public class SectionFragment extends Fragment {
 	 * Shows the loading bar.
 	 */
 	public void showLoadingBar() {
-		if (Configuration.DEVMODE)
+		if (Config.DEVMODE)
 			Log.d("TasteKid", "showing loadingbar");
 		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
 				.getActivityInstance();
-		activity.showLoadingBar();
+		activity.showLoadingBar(true);
 		// progressLayout.setVisibility(View.VISIBLE);
 	}
 

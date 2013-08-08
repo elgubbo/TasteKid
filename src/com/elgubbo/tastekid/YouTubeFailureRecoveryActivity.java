@@ -16,9 +16,6 @@
 
 package com.elgubbo.tastekid;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 
@@ -29,7 +26,7 @@ import android.widget.Toast;
  * An abstract activity which deals with recovering from errors which may occur during API
  * initialization, but can be corrected through user action.
  */
-public abstract class YouTubeFailureRecoveryActivity extends SherlockFragmentActivity implements
+public abstract class YouTubeFailureRecoveryActivity extends SherlockYouTubeBaseActivity implements
     YouTubePlayer.OnInitializedListener {
 
   /** The Constant RECOVERY_DIALOG_REQUEST. */
@@ -49,7 +46,7 @@ public abstract class YouTubeFailureRecoveryActivity extends SherlockFragmentAct
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == RECOVERY_DIALOG_REQUEST) {
       // Retry initialization if user performed a recovery action
-      getYouTubePlayerProvider().initialize(Configuration.YOUTUBE_API_KEY, this);
+      getYouTubePlayerProvider().initialize(Config.YOUTUBE_API_KEY, this);
     }
   }
 

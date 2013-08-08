@@ -6,7 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.Config;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.Result;
@@ -129,7 +129,7 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
 		try {
-			if (Configuration.DEVMODE)
+			if (Config.DEVMODE)
 				Log.i(DBHelper.class.getName(), "onCreate");
 			TableUtils.createTable(connectionSource, ApiResponse.class);
 			TableUtils.createTable(connectionSource, Similar.class);
@@ -153,7 +153,7 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
 			int oldVersion, int newVersion) {
 		try {
-			if (Configuration.DEVMODE)
+			if (Config.DEVMODE)
 				Log.i(DBHelper.class.getName(), "onUpgrade");
 			TableUtils.dropTable(connectionSource, Result.class, true);
 			TableUtils.dropTable(connectionSource, ApiResponse.class, true);
@@ -162,7 +162,7 @@ public class DBHelper extends RoboSpiceDatabaseHelper {
 			// after we drop the old databases, we create the new ones
 			onCreate(db, connectionSource);
 		} catch (SQLException e) {
-			if (Configuration.DEVMODE)
+			if (Config.DEVMODE)
 				Log.e(DBHelper.class.getName(), "Can't drop databases", e);
 			throw new RuntimeException(e);
 		}

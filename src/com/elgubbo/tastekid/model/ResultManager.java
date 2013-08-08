@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.Config;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.TasteKidApp;
 import com.elgubbo.tastekid.api.TasteKidSpiceRequest;
@@ -108,7 +108,7 @@ public class ResultManager implements RequestListener<ApiResponse> {
 			QueryBuilder<ApiResponse, Integer> apiResponseQuery = apiResponseDao.queryBuilder();
 			apiResponseQuery.orderBy("_id", false);
 			List<ApiResponse> temp = apiResponseDao.query(apiResponseQuery.prepare());
-			for(int i = 0; i<Configuration.RECENT_SEARCH_COUNT; i++){
+			for(int i = 0; i<Config.RECENT_SEARCH_COUNT; i++){
 				if(temp.size() > i)
 					results.add(temp.get(i));
 			}
@@ -216,7 +216,7 @@ public class ResultManager implements RequestListener<ApiResponse> {
 			apiResponse.similar.results = apiResponse.similar.getResults();
 		} else {
 			error = apiResponse.error;
-			if (Configuration.DEVMODE)
+			if (Config.DEVMODE)
 				Log.d("TasteKid", error);
 		}
 

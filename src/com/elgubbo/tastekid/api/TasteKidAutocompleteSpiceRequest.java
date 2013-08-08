@@ -12,7 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 
 import android.util.Log;
 
-import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.Config;
 import com.elgubbo.tastekid.model.AutoCompleteResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,10 +32,10 @@ public class TasteKidAutocompleteSpiceRequest extends
 	 */
 	private static HttpGet buildHttpGet(String prefix,
 			HashMap<String, String> map) {
-		String urlString = (prefix == null) ? Configuration.API_URL
-				: Configuration.API_URL + prefix;
-		urlString += "?" + "k=" + Configuration.API_K;
-		urlString += "&" + "f=" + Configuration.API_F;
+		String urlString = (prefix == null) ? Config.API_URL
+				: Config.API_URL + prefix;
+		urlString += "?" + "k=" + Config.API_K;
+		urlString += "&" + "f=" + Config.API_F;
 		urlString += "&" + "format=JSON";
 		urlString += "&" + "verbose=1";
 		// add keys to urlString if needed
@@ -43,7 +43,7 @@ public class TasteKidAutocompleteSpiceRequest extends
 			urlString += "&q=" + map.get("q").replaceAll("_", "%20");
 		}
 
-		if (Configuration.DEVMODE) {
+		if (Config.DEVMODE) {
 			Log.d("APIWRAPPER", "the url string is: " + urlString);
 		}
 		HttpGet get = new HttpGet(urlString);

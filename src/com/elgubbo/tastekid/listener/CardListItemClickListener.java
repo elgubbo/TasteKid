@@ -1,7 +1,6 @@
 package com.elgubbo.tastekid.listener;
 
 import com.elgubbo.tastekid.DetailActivity;
-import com.elgubbo.tastekid.DetailFragment;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.model.Result;

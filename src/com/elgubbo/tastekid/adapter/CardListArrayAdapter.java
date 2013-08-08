@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.elgubbo.tastekid.Configuration;
+import com.elgubbo.tastekid.Config;
 import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.TasteKidApp;
