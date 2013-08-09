@@ -56,12 +56,12 @@ public class TasteKidApp extends Application {
     public static final Map<String, Integer> ICON_MAP;
     static {
         HashMap<String, Integer> iconMapInit = new HashMap<String, Integer>();
-	    iconMapInit.put("movie", R.drawable.movie);
-	    iconMapInit.put("book", R.drawable.book);
-	    iconMapInit.put("music", R.drawable.music);
-	    iconMapInit.put("show", R.drawable.show);
-	    iconMapInit.put("game", R.drawable.game);
-	    iconMapInit.put("author", R.drawable.author);
+	    iconMapInit.put("movie", R.drawable.ic_movie);
+	    iconMapInit.put("book", R.drawable.ic_book);
+	    iconMapInit.put("music", R.drawable.ic_music);
+	    iconMapInit.put("show", R.drawable.ic_show);
+	    iconMapInit.put("game", R.drawable.ic_game);
+	    iconMapInit.put("author", R.drawable.ic_author);
         ICON_MAP = Collections.unmodifiableMap(iconMapInit);
     }
 

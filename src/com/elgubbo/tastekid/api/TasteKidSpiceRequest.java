@@ -39,8 +39,8 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 	 */
 	private static HttpGet buildHttpGet(String prefix,
 			HashMap<String, String> map) {
-		String urlString = (prefix == null) ? Config.API_URL
-				: Config.API_URL + prefix;
+		String urlString = (prefix == null) ? Config.API_URL : Config.API_URL
+				+ prefix;
 		urlString += "?" + "k=" + Config.API_K;
 		urlString += "&" + "f=" + Config.API_F;
 		urlString += "&" + "format=JSON";
@@ -88,7 +88,7 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 	@Override
 	public ApiResponse loadDataFromNetwork() throws Exception {
 		ApiResponse fromDatabase = loadFromDatabase();
-		if(fromDatabase != null)
+		if (fromDatabase != null)
 			return fromDatabase;
 		HashMap<String, String> argMap = new HashMap<String, String>();
 		try {
@@ -113,9 +113,22 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 		ApiResponse apiResponse = gson.fromJson(json, ApiResponse.class);
 		apiResponse.query = query;
 		apiResponse.created = new Timestamp(new Date().getTime());
+		apiResponse = filterResultsForEmpty(apiResponse);
 		// Save similar
 		saveToDatabase(apiResponse);
 		return apiResponse;
+	}
+
+	private ApiResponse filterResultsForEmpty(ApiResponse response) {
+		for (int i = 0; i < response.similar.getResults().size(); i++) {
+			if (response.similar.getResults().get(i).wTeaser.trim().isEmpty()
+					|| response.similar.getResults().get(i).wUrl.trim()
+							.isEmpty()
+					|| response.similar.getResults().get(i).yID.trim()
+							.isEmpty())
+				response.similar.getResults().remove(i);
+		}
+		return response;
 	}
 
 	private ApiResponse loadFromDatabase() {
@@ -128,26 +141,27 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 		try {
 			apiResponseDao = databaseHelper.getApiResponseDao();
 			similarDao = databaseHelper.getSimilarDao();
-			dbQuery = apiResponseDao.queryBuilder().where().eq("query", this.query)
-					.prepare();
-			ApiResponse result =  apiResponseDao.queryForFirst(dbQuery);
-			if(result!=null){
+			dbQuery = apiResponseDao.queryBuilder().where()
+					.eq("query", this.query).prepare();
+			ApiResponse result = apiResponseDao.queryForFirst(dbQuery);
+			if (result != null) {
 				similarDao.refresh(result.similar);
 				apiResponseDao.refresh(result);
-				//TODO BAD BAD BAD - just a temporary fix.
+				// TODO BAD BAD BAD - just a temporary fix.
 				ArrayList<Result> newInfo = new ArrayList<Result>();
 				ArrayList<Result> newResults = new ArrayList<Result>();
 				for (Result res : result.similar.getInfo()) {
-					if(res.isInfo)
+					if (res.isInfo)
 						newInfo.add(res);
 				}
 				for (Result resres : result.similar.getResults()) {
-					if(!resres.isInfo)
+					if (!resres.isInfo)
 						newResults.add(resres);
 				}
 				result.similar.setInfo(newInfo);
 				result.similar.setResults(newResults);
-				Log.d("TasteKid", "Info in loadFromdatabase is: "+result.similar.getInfo().size());
+				Log.d("TasteKid", "Info in loadFromdatabase is: "
+						+ result.similar.getInfo().size());
 			}
 			return result;
 		} catch (SQLException e) {
@@ -156,7 +170,6 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 		}
 		return null;
 	}
-
 
 	private boolean saveToDatabase(ApiResponse apiResponse) {
 		// Save similar

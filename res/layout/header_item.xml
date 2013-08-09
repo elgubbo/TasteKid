@@ -79,7 +79,7 @@
                 android:id="@+id/youtubeImageView"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/youtube" />
+                android:src="@drawable/ic_youtube" />
 
             <TextView
                 android:id="@+id/youtubeTextView"
@@ -104,7 +104,7 @@
                 android:id="@+id/wikiImageView"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/wikipedia" />
+                android:src="@drawable/ic_wikipedia" />
 
             <TextView
                 android:id="@+id/wikiTextView"

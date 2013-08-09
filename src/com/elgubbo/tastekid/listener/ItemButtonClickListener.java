@@ -9,12 +9,10 @@ import com.elgubbo.tastekid.model.Result;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -34,8 +32,7 @@ public class ItemButtonClickListener implements OnClickListener {
 	 *            the appContext to startA new Activity
 	 */
 	public ItemButtonClickListener(Result result, Context appContext) {
-		if (Config.DEVMODE)
-			Log.d("TasteKid", "Created on ClickListener");
+
 		this.result = result;
 		this.appContext = appContext;
 	}
@@ -53,8 +50,7 @@ public class ItemButtonClickListener implements OnClickListener {
 	 */
 	@Override
 	public void onClick(View v) {
-		if (Config.DEVMODE)
-			Log.d("TasteKid", "Clicked: " + v.getId());
+
 		switch (v.getId()) {
 		case R.id.youtubeLinearLayout:
 			TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
@@ -85,7 +81,7 @@ public class ItemButtonClickListener implements OnClickListener {
 			String shareBody = "Check out this cool " + result.type
 					+ " i found with the TasteKid for Android app! ";
 			if (result.yUrl != null && !result.yUrl.trim().equalsIgnoreCase(""))
-				shareBody += "This is the trailer " + result.yUrl;
+				shareBody += "This is the video " + result.yUrl;
 			shareBody += " ,and here is the link to the wikipedia entry " + result.wUrl;
 			String shareHeader = "I have a " + result.type + " recommendation for you!";
 			shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,

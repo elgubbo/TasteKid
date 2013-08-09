@@ -156,7 +156,7 @@ public class ResultManager implements RequestListener<ApiResponse> {
 			if (type == null)
 				return (ArrayList<Result>) apiResponse.similar.results;
 			for (Result result : apiResponse.similar.results) {
-				if (result.type.equalsIgnoreCase(type)) {
+				if (result.type.equalsIgnoreCase(type) && !result.wTeaser.trim().isEmpty()) {
 					filteredResults.add(result);
 				}
 			}

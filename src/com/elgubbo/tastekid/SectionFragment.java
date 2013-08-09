@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.elgubbo.tastekid.adapter.CardListArrayAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
-import com.elgubbo.tastekid.interfaces.IResultsReceiver;
 import com.elgubbo.tastekid.listener.ItemButtonClickListener;
 import com.elgubbo.tastekid.listener.CardListItemClickListener;
 import com.elgubbo.tastekid.model.ApiResponse;
@@ -12,12 +11,10 @@ import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import android.app.ActionBar.LayoutParams;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -28,8 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 /**
@@ -167,7 +164,10 @@ public class SectionFragment extends Fragment {
 				.findViewById(R.id.description);
 		title.setText(infoResult.name);
 		description.setText(infoResult.wTeaser);
-		setupHeaderButtons(infoLayout, infoResult);
+		LinearLayout buttonLayout = (LinearLayout) infoLayout
+				.findViewById(R.id.buttonLayout);
+		buttonLayout.setVisibility(View.VISIBLE);
+		addOnClickListenerToButtons(buttonLayout, infoResult);
 		infoLayout.setVisibility(View.VISIBLE);
 		helpLayout.setVisibility(View.GONE);
 	}
@@ -323,7 +323,7 @@ public class SectionFragment extends Fragment {
 	public void onErrorReceived(String error) {
 		headerLayout.removeView(errorLayout);
 		errorLayout.setBackgroundColor(getResources().getColor(
-				android.R.color.holo_orange_light));
+				R.color.abs__background_holo_light));
 		LinearLayout buttonLayout = (LinearLayout) errorLayout
 				.findViewById(R.id.buttonLayoutItem);
 		errorLayout.removeView(buttonLayout);
@@ -403,8 +403,6 @@ public class SectionFragment extends Fragment {
 		infoLayout = (LinearLayout) inflater
 				.inflate(R.layout.header_item, null);
 
-		setupLoadingBar();
-
 		headerLayout.addView(infoLayout);
 		infoLayout.setVisibility(View.GONE);
 		if (info == null || info.size() == 0)
@@ -417,20 +415,7 @@ public class SectionFragment extends Fragment {
 		listView.addHeaderView(headerLayout);
 	}
 
-	/**
-	 * Setup header buttons.
-	 * 
-	 * @param headerView
-	 *            the view that contains the info about the current search
-	 *            result
-	 * @param result
-	 *            the result
-	 */
-	private void setupHeaderButtons(View headerView, Result result) {
-		LinearLayout buttonLayout = (LinearLayout) headerView
-				.findViewById(R.id.buttonLayout);
-		addOnClickListenerToButtons(buttonLayout, result);
-	}
+
 
 	/**
 	 * Sets up the list view that is displayed by this fragment.
@@ -452,23 +437,7 @@ public class SectionFragment extends Fragment {
 
 	}
 
-	/**
-	 * Sets up the loading bar that is shown during requests.
-	 */
-	private void setupLoadingBar() {
-		progressLayout.setGravity(Gravity.CENTER);
-		progressLayout.setBackgroundResource(R.drawable.card_background);
-		TextView loadingText = new TextView(TasteKidActivity.getAppContext());
-		loadingText.setText("Loading...");
-		loadingText.setTextColor(Color.BLACK);
-		loadingText.setGravity(Gravity.CENTER);
-		ProgressBar loadingProgressBar = new ProgressBar(
-				TasteKidActivity.getAppContext());
-		progressLayout.addView(loadingText);
-		progressLayout.addView(loadingProgressBar);
-		headerLayout.addView(progressLayout);
-		progressLayout.setVisibility(View.GONE);
-	}
+
 
 	/**
 	 * Shows the loading bar.

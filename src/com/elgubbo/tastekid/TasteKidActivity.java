@@ -21,7 +21,6 @@ import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
 import com.elgubbo.tastekid.model.ApiResponse;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -41,7 +40,6 @@ import android.view.ViewParent;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-
 
 /**
  * The Class TasteKidActivity. The main activity, contains all fragments
@@ -74,12 +72,11 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 	/** the Recent searches listview **/
 	ListView recentListView;
-	
-    DrawerLayout mDrawerLayout;
-    
-    LinearLayout drawerLinearLayout;
 
-	
+	DrawerLayout mDrawerLayout;
+
+	LinearLayout drawerLinearLayout;
+
 	public DrawerLayout getmDrawerLayout() {
 		return mDrawerLayout;
 	}
@@ -107,12 +104,11 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 	private Menu menu;
 
-	// handler for received Intents for the "my-event" event
+	// handler for received Intents for the "autocompletesuggestions" event
 	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// Extract data included in the Intent
-			String error = null;
 			if (intent.getExtras() != null) {
 				final ArrayList<String> suggestions = intent.getExtras()
 						.getStringArrayList("autocompletesuggestions");
@@ -139,7 +135,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 					@Override
 					public boolean onSuggestionSelect(int position) {
-						// TODO Auto-generated method stub
 						return false;
 					}
 				});
@@ -149,6 +144,8 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	};
 
 	private ActionBarDrawerToggle mDrawerToggle;
+
+	// private TitlePageIndicator titleIndicator;
 
 	/**
 	 * Searches the view hierarchy excluding the content view for a possible
@@ -219,8 +216,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		return recentListView;
 	}
 
-
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -252,21 +247,19 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		actionBar.setSubtitle("explore your taste");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
 
-		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer icon to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description */
-                R.string.drawer_close  /* "close drawer" description */
-                );
-        
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+		mDrawerLayout, /* DrawerLayout object */
+		R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
+		R.string.drawer_open, /* "open drawer" description */
+		R.string.drawer_close /* "close drawer" description */
+		);
 
-        drawerLinearLayout = (LinearLayout) findViewById(R.id.drawer_linear_layout);
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+		drawerLinearLayout = (LinearLayout) findViewById(R.id.drawer_linear_layout);
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -290,25 +283,20 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 					}
 				});
-		
-		
+		// titleIndicator = (TitlePageIndicator)findViewById(R.id.titles);
+
+		// titleIndicator.setViewPager(mViewPager);
 		mSearchQueryChangeListener = new SearchQueryChangeListener(
 				mSectionsPagerAdapter, mViewPager.getCurrentItem(), mViewPager);
 
-
-
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
 			actionBar.addTab(actionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
-		
-		//Setup navigation drawer listviews
+
+		// Setup navigation drawer listviews
 		recentListView = (ListView) findViewById(R.id.sideBarList1);
 		favouriteListView = (ListView) findViewById(R.id.sideBarList2);
 
@@ -327,20 +315,20 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		if (Config.DEVMODE)
 			ViewServer.get(this).addWindow(this);
 	}
-	
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-    
-    @Override
-    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
 
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(
+			android.content.res.Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -355,9 +343,9 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 
 		mSearchView = (SearchView) searchItem.getActionView();
-		
 
-		setupSearchView(searchItem);
+		mSearchView.setSubmitButtonEnabled(true);
+		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
 
 		return true;
 	}
@@ -371,35 +359,29 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	protected void onDestroy() {
 		super.onDestroy();
 
-		/*
-		 * Handle DB closing
-		 */
+		// Handle DB closing
 		if (databaseHelper != null) {
 			OpenHelperManager.releaseHelper();
 			databaseHelper = null;
 		}
-    	ViewServer.get(this).removeWindow(this);
+		ViewServer.get(this).removeWindow(this);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
- 
-            if (mDrawerLayout.isDrawerOpen(drawerLinearLayout)) {
-                mDrawerLayout.closeDrawer(drawerLinearLayout);
-            } else {
-                mDrawerLayout.openDrawer(drawerLinearLayout);
-            }
-        }
-
-			return super.onOptionsItemSelected(item);
+		if (item.getItemId() == android.R.id.home) {
+			if (mDrawerLayout.isDrawerOpen(drawerLinearLayout)) {
+				mDrawerLayout.closeDrawer(drawerLinearLayout);
+			} else {
+				mDrawerLayout.openDrawer(drawerLinearLayout);
+			}
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
 		// Register mMessageReceiver to receive messages.
 		LocalBroadcastManager.getInstance(
 				TasteKidActivity.getActivityInstance()).registerReceiver(
@@ -421,24 +403,11 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * android.app.ActionBar.TabListener#onTabReselected(android.app.ActionBar
-	 * .Tab, android.app.FragmentTransaction)
-	 */
-	@Override
-	public void onTabReselected(Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
 	 * android.app.ActionBar.TabListener#onTabSelected(android.app.ActionBar
 	 * .Tab, android.app.FragmentTransaction)
 	 */
 	@Override
-	public void onTabSelected(Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
@@ -453,27 +422,18 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	 * .Tab, android.app.FragmentTransaction)
 	 */
 	@Override
-	public void onTabUnselected(Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabUnselected(Tab tab, FragmentTransaction fragmentTransaction) {
 	}
-
-	/**
-	 * Sets the up search view.
-	 * 
-	 * @param searchItem
-	 *            the new up search view
-	 */
-	private void setupSearchView(MenuItem searchItem) {
-		mSearchView.setSubmitButtonEnabled(true);
-
-		mSearchView.setOnQueryTextListener(mSearchQueryChangeListener);
-
-	}
-
 
 	public void showLoadingBar(boolean show) {
 		getSherlock().setProgressBarIndeterminateVisibility(show);
 		setSupportProgressBarIndeterminateVisibility(show);
+	}
+
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

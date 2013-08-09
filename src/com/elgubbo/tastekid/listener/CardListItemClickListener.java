@@ -28,12 +28,10 @@ public class CardListItemClickListener implements OnItemClickListener{
 		ListView listView = (ListView) arg0;
 		HeaderViewListAdapter wrapAdapter = (HeaderViewListAdapter) listView.getAdapter();
 		SwingBottomInAnimationAdapter adapter = (SwingBottomInAnimationAdapter) wrapAdapter.getWrappedAdapter();
-		Log.d("tastekid", "clicked item at position: "+position);
 		Result res = (position==0) ? (Result) ResultManager.getInstance().getInfo().get(0) : (Result) adapter.getItem(position-1);
 		
-		Bundle extras = new Bundle();
-		extras.putParcelable("result", res);
-		 
+		
+		//Start the Detail Activity 
 		Intent intent = new Intent(TasteKidActivity.getActivityInstance(), DetailActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra("result", res);

@@ -4,16 +4,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity$DummySectionFragment" >
 
-
     <ListView
-		android:id="@+id/cardListView"
-		android:layout_marginLeft="16dp"
-		android:layout_marginRight="16dp"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:layout_marginTop="10dp"
-		
-		android:divider="@null"
-		android:dividerHeight="5dp">
+        android:id="@+id/cardListView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp" >
     </ListView>
+
 </RelativeLayout>
