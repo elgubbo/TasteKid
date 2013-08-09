@@ -6,7 +6,7 @@ package com.elgubbo.tastekid;
  * 
  * @author Alexander Reichert
  */
-public abstract class Configuration {
+public abstract class Config {
 	/*
 	 * GLOBAL APP SETTINGS
 	 */
