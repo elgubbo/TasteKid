@@ -13,5 +13,10 @@
     <string name="search_title">Search</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="wiki_link">Wiki article</string>
+    <string name="yt_link">on YouTube</string>
+    <string name="share">Share</string>
+    <string name="recent_searches">Recent searches</string>
+    <string name="bookmarks">Bookmarks</string>
 
 </resources>

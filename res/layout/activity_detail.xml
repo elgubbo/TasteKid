@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
@@ -18,36 +18,33 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+        <CheckBox
+            android:id="@+id/favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:button="@drawable/star" />
 
-            <CheckBox
-                android:id="@+id/favourite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dp"
-                android:button="@drawable/star" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iconView"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="title"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/iconView"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/favourite" />
-        </RelativeLayout>
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/iconView"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/favourite" />
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -69,21 +66,7 @@
                 android:layout_marginLeft="6dp"
                 android:layout_marginRight="6dp"
                 android:layout_marginTop="4dp"
-                android:background="@drawable/card_background"
-                android:text="foo" />
-
-            <!--
-                 <LinearLayout
-                android:id="@+id/youtube_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
-                android:layout_marginTop="4dp"
-                android:orientation="vertical" >
-            </LinearLayout>
-            -->
+                android:background="@drawable/card_background" />
 
             <com.google.android.youtube.player.YouTubePlayerView
                 android:id="@+id/youtube_view"
@@ -132,7 +115,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Wiki article" />
+                        android:text="@string/wiki_link" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -161,7 +144,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Share" />
+                        android:text="@string/share" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

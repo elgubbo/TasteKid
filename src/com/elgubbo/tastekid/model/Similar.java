@@ -91,4 +91,13 @@ public class Similar implements Parcelable{
 		dest.writeList(getInfo());
 		dest.writeList(getResults());
 	}
+	
+	public void filterResults(){
+		ArrayList<Result> localResults = getResults();
+		for (int i = 0; i < localResults.size(); i++) {
+			if(localResults.get(i).wUrl.equals("") || localResults.get(i).wTeaser.equals(""))
+				localResults.remove(i);
+		}
+		setResults(localResults);
+	}
 }

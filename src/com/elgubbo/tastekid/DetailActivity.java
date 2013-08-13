@@ -12,14 +12,11 @@ import com.elgubbo.tastekid.listener.ItemButtonClickListener;
 import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.j256.ormlite.dao.Dao;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import android.view.View;
@@ -75,15 +72,16 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 				R.anim.right_slide_out);
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		//restore state when device is turned or activity is destroyed
 		if (savedInstanceState != null) {
 			result = savedInstanceState.getParcelable("result");
 		}
+		//get the data for this activity from the bundle in the intent
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			result = extras.getParcelable("result");
 		}
-		if (Config.DEVMODE)
-			Log.d("TasteKid", "Result passed to Popup is: " + result.name);
+		//layout
 		setContentView(R.layout.activity_detail);
 		setupViews();
 	}
@@ -137,7 +135,7 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 		if (!wasRestored) {
 			player.cueVideo(result.yID);
 		}
-		player.setShowFullscreenButton(false);
+		player.setShowFullscreenButton(true);
 	}
 
 	@Override
@@ -153,6 +151,7 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 
 	@Override
 	public void onSaveInstanceState(Bundle b) {
+		super.onSaveInstanceState(b);
 		b.putParcelable("result", this.result);
 	}
 
@@ -168,6 +167,7 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 		}
 		else
 			youTubeView.setVisibility(View.GONE);
+		
 		TextView title = (TextView) findViewById(R.id.title);
 		TextView description = (TextView) findViewById(R.id.description);
 		CheckBox favourite = (CheckBox) findViewById(R.id.favourite);
@@ -211,13 +211,10 @@ public class DetailActivity extends YouTubeFailureRecoveryActivity {
 						for (Result result : ResultManager.getInstance().getFavouriteResults()) {
 							adapter.add(result);
 						}
-//						adapter.addAll(ResultManager.getInstance()
-//								.getFavouriteResults());
 						adapter.notifyDataSetChanged();
 					}
 				});
 		description.setText(result.wTeaser);
-
 		ImageView iconView = (ImageView) findViewById(R.id.iconView);
 		iconView.setBackgroundResource(TasteKidApp.ICON_MAP.get(result.type) != null ? TasteKidApp.ICON_MAP
 				.get(result.type) : 0);

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 
 import android.util.Log;
@@ -113,22 +112,10 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 		ApiResponse apiResponse = gson.fromJson(json, ApiResponse.class);
 		apiResponse.query = query;
 		apiResponse.created = new Timestamp(new Date().getTime());
-		apiResponse = filterResultsForEmpty(apiResponse);
+		apiResponse.similar.filterResults();
 		// Save similar
 		saveToDatabase(apiResponse);
 		return apiResponse;
-	}
-
-	private ApiResponse filterResultsForEmpty(ApiResponse response) {
-		for (int i = 0; i < response.similar.getResults().size(); i++) {
-			if (response.similar.getResults().get(i).wTeaser.trim().isEmpty()
-					|| response.similar.getResults().get(i).wUrl.trim()
-							.isEmpty()
-					|| response.similar.getResults().get(i).yID.trim()
-							.isEmpty())
-				response.similar.getResults().remove(i);
-		}
-		return response;
 	}
 
 	private ApiResponse loadFromDatabase() {
@@ -165,7 +152,6 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 			}
 			return result;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -199,10 +185,10 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 			for (Result result : apiResponse.similar.getResults()) {
 				result.parent = apiResponse.similar;
 				result.setCreated(currentTime);
-				resultDao.create(result);
+				if (!result.wUrl.equals("") && !result.wTeaser.equals(""))
+					resultDao.create(result);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

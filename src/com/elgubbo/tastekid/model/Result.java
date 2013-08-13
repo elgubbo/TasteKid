@@ -21,9 +21,9 @@ public class Result implements Parcelable {
 	@DatabaseField(canBeNull = true)
 	@SerializedName("Type")
 	public String type;
-	@DatabaseField(canBeNull = true)
+	@DatabaseField(canBeNull = false)
 	public String wTeaser;
-	@DatabaseField(canBeNull = true)
+	@DatabaseField(canBeNull = false)
 	public String wUrl;
 	@DatabaseField(canBeNull = true)
 	public String yTitle;

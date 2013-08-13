@@ -35,6 +35,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SimpleCursorAdapter;
 
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.LinearLayout;
@@ -48,62 +49,29 @@ import android.widget.Spinner;
 public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		TabListener {
 
-	/**
-	 * Gets the activity instance.
-	 * 
-	 * @return the activity instance
-	 */
-	public static Context getActivityInstance() {
-		return activityInstance;
-	}
-
-	// The searchview
 	/** The m search view. */
 	SearchView mSearchView;
-
 	/** The m sections pager adapter. */
 	SectionsPagerAdapter mSectionsPagerAdapter;
-
 	/** The m view pager. */
 	ViewPager mViewPager;
-
 	/** the Favourites Listview **/
 	ListView favouriteListView;
-
 	/** the Recent searches listview **/
 	ListView recentListView;
-
 	DrawerLayout mDrawerLayout;
-
 	LinearLayout drawerLinearLayout;
-
-	public DrawerLayout getmDrawerLayout() {
-		return mDrawerLayout;
-	}
-
+	LinearLayout overlayLayout;
 	/** The app context. */
 	private static Context appContext;
-
 	/** The activity instance. */
 	private static Activity activityInstance;
-
-	/**
-	 * Gets the app context.
-	 * 
-	 * @return the app context
-	 */
-	public static Context getAppContext() {
-		return appContext;
-	}
-
 	/** The m search query change listener. */
 	SearchQueryChangeListener mSearchQueryChangeListener;
-
 	/** The database helper. */
 	private DBHelper databaseHelper;
-
 	private Menu menu;
-
+	private ActionBarDrawerToggle mDrawerToggle;
 	// handler for received Intents for the "autocompletesuggestions" event
 	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 		@Override
@@ -112,6 +80,10 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 			if (intent.getExtras() != null) {
 				final ArrayList<String> suggestions = intent.getExtras()
 						.getStringArrayList("autocompletesuggestions");
+
+				// setup MatrixCursor because suggestions of searchview will
+				// only accept CursorAdapter and we dont have database data but
+				// data in an arraylist
 				MatrixCursor matrixCursor = new MatrixCursor(new String[] {
 						"_id", "name" });
 				int cursorId = 0;
@@ -119,14 +91,16 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 					matrixCursor.addRow(new Object[] { cursorId, suggestion });
 					cursorId++;
 				}
+				// setup the simple cursor adapter
 				SimpleCursorAdapter mSimpleCursorAdapter = new SimpleCursorAdapter(
 						appContext, R.layout.suggestion_list_item,
 						matrixCursor, new String[] { "name" },
 						new int[] { R.id.itemTitle },
 						SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 				mSearchView.setSuggestionsAdapter(mSimpleCursorAdapter);
+				// add the onsuggestionlistener, fire query when a suggestion is
+				// clicked
 				mSearchView.setOnSuggestionListener(new OnSuggestionListener() {
-
 					@Override
 					public boolean onSuggestionClick(int position) {
 						mSearchView.setQuery(suggestions.get(position), true);
@@ -135,6 +109,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 					@Override
 					public boolean onSuggestionSelect(int position) {
+						// don't do anything on select
 						return false;
 					}
 				});
@@ -143,9 +118,48 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		}
 	};
 
-	private ActionBarDrawerToggle mDrawerToggle;
+	public DrawerLayout getmDrawerLayout() {
+		return mDrawerLayout;
+	}
 
-	// private TitlePageIndicator titleIndicator;
+	public static Context getAppContext() {
+		return appContext;
+	}
+
+	public static Context getActivityInstance() {
+		return activityInstance;
+	}
+
+	public ListView getFavouriteListView() {
+		return favouriteListView;
+	}
+
+	public DBHelper getHelper() {
+		if (databaseHelper == null) {
+			databaseHelper = OpenHelperManager.getHelper(this, DBHelper.class);
+		}
+		return databaseHelper;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public SearchQueryChangeListener getmSearchQueryChangeListener() {
+		return mSearchQueryChangeListener;
+	}
+
+	public SearchView getmSearchView() {
+		return mSearchView;
+	}
+
+	public ViewPager getmViewPager() {
+		return mViewPager;
+	}
+
+	public ListView getRecentListView() {
+		return recentListView;
+	}
 
 	/**
 	 * Searches the view hierarchy excluding the content view for a possible
@@ -180,42 +194,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		return false;
 	}
 
-	public ListView getFavouriteListView() {
-		return favouriteListView;
-	}
-
-	/**
-	 * Gets the helper.
-	 * 
-	 * @return the helper
-	 */
-	public DBHelper getHelper() {
-		if (databaseHelper == null) {
-			databaseHelper = OpenHelperManager.getHelper(this, DBHelper.class);
-		}
-		return databaseHelper;
-	}
-
-	public Menu getMenu() {
-		return menu;
-	}
-
-	public SearchQueryChangeListener getmSearchQueryChangeListener() {
-		return mSearchQueryChangeListener;
-	}
-
-	public SearchView getmSearchView() {
-		return mSearchView;
-	}
-
-	public ViewPager getmViewPager() {
-		return mViewPager;
-	}
-
-	public ListView getRecentListView() {
-		return recentListView;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -238,7 +216,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		}
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-		setContentView(R.layout.main_layout);
+		setContentView(R.layout.layout_main);
 
 		// Set up the action bar.
 		final ActionBar actionBar = getSupportActionBar();
@@ -249,6 +227,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 
+		overlayLayout = (LinearLayout) findViewById(R.id.overlay);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		mDrawerLayout, /* DrawerLayout object */
@@ -283,11 +262,8 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 					}
 				});
-		// titleIndicator = (TitlePageIndicator)findViewById(R.id.titles);
 
-		// titleIndicator.setViewPager(mViewPager);
-		mSearchQueryChangeListener = new SearchQueryChangeListener(
-				mSectionsPagerAdapter, mViewPager.getCurrentItem(), mViewPager);
+		mSearchQueryChangeListener = new SearchQueryChangeListener();
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -386,6 +362,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		LocalBroadcastManager.getInstance(
 				TasteKidActivity.getActivityInstance()).registerReceiver(
 				mMessageReceiver, new IntentFilter("update-autocomplete"));
+
 		if (Config.DEVMODE)
 			ViewServer.get(this).setFocusedWindow(this);
 
@@ -393,6 +370,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 	@Override
 	public void onSaveInstanceState(Bundle b) {
+		// save current query and apiresponse in the outgoing bundle
 		b.putString("query", TasteKidApp.getCurrentQuery());
 		b.putParcelable("apiResponse", ResultManager.getInstance()
 				.getApiResponse());
@@ -426,14 +404,14 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	}
 
 	public void showLoadingBar(boolean show) {
+		overlayLayout.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 		getSherlock().setProgressBarIndeterminateVisibility(show);
 		setSupportProgressBarIndeterminateVisibility(show);
+		mDrawerLayout.closeDrawers();
 	}
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

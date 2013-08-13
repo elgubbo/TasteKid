@@ -22,7 +22,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="title"
             android:textSize="20sp" />
 
         <ImageView
@@ -49,8 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:ellipsize="end"
-            android:maxLines="8"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra metus et ligula accumsan auctor. Nullam luctus neque quis nibh porttitor sagittis. Nunc dignissim quam nec quam scelerisque faucibus. Maecenas elementum ante eget felis vestibulum quis pharetra dui condimentum. In a ligula lectus, aliquet interdum diam. Fusce luctus bibendum tellus, sed iaculis mi vehicula vitae. Fusce quis ipsum in est ultricies egestas a vel orci." />
+            android:maxLines="8" >
+        </TextView>
     </LinearLayout>
 
     <View
@@ -87,7 +86,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Watch trailer" />
+                android:text="@string/yt_link" />
         </LinearLayout>
 
         <LinearLayout
@@ -111,7 +110,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Wiki article" />
+                android:text="@string/wiki_link" />
         </LinearLayout>
     </LinearLayout>
 

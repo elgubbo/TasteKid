@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
@@ -76,8 +77,7 @@ public class SectionFragment extends Fragment {
 	/** The inflater. */
 	LayoutInflater inflater;
 	// Layouts
-	/** The progress layout. */
-	private LinearLayout progressLayout;
+
 
 	/** The header layout. */
 	private LinearLayout headerLayout;
@@ -90,6 +90,7 @@ public class SectionFragment extends Fragment {
 
 	/** The error layout. */
 	private LinearLayout errorLayout;
+
 
 	// Which position the fragment is at
 	/** The position. */
@@ -127,7 +128,7 @@ public class SectionFragment extends Fragment {
 	 */
 	private void addOnClickListenerToButtons(LinearLayout buttonLayout,
 			Result result) {
-
+		
 		if (result == null)
 			return;
 		LinearLayout yTButton = (LinearLayout) buttonLayout
@@ -164,6 +165,19 @@ public class SectionFragment extends Fragment {
 				.findViewById(R.id.description);
 		title.setText(infoResult.name);
 		description.setText(infoResult.wTeaser);
+		infoLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				//Start the Detail Activity 
+				Intent intent = new Intent(TasteKidActivity.getActivityInstance(), DetailActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.putExtra("result", ResultManager.getInstance().getInfo().get(0));
+				
+				TasteKidActivity.getAppContext().startActivity(intent);				
+			}
+		});
 		LinearLayout buttonLayout = (LinearLayout) infoLayout
 				.findViewById(R.id.buttonLayout);
 		buttonLayout.setVisibility(View.VISIBLE);
@@ -252,15 +266,7 @@ public class SectionFragment extends Fragment {
 		return position;
 	}
 
-	/**
-	 * Hides the loading bar.
-	 */
-	public void hideLoadingBar() {
-		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
-				.getActivityInstance();
-		activity.showLoadingBar(false);
-		progressLayout.setVisibility(View.GONE);
-	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -280,8 +286,6 @@ public class SectionFragment extends Fragment {
 				null);
 		this.errorLayout = (LinearLayout) inflater.inflate(R.layout.list_item,
 				null);
-		progressLayout = new LinearLayout(TasteKidActivity.getAppContext());
-
 		if (getArguments() != null)
 			this.position = getArguments().getInt("position");
 		if (savedInstanceState != null)
@@ -321,9 +325,15 @@ public class SectionFragment extends Fragment {
 	 * .lang.String)
 	 */
 	public void onErrorReceived(String error) {
-		headerLayout.removeView(errorLayout);
-		errorLayout.setBackgroundColor(getResources().getColor(
-				R.color.abs__background_holo_light));
+		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
+		activity.showLoadingBar(false);
+		if(adapter!=null){
+			adapter.clear();
+			adapter.notifyDataSetChanged();
+		}
+		
+		headerLayout.removeAllViews();
+		errorLayout.setBackgroundResource(R.drawable.card_background);
 		LinearLayout buttonLayout = (LinearLayout) errorLayout
 				.findViewById(R.id.buttonLayoutItem);
 		errorLayout.removeView(buttonLayout);
@@ -333,8 +343,9 @@ public class SectionFragment extends Fragment {
 				.findViewById(R.id.description);
 		title.setText("Error");
 		content.setText(error);
+		helpLayout.setVisibility(View.INVISIBLE);
+		errorLayout.setVisibility(View.VISIBLE);
 		headerLayout.addView(errorLayout);
-		hideLoadingBar();
 	}
 
 	@Override
@@ -352,15 +363,18 @@ public class SectionFragment extends Fragment {
 	 * @see com.elgubbo.tastekid.interfaces.IResultsReceiver#onResultsReady()
 	 */
 	public void onResultsReady() {
+		errorLayout.setVisibility(View.GONE);
+
 		results = ResultManager.getInstance().getResultsByPosition(position);
 		info = ResultManager.getInstance().getInfo();
+		headerLayout.removeAllViews();
+		headerLayout.addView(infoLayout);
 		adapter.clear();
 		for (Result res : results) {
 			adapter.add(res);
 		}
 //		adapter.addAll(results);
 		updateCards();
-		hideLoadingBar();
 	}
 
 	@Override
@@ -438,23 +452,13 @@ public class SectionFragment extends Fragment {
 	}
 
 
-
-	/**
-	 * Shows the loading bar.
-	 */
-	public void showLoadingBar() {
-		if (Config.DEVMODE)
-			Log.d("TasteKid", "showing loadingbar");
-		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity
-				.getActivityInstance();
-		activity.showLoadingBar(true);
-		// progressLayout.setVisibility(View.VISIBLE);
-	}
-
 	/**
 	 * Refreshes the listView to fit the current resultSet.
 	 */
 	private void updateCards() {
+		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
+		activity.showLoadingBar(false);
+ 		
 		helpLayout.setVisibility(View.GONE);
 		if (results.size() == 0) {
 			if (info.size() == 0)
@@ -463,7 +467,7 @@ public class SectionFragment extends Fragment {
 				fillHeaderNoResults();
 		} else
 			fillHeaderInfo();
-		adapter.notifyDataSetChanged();
+		adapter.notifyDataSetInvalidated();
 		listView.smoothScrollToPosition(0);
 	}
 

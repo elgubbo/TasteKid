@@ -5,15 +5,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
 import com.elgubbo.tastekid.DetailActivity;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.adapter.FavouriteResultArrayAdapter;
 import com.elgubbo.tastekid.model.Result;
-import com.elgubbo.tastekid.model.ResultManager;
-import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 public class FavouriteItemClickListener implements OnItemClickListener{
 

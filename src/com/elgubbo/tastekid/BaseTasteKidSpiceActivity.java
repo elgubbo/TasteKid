@@ -1,7 +1,5 @@
 package com.elgubbo.tastekid;
 
-import android.support.v4.app.FragmentActivity;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.elgubbo.tastekid.api.TasteKidSpiceService;
 import com.octo.android.robospice.SpiceManager;

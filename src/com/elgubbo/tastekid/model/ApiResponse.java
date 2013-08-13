@@ -67,4 +67,6 @@ public class ApiResponse implements Parcelable{
 		dest.writeString(error);
 		dest.writeString(query);
 	}
+	
+
 }

@@ -196,8 +196,7 @@ public class ResultManager implements RequestListener<ApiResponse> {
 	 */
 	@Override
 	public void onRequestFailure(SpiceException arg0) {
-		// TODO Auto-generated method stub
-
+		update(arg0.getMessage());
 	}
 
 	/*

@@ -2,11 +2,8 @@ package com.elgubbo.tastekid.model;
 
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
-
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.api.TasteKidAutocompleteSpiceRequest;
-import com.elgubbo.tastekid.api.TasteKidSpiceRequest;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 

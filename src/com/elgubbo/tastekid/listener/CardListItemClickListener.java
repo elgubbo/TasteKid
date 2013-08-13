@@ -1,17 +1,12 @@
 package com.elgubbo.tastekid.listener;
 
 import com.elgubbo.tastekid.DetailActivity;
-import com.elgubbo.tastekid.R;
 import com.elgubbo.tastekid.TasteKidActivity;
 import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,6 +23,8 @@ public class CardListItemClickListener implements OnItemClickListener{
 		ListView listView = (ListView) arg0;
 		HeaderViewListAdapter wrapAdapter = (HeaderViewListAdapter) listView.getAdapter();
 		SwingBottomInAnimationAdapter adapter = (SwingBottomInAnimationAdapter) wrapAdapter.getWrappedAdapter();
+		if(adapter==null || position-1 < 0)
+			return;
 		Result res = (position==0) ? (Result) ResultManager.getInstance().getInfo().get(0) : (Result) adapter.getItem(position-1);
 		
 		
