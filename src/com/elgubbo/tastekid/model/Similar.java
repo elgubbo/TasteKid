@@ -2,13 +2,8 @@ package com.elgubbo.tastekid.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
-import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;

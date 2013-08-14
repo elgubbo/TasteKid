@@ -27,7 +27,6 @@ public class AutoCompleteManager implements RequestListener<AutoCompleteResponse
 	 * Instantiates a new result manager.
 	 */
 	private AutoCompleteManager() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void getAutoCompleteSuggestions(String query) {
@@ -46,8 +45,7 @@ public class AutoCompleteManager implements RequestListener<AutoCompleteResponse
 
 	@Override
 	public void onRequestFailure(SpiceException arg0) {
-		// TODO Auto-generated method stub
-
+		//Fail silently, worst thing that could happen is no Suggestions are shown to the user
 	}
 
 	@Override

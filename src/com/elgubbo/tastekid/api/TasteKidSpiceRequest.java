@@ -72,7 +72,6 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 	 * @throws IOException
 	 */
 	private String getRequest(HttpGet get) throws IOException {
-		// TODO implement error handling!!
 		String json = "";
 		HashMap<Integer, String> hashMap = UnsecureHttpClient
 				.executeForResponse(get);
@@ -93,7 +92,6 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 		try {
 			argMap.put("q", (URLEncoder.encode(this.query, "UTF-8")));
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -104,10 +102,6 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 
 		json = getRequest(buildHttpGet(null, argMap));
 
-		if (Config.DEVMODE) {
-			Log.d("TasteKid", "The JSON is: ");
-			Log.d("TasteKid", json);
-		}
 
 		ApiResponse apiResponse = gson.fromJson(json, ApiResponse.class);
 		apiResponse.query = query;
@@ -147,8 +141,7 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 				}
 				result.similar.setInfo(newInfo);
 				result.similar.setResults(newResults);
-				Log.d("TasteKid", "Info in loadFromdatabase is: "
-						+ result.similar.getInfo().size());
+
 			}
 			return result;
 		} catch (SQLException e) {

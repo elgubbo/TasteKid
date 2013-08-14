@@ -49,26 +49,17 @@ import android.widget.Spinner;
 public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		TabListener {
 
-	/** The m search view. */
 	SearchView mSearchView;
-	/** The m sections pager adapter. */
 	SectionsPagerAdapter mSectionsPagerAdapter;
-	/** The m view pager. */
-	ViewPager mViewPager;
-	/** the Favourites Listview **/
+	ViewPager fragmentViewPager;
 	ListView favouriteListView;
-	/** the Recent searches listview **/
 	ListView recentListView;
 	DrawerLayout mDrawerLayout;
 	LinearLayout drawerLinearLayout;
 	LinearLayout overlayLayout;
-	/** The app context. */
 	private static Context appContext;
-	/** The activity instance. */
 	private static Activity activityInstance;
-	/** The m search query change listener. */
 	SearchQueryChangeListener mSearchQueryChangeListener;
-	/** The database helper. */
 	private DBHelper databaseHelper;
 	private Menu menu;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -154,7 +145,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	}
 
 	public ViewPager getmViewPager() {
-		return mViewPager;
+		return fragmentViewPager;
 	}
 
 	public ListView getRecentListView() {
@@ -194,11 +185,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
-	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		appContext = getApplicationContext();
@@ -227,7 +213,9 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 
+		// Overlay for the loading screen
 		overlayLayout = (LinearLayout) findViewById(R.id.overlay);
+		// sidebar/drawer
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		mDrawerLayout, /* DrawerLayout object */
@@ -235,23 +223,19 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		R.string.drawer_open, /* "open drawer" description */
 		R.string.drawer_close /* "close drawer" description */
 		);
-
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
 		drawerLinearLayout = (LinearLayout) findViewById(R.id.drawer_linear_layout);
-		// Create the adapter that will return a fragment for each of the three
+		// Create the adapter that will return a fragment for each of the
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager(), this);
-
 		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setOffscreenPageLimit(5);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		fragmentViewPager = (ViewPager) findViewById(R.id.pager);
+		fragmentViewPager.setOffscreenPageLimit(5);
+		fragmentViewPager.setAdapter(mSectionsPagerAdapter);
 		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
-		mViewPager
+		// tab.
+		fragmentViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
@@ -306,11 +290,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.menu = menu;
@@ -326,11 +305,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.FragmentActivity#onDestroy()
-	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -388,7 +362,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
-		mViewPager.setCurrentItem(tab.getPosition());
+		fragmentViewPager.setCurrentItem(tab.getPosition());
 
 	}
 
@@ -401,6 +375,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	 */
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction fragmentTransaction) {
+		// DO NOTHING
 	}
 
 	public void showLoadingBar(boolean show) {
@@ -412,6 +387,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		// DO NOTHING
 	}
 
 }

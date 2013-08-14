@@ -14,13 +14,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
-public class SearchQueryChangeListener implements
-		OnQueryTextListener {
-
+public class SearchQueryChangeListener implements OnQueryTextListener {
 
 	public SearchQueryChangeListener() {
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -31,8 +28,9 @@ public class SearchQueryChangeListener implements
 	 */
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		if (newText.length() > 1) 
-			AutoCompleteManager.getInstance().getAutoCompleteSuggestions(newText);
+		if (newText.length() > 1)
+			AutoCompleteManager.getInstance().getAutoCompleteSuggestions(
+					newText);
 
 		return false;
 	}
@@ -50,23 +48,24 @@ public class SearchQueryChangeListener implements
 		TasteKidActivity tasteKidActivity = (TasteKidActivity) TasteKidActivity
 				.getActivityInstance();
 		tasteKidActivity.showLoadingBar(true);
-		tasteKidActivity.getmViewPager().setCurrentItem(0,true);
-		
-		//close searchview
+		tasteKidActivity.getmViewPager().setCurrentItem(0, true);
+
+		// close searchview
 		MenuItem searchItem = tasteKidActivity.getMenu().findItem(
 				R.id.action_search);
 		searchItem.collapseActionView();
 
-		//update recent searches list in the drawer
+		// update recent searches list in the drawer
 		RecentSearchesArrayAdapter recentsAdapter = (RecentSearchesArrayAdapter) tasteKidActivity
 				.getRecentListView().getAdapter();
 		recentsAdapter.clear();
-		for (ApiResponse response : ResultManager.getInstance().getRecentSearches()) {
+		for (ApiResponse response : ResultManager.getInstance()
+				.getRecentSearches()) {
 			recentsAdapter.add(response);
 		}
 		recentsAdapter.notifyDataSetChanged();
 
-		//hide soft keyboard
+		// hide soft keyboard
 		InputMethodManager inputManager = (InputMethodManager) TasteKidActivity
 				.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromWindow(((Activity) TasteKidActivity
@@ -75,13 +74,10 @@ public class SearchQueryChangeListener implements
 
 		if (query.trim().equalsIgnoreCase(""))
 			return false;
-		
 
 		ResultManager.getInstance().getResultsForQuery(query);
 
 		return true;
 	}
-
-
 
 }
