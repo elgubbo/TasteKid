@@ -18,5 +18,6 @@
     <string name="share">Share</string>
     <string name="recent_searches">Recent searches</string>
     <string name="bookmarks">Bookmarks</string>
+    <string name="help_text">To get suggestions for movies/music/books just hit the search button in the actionbar and start typing!</string>
 
 </resources>

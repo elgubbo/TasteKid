@@ -11,8 +11,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:clipToPadding="false"
+        android:divider="@null"
         android:horizontalSpacing="5dp"
-        android:numColumns="1"
+        android:numColumns="2"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
         android:verticalSpacing="5dp" >

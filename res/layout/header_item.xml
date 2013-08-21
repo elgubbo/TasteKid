@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
     android:layout_marginLeft="6dp"
     android:layout_marginRight="6dp"
     android:layout_marginTop="4dp"
     android:background="@drawable/header_card_background"
     android:orientation="vertical" >
+b
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,22 +26,29 @@
             android:textSize="20sp" />
 
         <ImageView
+            android:id="@+id/dropdown_iconView"
+            android:layout_width="28dp"
+            android:layout_height="28dp" />
+
+        <ImageView
             android:id="@+id/iconView"
             android:layout_width="28dp"
             android:layout_height="28dp" />
     </LinearLayout>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="4dp"
-        android:background="@color/dark_grey" />
-
     <LinearLayout
+        android:id="@+id/text_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:orientation="vertical"
         android:padding="4dp" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/dark_grey" />
 
         <TextView
             android:id="@+id/description"
@@ -50,69 +58,69 @@
             android:ellipsize="end"
             android:maxLines="8"
             android:textColor="@android:color/white" />
-    </LinearLayout>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="4dp"
-        android:background="@color/dark_grey" />
-
-    <LinearLayout
-        android:id="@+id/buttonLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/dark_grey" />
 
         <LinearLayout
-            android:id="@+id/youtubeLinearLayout"
-            android:layout_width="0dp"
+            android:id="@+id/buttonLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:clickable="true"
-            android:padding="4dp" >
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp" >
 
-            <ImageView
-                android:id="@+id/youtubeImageView"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_youtube" />
+            <LinearLayout
+                android:id="@+id/youtubeLinearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:clickable="true"
+                android:padding="4dp" >
 
-            <TextView
-                android:id="@+id/youtubeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/yt_link"
-                android:textColor="#FFFFFF" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/youtubeImageView"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_youtube" />
 
-        <LinearLayout
-            android:id="@+id/wikiLinearLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:clickable="true"
-            android:padding="4dp" >
+                <TextView
+                    android:id="@+id/youtubeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/yt_link"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/wikiImageView"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_wikipedia" />
+            <LinearLayout
+                android:id="@+id/wikiLinearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:clickable="true"
+                android:padding="4dp" >
 
-            <TextView
-                android:id="@+id/wikiTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/wiki_link"
-                android:textColor="#FFFFFF" />
+                <ImageView
+                    android:id="@+id/wikiImageView"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_wikipedia" />
+
+                <TextView
+                    android:id="@+id/wikiTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/wiki_link"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

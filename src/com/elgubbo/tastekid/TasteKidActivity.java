@@ -16,11 +16,18 @@ import com.elgubbo.tastekid.adapter.SectionsPagerAdapter;
 import com.elgubbo.tastekid.db.DBHelper;
 import com.elgubbo.tastekid.helper.ViewServer;
 import com.elgubbo.tastekid.listener.FavouriteItemClickListener;
+import com.elgubbo.tastekid.listener.ItemButtonClickListener;
 import com.elgubbo.tastekid.listener.RecentSearchItemClickListener;
 import com.elgubbo.tastekid.listener.SearchQueryChangeListener;
 import com.elgubbo.tastekid.model.ApiResponse;
+import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.ResultManager;
+import com.elgubbo.tastekid.ui.ExpandCollapseAnimation;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,12 +42,24 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SimpleCursorAdapter;
 
+import android.util.Log;
 import android.view.View;
+import android.view.MotionEvent;
+import android.view.ViewTreeObserver;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.RotateAnimation;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * The Class TasteKidActivity. The main activity, contains all fragments
@@ -56,7 +75,9 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	ListView recentListView;
 	DrawerLayout mDrawerLayout;
 	LinearLayout drawerLinearLayout;
-	LinearLayout overlayLayout;
+	// LinearLayout overlayLayout;
+	LinearLayout headerLayout;
+	boolean headerCollapsed = false;
 	private static Context appContext;
 	private static Activity activityInstance;
 	SearchQueryChangeListener mSearchQueryChangeListener;
@@ -64,7 +85,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	private Menu menu;
 	private ActionBarDrawerToggle mDrawerToggle;
 	// handler for received Intents for the "autocompletesuggestions" event
-	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+	private BroadcastReceiver mAutocompleteMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// Extract data included in the Intent
@@ -109,8 +130,126 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		}
 	};
 
+	// handler for received Intents for the "update-event" event
+	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// Extract data included in the Intent
+			String error = null;
+			if (intent.getExtras() != null)
+				error = intent.getExtras().getString("error");
+			if (error != null) {
+				onErrorReceived(error);
+			} else {
+				onResultsReady();
+
+			}
+		}
+	};
+	private LinearLayout headerItem;
+
 	public DrawerLayout getmDrawerLayout() {
 		return mDrawerLayout;
+	}
+
+	protected void onResultsReady() {
+		final Result result = ResultManager.getInstance().getInfo().get(0);
+		headerLayout.findViewById(R.id.help_layout).setVisibility(View.GONE);
+		headerItem = (LinearLayout) headerLayout
+				.findViewById(R.id.header_item_layout);
+		TextView headerTitle = (TextView) headerItem.findViewById(R.id.title);
+		TextView headerDescription = (TextView) headerItem
+				.findViewById(R.id.description);
+		headerTitle.setText(result.name);
+		headerItem.findViewById(R.id.iconView).setBackgroundResource(
+				TasteKidApp.ICON_MAP.get(result.type));
+		headerDescription.setText(result.wTeaser);
+		final LinearLayout textContainer = (LinearLayout) headerItem
+				.findViewById(R.id.text_container);
+
+		// setup onclicklisteners to buttons (youtube and wiki)
+		LinearLayout buttonLayout = (LinearLayout) headerItem
+				.findViewById(R.id.buttonLayout);
+		LinearLayout yTButton = (LinearLayout) buttonLayout
+				.findViewById(R.id.youtubeLinearLayout);
+		LinearLayout wikiButton = (LinearLayout) buttonLayout
+				.findViewById(R.id.wikiLinearLayout);
+		ItemButtonClickListener listener = new ItemButtonClickListener(result,
+				TasteKidActivity.getAppContext());
+		if (result.yID != null && !result.yID.trim().equalsIgnoreCase("")) {
+			yTButton.setOnClickListener(listener);
+			yTButton.setVisibility(View.VISIBLE);
+		} else
+			yTButton.setVisibility(View.INVISIBLE);
+		if (result.wUrl != null && !result.wUrl.trim().equalsIgnoreCase("")) {
+			wikiButton.setOnClickListener(listener);
+			wikiButton.setVisibility(View.VISIBLE);
+		} else
+			wikiButton.setVisibility(View.INVISIBLE);
+		
+		
+		final ImageView collapseButton = (ImageView) headerItem
+				.findViewById(R.id.dropdown_iconView);
+		ExpandCollapseAnimation anim = new ExpandCollapseAnimation(
+				textContainer, 1);
+		textContainer.startAnimation(anim);
+		headerCollapsed = true;
+		collapseButton
+				.setBackgroundResource(headerCollapsed ? R.drawable.navigation_expand
+						: R.drawable.navigation_collapse);
+
+		final RotateAnimation rotAnim = new RotateAnimation(0.0f, 180.0f,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+		rotAnim.setDuration(200);
+		rotAnim.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				collapseButton
+						.setBackgroundResource(headerCollapsed ? R.drawable.navigation_expand
+								: R.drawable.navigation_collapse);
+			}
+		});
+		collapseButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				int height = headerCollapsed ? 300 : 0;
+				ExpandCollapseAnimation anim = new ExpandCollapseAnimation(
+						textContainer, headerCollapsed ? 0 : 1);
+				anim.setDuration(200);
+				textContainer.startAnimation(anim);
+				headerCollapsed = !headerCollapsed;
+				collapseButton.startAnimation(rotAnim);
+			}
+		});
+		headerItem.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(TasteKidActivity
+						.getActivityInstance(), DetailActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.putExtra("result", result);
+				TasteKidActivity.getActivityInstance().startActivity(intent);
+			}
+		});
+
+		headerItem.setVisibility(View.VISIBLE);
+	}
+
+	protected void onErrorReceived(String error) {
+		// TODO Auto-generated method stub
+
 	}
 
 	public static Context getAppContext() {
@@ -191,18 +330,9 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		activityInstance = this;
 		super.onCreate(savedInstanceState);
 
-		if (savedInstanceState != null) {
-			TasteKidApp.setCurrentQuery(savedInstanceState.getString("query"));
-			ApiResponse restoredResponse = (ApiResponse) savedInstanceState
-					.getParcelable("apiResponse");
-			if (restoredResponse != null) {
-				ResultManager.getInstance().setApiResponse(restoredResponse);
-			}
-
-		}
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-		setContentView(R.layout.layout_main);
+		setContentView(R.layout.activity_main);
 
 		// Set up the action bar.
 		final ActionBar actionBar = getSupportActionBar();
@@ -214,7 +344,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		actionBar.setHomeButtonEnabled(true);
 
 		// Overlay for the loading screen
-		overlayLayout = (LinearLayout) findViewById(R.id.overlay);
+		// overlayLayout = (LinearLayout) findViewById(R.id.overlay);
 		// sidebar/drawer
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
@@ -256,6 +386,9 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 					.setTabListener(this));
 		}
 
+		// Setup the header views
+		headerLayout = (LinearLayout) findViewById(R.id.header_layout);
+
 		// Setup navigation drawer listviews
 		recentListView = (ListView) findViewById(R.id.sideBarList1);
 		favouriteListView = (ListView) findViewById(R.id.sideBarList2);
@@ -276,9 +409,21 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 			ViewServer.get(this).addWindow(this);
 	}
 
+	private int originalHeaderTextHeight;
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			TasteKidApp.setCurrentQuery(savedInstanceState.getString("query"));
+			ApiResponse restoredResponse = (ApiResponse) savedInstanceState
+					.getParcelable("apiResponse");
+			if (restoredResponse != null) {
+				ResultManager.getInstance().setApiResponse(restoredResponse);
+				onResultsReady();
+			}
+			headerCollapsed = savedInstanceState.getBoolean("headerCollapsed");
+		}
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 		mDrawerToggle.syncState();
 	}
@@ -332,10 +477,14 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		// Register mMessageReceiver to receive messages.
+		// register message receivers to receive messages.
 		LocalBroadcastManager.getInstance(
 				TasteKidActivity.getActivityInstance()).registerReceiver(
-				mMessageReceiver, new IntentFilter("update-autocomplete"));
+				mAutocompleteMessageReceiver,
+				new IntentFilter("update-autocomplete"));
+		LocalBroadcastManager.getInstance(
+				TasteKidActivity.getActivityInstance()).registerReceiver(
+				mMessageReceiver, new IntentFilter("update-event"));
 
 		if (Config.DEVMODE)
 			ViewServer.get(this).setFocusedWindow(this);
@@ -348,6 +497,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		b.putString("query", TasteKidApp.getCurrentQuery());
 		b.putParcelable("apiResponse", ResultManager.getInstance()
 				.getApiResponse());
+		b.putBoolean("headerCollapsed", headerCollapsed);
 		super.onSaveInstanceState(b);
 	}
 
@@ -379,7 +529,7 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	}
 
 	public void showLoadingBar(boolean show) {
-		overlayLayout.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+		// overlayLayout.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 		getSherlock().setProgressBarIndeterminateVisibility(show);
 		setSupportProgressBarIndeterminateVisibility(show);
 		mDrawerLayout.closeDrawers();
