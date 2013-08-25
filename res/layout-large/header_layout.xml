@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/help_layout"
+        layout="@layout/help_layout" />
+
+    <include
+        android:id="@+id/header_item_layout"
+        android:layout_height="wrap_content"
+        layout="@layout/header_item"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/error_layout"
+        android:layout_height="wrap_content"
+        layout="@layout/error_layout"
+        android:visibility="gone" />
+
+</LinearLayout>
