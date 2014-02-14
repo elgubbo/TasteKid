@@ -189,16 +189,15 @@ public class SectionFragment extends Fragment {
 			adapter.add(res);
 		}
 		updateCards();
-		
-//		TasteKidActivity activity = (TasteKidActivity) TasteKidActivity.getActivityInstance();
-//		listView.setOnTouchListener(new FragmentListViewScrollListener((LinearLayout)activity.headerLayout));
 
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
+		if(ResultManager.getInstance().resultsAvailable()){
+//			onResultsReady();
+		}
 		// Register mMessageReceiver to receive messages.
 		LocalBroadcastManager.getInstance(
 				TasteKidActivity.getActivityInstance()).registerReceiver(
@@ -214,10 +213,6 @@ public class SectionFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle state) {
 		super.onSaveInstanceState(state);
-		if (Config.DEVMODE)
-			Log.i("TasteKid", "onSaveInstanceState()");
-		state.putParcelableArrayList("results", results);
-		state.putParcelableArrayList("info", info);
 		state.putInt("position", position);
 	}
 

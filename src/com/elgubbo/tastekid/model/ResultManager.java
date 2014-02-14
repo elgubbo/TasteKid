@@ -286,6 +286,7 @@ public class ResultManager implements RequestListener<ApiResponse> {
 
 	public void setApiResponse(ApiResponse apiResponse) {
 		this.apiResponse = apiResponse;
+		update(null);
 	}
 
 	// Send an Intent with an action named "my-event".

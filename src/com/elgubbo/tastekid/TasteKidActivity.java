@@ -223,7 +223,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 
 			@Override
 			public void onClick(View v) {
-				int height = headerCollapsed ? 300 : 0;
 				ExpandCollapseAnimation anim = new ExpandCollapseAnimation(
 						textContainer, headerCollapsed ? 0 : 1);
 				anim.setDuration(200);
@@ -409,8 +408,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 			ViewServer.get(this).addWindow(this);
 	}
 
-	private int originalHeaderTextHeight;
-
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -420,7 +417,6 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 					.getParcelable("apiResponse");
 			if (restoredResponse != null) {
 				ResultManager.getInstance().setApiResponse(restoredResponse);
-				onResultsReady();
 			}
 			headerCollapsed = savedInstanceState.getBoolean("headerCollapsed");
 		}
@@ -485,7 +481,8 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		LocalBroadcastManager.getInstance(
 				TasteKidActivity.getActivityInstance()).registerReceiver(
 				mMessageReceiver, new IntentFilter("update-event"));
-
+		if(ResultManager.getInstance().resultsAvailable())
+			onResultsReady();
 		if (Config.DEVMODE)
 			ViewServer.get(this).setFocusedWindow(this);
 
