@@ -44,6 +44,7 @@ public class TasteKidSpiceRequest extends SpiceRequest<ApiResponse> {
 		urlString += "&" + "f=" + Config.API_F;
 		urlString += "&" + "format=JSON";
 		urlString += "&" + "verbose=1";
+		urlString += "&" + "limit=100";
 		// add keys to urlString if needed
 		if (map.containsKey("q")) {
 			urlString += "&q=" + map.get("q").replaceAll("_", "%20");

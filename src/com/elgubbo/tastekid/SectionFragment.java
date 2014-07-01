@@ -17,12 +17,10 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 
 /**
  * The Class SectionFragment. Displays a fragment for a given position
@@ -37,8 +35,6 @@ public class SectionFragment extends Fragment {
 	 * 
 	 * @param position
 	 *            the position
-	 * @param adapterHolder
-	 *            the adapter holder
 	 * @return the section fragment
 	 */
 	public static SectionFragment init(int position) {
@@ -117,6 +113,7 @@ public class SectionFragment extends Fragment {
 		this.inflater = inflater;
 		this.rootView = inflater.inflate(R.layout.fragment_main_layout,
 				container, false);
+		//restore basic properties when the state was saved
 		if (getArguments() != null)
 			this.position = getArguments().getInt("position");
 		if (savedInstanceState != null)
@@ -185,9 +182,7 @@ public class SectionFragment extends Fragment {
 		results = ResultManager.getInstance().getResultsByPosition(position);
 		info = ResultManager.getInstance().getInfo();
 		adapter.clear();
-		for (Result res : results) {
-			adapter.add(res);
-		}
+		adapter.addAll(results);
 		updateCards();
 
 	}
@@ -196,7 +191,7 @@ public class SectionFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		if(ResultManager.getInstance().resultsAvailable()){
-//			onResultsReady();
+		//	onResultsReady();
 		}
 		// Register mMessageReceiver to receive messages.
 		LocalBroadcastManager.getInstance(

@@ -24,16 +24,14 @@ import com.elgubbo.tastekid.model.Result;
 import com.elgubbo.tastekid.model.ResultManager;
 import com.elgubbo.tastekid.ui.ExpandCollapseAnimation;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.ValueAnimator;
-
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.MatrixCursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
@@ -42,15 +40,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SimpleCursorAdapter;
 
-import android.util.Log;
 import android.view.View;
-import android.view.MotionEvent;
-import android.view.ViewTreeObserver;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.RotateAnimation;
 import android.view.ViewGroup;
@@ -153,17 +145,28 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 	}
 
 	protected void onResultsReady() {
-		final Result result = ResultManager.getInstance().getInfo().get(0);
+		final Result result;
 		headerLayout.findViewById(R.id.help_layout).setVisibility(View.GONE);
 		headerItem = (LinearLayout) headerLayout
 				.findViewById(R.id.header_item_layout);
 		TextView headerTitle = (TextView) headerItem.findViewById(R.id.title);
 		TextView headerDescription = (TextView) headerItem
 				.findViewById(R.id.description);
-		headerTitle.setText(result.name);
-		headerItem.findViewById(R.id.iconView).setBackgroundResource(
-				TasteKidApp.ICON_MAP.get(result.type));
-		headerDescription.setText(result.wTeaser);
+		if(ResultManager.getInstance().getInfo().size() > 0){
+			result = ResultManager.getInstance().getInfo().get(0);
+			headerTitle.setText(result.name);
+			headerItem.findViewById(R.id.iconView).setBackgroundResource(
+					TasteKidApp.ICON_MAP.get(result.type));
+			headerDescription.setText(result.wTeaser);
+		}
+		else
+		{
+			result = new Result();
+			headerTitle.setText(TasteKidApp.getCurrentQuery() + " has not been found!");
+			headerDescription.setText("Please try searching for something else");
+		}
+
+
 		final LinearLayout textContainer = (LinearLayout) headerItem
 				.findViewById(R.id.text_container);
 
@@ -323,6 +326,13 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		return false;
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setLogoPadding()
+	{
+		ImageView view = (ImageView)findViewById(android.R.id.home);
+		view.setPadding(15, 0, 0, 0);
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		appContext = getApplicationContext();
@@ -336,11 +346,12 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		// Set up the action bar.
 		final ActionBar actionBar = getSupportActionBar();
 		// TODO fix this dirty workaround
-		actionBar.setTitle("");
+		actionBar.setTitle("TasteKid");
 		actionBar.setSubtitle("explore your taste");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
+		setLogoPadding();
 
 		// Overlay for the loading screen
 		// overlayLayout = (LinearLayout) findViewById(R.id.overlay);
@@ -481,8 +492,9 @@ public class TasteKidActivity extends BaseTasteKidSpiceActivity implements
 		LocalBroadcastManager.getInstance(
 				TasteKidActivity.getActivityInstance()).registerReceiver(
 				mMessageReceiver, new IntentFilter("update-event"));
-		if(ResultManager.getInstance().resultsAvailable())
+		if(ResultManager.getInstance().resultsAvailable()){
 			onResultsReady();
+		}
 		if (Config.DEVMODE)
 			ViewServer.get(this).setFocusedWindow(this);
 

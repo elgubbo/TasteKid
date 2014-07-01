@@ -164,7 +164,14 @@ public class ResultManager implements RequestListener<ApiResponse> {
 				}
 			}
 		}
-
+		if(filteredResults.size() == 0 && TasteKidApp.getCurrentQuery() != null){
+			
+			Result noResult = new Result();
+			noResult.type = type;
+			noResult.name = "No recommendations";
+			noResult.wTeaser = "No "+type+" recommendations";
+			filteredResults.add(noResult);
+		}
 		return filteredResults;
 	}
 

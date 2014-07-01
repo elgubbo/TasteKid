@@ -48,6 +48,7 @@ public class TasteKidApp extends Application {
 
 	/** The current query. */
 	private static String currentQuery;
+	private static String currentCategory;
 	
 
 	/**
@@ -93,6 +94,14 @@ public class TasteKidApp extends Application {
 	public void onCreate() {
 		//resultManager = ResultManager.getInstance();
 		super.onCreate();
+	}
+
+	public static String getCurrentCategory() {
+		return currentCategory;
+	}
+
+	public static void setCurrentCategory(String currentCategory) {
+		TasteKidApp.currentCategory = currentCategory;
 	}
 
 }
